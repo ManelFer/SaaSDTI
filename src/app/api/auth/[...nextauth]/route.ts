@@ -15,8 +15,8 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        // For demo purposes, we're using hardcoded credentials
-        // In a real application, you would validate against your database
+        
+        // Validar depois com o banco de dados
         if (credentials.email === 'test@gmail.com' && credentials.password === '123456') {
           return {
             id: '1',

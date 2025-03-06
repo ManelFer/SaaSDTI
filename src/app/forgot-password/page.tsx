@@ -1,6 +1,11 @@
 import LoginForgot from "@/components/auth/LoginForgot";
+import LogoutButton from "@/components/auth/LogoutButton";
+import { getServerSession } from "next-auth";
 
-export default function forgotPass() {
+
+export default async function forgotPass() {
+    const session = await getServerSession();
+    
     return (
         <main className="min-h-screen flex items-center justify-center bg-gray-100">
             <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow-lg">
@@ -14,6 +19,7 @@ export default function forgotPass() {
                     </p> 
                 </div>
                 <LoginForgot />
+                <LogoutButton/>
             </div>
         </main>
     )
