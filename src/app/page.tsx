@@ -1,4 +1,3 @@
-import Image from "next/image";
 
 import Link from 'next/link';
 import { getServerSession } from 'next-auth';
@@ -18,7 +17,7 @@ export default async function Home() {
         <div className="text-center">
           <h2 className="mt-6 text-3xl font-bold text-gray-900">DTI-Controller</h2>
           <p className="mt-2 text-sm text-gray-600">
-            Sign in to your account
+            Sisema de controle de estoque e OS
           </p>
         </div>
         <LoginForm />
@@ -27,7 +26,7 @@ export default async function Home() {
             href="/forgot-password" 
             className="text-sm text-blue-600 hover:text-blue-800"
           >
-            Forgot your password?
+            Esqueceu a senha?
           </Link>
         </div>
       </div>
