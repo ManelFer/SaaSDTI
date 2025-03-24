@@ -35,7 +35,7 @@ export default async function DashboardPage() {
             <LogoutButton />
           </div>
           <div className="bg-white rounded-lg shadow p-6">
-            <p className="text-gray-600">Welcome to your dashboard!</p>
+            <p className="text-gray-600">Sistema de Cadastro e Controle!</p>
           </div>
         </div>
 
