@@ -72,4 +72,10 @@ export async function initializeDatabase() {
 }
 
 // Export database instance
-export const db = initializeDatabase(); 
+export const db = initializeDatabase();
+
+// This should only be used in API routes
+export const apiDb = open({
+  filename: './data.db',
+  driver: sqlite3.Database,
+}); 

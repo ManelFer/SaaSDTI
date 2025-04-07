@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { db } from '@/lib/database';
 import toast from 'react-hot-toast';
@@ -18,6 +18,8 @@ interface InventoryItem {
 export default function InventoryPage() {
   const [inventoryItems, setInventoryItems] = useState<InventoryItem[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterListed, setFilterListed] = useState<'all' | 'listed' | 'unlisted'>('all');
   const [formData, setFormData] = useState({
     product_name: '',
     model: '',
@@ -26,17 +28,14 @@ export default function InventoryPage() {
     is_listed: true,
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetchInventoryItems();
   }, []);
 
   const fetchInventoryItems = async () => {
     try {
       const database = await db;
-      const items = await database.all(`
-        SELECT * FROM inventory
-        ORDER BY created_at DESC
-      `);
+      const items = await database.all('SELECT * FROM inventory ORDER BY created_at DESC');
       setInventoryItems(items);
     } catch (error) {
       console.error('Error fetching inventory items:', error);
@@ -49,19 +48,10 @@ export default function InventoryPage() {
     try {
       const database = await db;
       await database.run(
-        `INSERT INTO inventory (
-          product_name, model, heritage, lot, is_listed
-        ) VALUES (?, ?, ?, ?, ?)`,
-        [
-          formData.product_name,
-          formData.model,
-          formData.heritage,
-          formData.lot,
-          formData.is_listed ? 1 : 0,
-        ]
+        'INSERT INTO inventory (product_name, model, heritage, lot, is_listed) VALUES (?, ?, ?, ?, ?)',
+        [formData.product_name, formData.model, formData.heritage, formData.lot, formData.is_listed ? 1 : 0]
       );
-
-      toast.success('Inventory item added successfully');
+      toast.success('Item added successfully');
       setIsModalOpen(false);
       setFormData({
         product_name: '',
@@ -88,11 +78,8 @@ export default function InventoryPage() {
   const generateReport = async () => {
     try {
       const database = await db;
-      const items = await database.all(`
-        SELECT * FROM inventory
-        ORDER BY product_name
-      `);
-
+      const items = await database.all('SELECT * FROM inventory ORDER BY product_name');
+      
       // Create a Word document with the inventory data
       const doc = new DOMParser().parseFromString(`
         <!DOCTYPE html>
@@ -116,9 +103,7 @@ export default function InventoryPage() {
                 <th>Lot</th>
                 <th>Listed</th>
               </tr>
-              ${items
-                .map(
-                  item => `
+              ${items.map(item => `
                 <tr>
                   <td>${item.product_name}</td>
                   <td>${item.model || '-'}</td>
@@ -126,18 +111,14 @@ export default function InventoryPage() {
                   <td>${item.lot || '-'}</td>
                   <td>${item.is_listed ? 'Yes' : 'No'}</td>
                 </tr>
-              `
-                )
-                .join('')}
+              `).join('')}
             </table>
           </body>
         </html>
       `, 'text/html');
 
       // Convert to blob and download
-      const blob = new Blob([doc.documentElement.outerHTML], {
-        type: 'application/msword',
-      });
+      const blob = new Blob([doc.documentElement.outerHTML], { type: 'application/msword' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -154,106 +135,137 @@ export default function InventoryPage() {
     }
   };
 
+  const filteredItems = inventoryItems.filter(item => {
+    const matchesSearch = 
+      item.product_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.model?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.heritage?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.lot?.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesFilter = 
+      filterListed === 'all' ||
+      (filterListed === 'listed' && item.is_listed) ||
+      (filterListed === 'unlisted' && !item.is_listed);
+
+    return matchesSearch && matchesFilter;
+  });
+
   return (
     <DashboardLayout>
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-semibold text-gray-900">Inventory</h2>
-        <div className="space-x-4">
-          <button
-            onClick={generateReport}
-            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
-          >
-            Generate Report
-          </button>
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-          >
-            Add Item
-          </button>
+      <div className="p-6">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold">Inventory Management</h1>
+          <div className="flex gap-4">
+            <button
+              onClick={generateReport}
+              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+            >
+              Generate Report
+            </button>
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            >
+              Add Item
+            </button>
+          </div>
         </div>
-      </div>
 
-      {/* Inventory Table */}
-      <div className="bg-white shadow rounded-lg overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Product Name
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Model
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Heritage
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Lot
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Listed
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {inventoryItems.map((item) => (
-              <tr key={item.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                  {item.product_name}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {item.model || '-'}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {item.heritage || '-'}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {item.lot || '-'}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span
-                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                      item.is_listed
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-red-100 text-red-800'
-                    }`}
-                  >
-                    {item.is_listed ? 'Yes' : 'No'}
-                  </span>
-                </td>
+        {/* Search and Filter */}
+        <div className="mb-6 flex gap-4">
+          <input
+            type="text"
+            placeholder="Search items..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="px-4 py-2 border rounded-md flex-1"
+          />
+          <select
+            value={filterListed}
+            onChange={(e) => setFilterListed(e.target.value as 'all' | 'listed' | 'unlisted')}
+            className="px-4 py-2 border rounded-md"
+          >
+            <option value="all">All Items</option>
+            <option value="listed">Listed Only</option>
+            <option value="unlisted">Unlisted Only</option>
+          </select>
+        </div>
+
+        {/* Inventory Table */}
+        <div className="bg-white rounded-lg shadow overflow-hidden">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Product Name
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Model
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Heritage
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Lot
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Listed
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Created At
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {filteredItems.map((item) => (
+                <tr key={item.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {item.product_name}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {item.model}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {item.heritage}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {item.lot}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                      item.is_listed ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                    }`}>
+                      {item.is_listed ? 'Listed' : 'Unlisted'}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {new Date(item.created_at).toLocaleDateString()}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
-      {/* Add Item Modal */}
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
-          <div className="bg-white rounded-lg p-6 max-w-2xl w-full">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">
-              Add Inventory Item
-            </h3>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+        {/* Add Item Modal */}
+        {isModalOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <div className="bg-white rounded-lg p-6 w-full max-w-md">
+              <h2 className="text-xl font-bold mb-4">Add New Item</h2>
+              <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Product Name
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700">Product Name</label>
                   <input
                     type="text"
                     name="product_name"
                     value={formData.product_name}
                     onChange={handleInputChange}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                     required
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Model
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700">Model</label>
                   <input
                     type="text"
                     name="model"
@@ -263,9 +275,7 @@ export default function InventoryPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Heritage
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700">Heritage</label>
                   <input
                     type="text"
                     name="heritage"
@@ -275,9 +285,7 @@ export default function InventoryPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Lot
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700">Lot</label>
                   <input
                     type="text"
                     name="lot"
@@ -286,38 +294,38 @@ export default function InventoryPage() {
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                   />
                 </div>
-              </div>
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  name="is_listed"
-                  checked={formData.is_listed}
-                  onChange={handleInputChange}
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                />
-                <label className="ml-2 block text-sm text-gray-900">
-                  Listed in Inventory
-                </label>
-              </div>
-              <div className="flex justify-end space-x-3">
-                <button
-                  type="button"
-                  onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                >
-                  Add
-                </button>
-              </div>
-            </form>
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    name="is_listed"
+                    checked={formData.is_listed}
+                    onChange={handleInputChange}
+                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  />
+                  <label className="ml-2 block text-sm text-gray-900">
+                    List in Inventory
+                  </label>
+                </div>
+                <div className="flex justify-end space-x-3">
+                  <button
+                    type="button"
+                    onClick={() => setIsModalOpen(false)}
+                    className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+                  >
+                    Add Item
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </DashboardLayout>
   );
 } 
