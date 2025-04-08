@@ -1,11 +1,11 @@
 import { ReactNode } from "react";
 import Sidebar from './Sidebar';
-import "./globals.css";
+import "../../../styles/globals.css";
 import Head from "next/head";
 
 interface LayoutProps {
   children: React.ReactNode;
-  title: string;
+  title?: string;
 }
 
 export default function Layout({ children, title = 'Sistema Informática' }: LayoutProps) {

@@ -1,6 +1,6 @@
 // src/pages/cadastros/os/index.tsx
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import Button from '@/components/ui/Button';
 
 export default function OrdemServicoList() {
   // Simulação de dados
@@ -14,7 +14,7 @@ export default function OrdemServicoList() {
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Ordens de Serviço</h1>
         <Link href="/cadastros/os/novo">
-          <Button>Nova OS</Button>
+          <Button/>
         </Link>
       </div>
 
