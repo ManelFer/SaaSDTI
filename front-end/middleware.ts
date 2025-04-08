@@ -6,21 +6,21 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get('auth-token')?.value
 
   // Public paths that don't require authentication
-  const publicPaths = ['/auth/login', '/auth/register']
+  const publicPaths = ['/src/app/auth/login', '/src/app/auth/register']
   
   // Check if the path is public
   if (publicPaths.includes(pathname)) {
     // If user is already authenticated, redirect to dashboard
     if (token) {
-      return NextResponse.redirect(new URL('/dashboard', request.url))
+      return NextResponse.redirect(new URL('/src/app/dashboard', request.url))
     }
     return NextResponse.next()
   }
 
   // Protect dashboard routes
-  if (pathname.startsWith('/dashboard')) {
+  if (pathname.startsWith('/src/app/dashboard')) {
     if (!token) {
-      return NextResponse.redirect(new URL('/auth/login', request.url))
+      return NextResponse.redirect(new URL('/src/app/auth/login', request.url))
     }
   }
 
@@ -29,8 +29,8 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/dashboard/:path*',
-    '/auth/login',
-    '/auth/register',
+    '/src/app/dashboard/:path*',
+    '/src/app/auth/login',
+    '/src/app/auth/register',
   ],
 }
