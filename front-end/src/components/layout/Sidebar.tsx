@@ -18,8 +18,7 @@ export default function Sidebar() {
       <div className="flex flex-col h-full">
         <div className="flex items-center justify-center h-16 border-b">
           <h1 className="text-xl font-bold text-gray-800">DTI</h1>
-          <br />
-          <p className="text-sm text-gray-600">Defensoria Publica</p>
+          
         </div>
         <nav className="flex-1 px-4 py-4">
           <ul className="space-y-2">
