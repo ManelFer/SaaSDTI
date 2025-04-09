@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import {
   Select,
@@ -48,53 +49,92 @@ export default function ProjectsPage() {
                   Cadastrar Ordem de Serviço
                 </Button>
               </DialogTrigger>
-              <DialogContent>
+              <DialogContent className="sm:max-w-[800px]">
                 <DialogHeader>
                   <DialogTitle>Cadastro de Ordem de Serviço</DialogTitle>
                   <DialogDescription> Cadastre uma nova ordem de serviço </DialogDescription>
                 </DialogHeader>
-                <div className='grid gap-4 py-4'>
-                  {/* Número da OS */}
-                  <div className='grid grid-cols-2 gap-4 items-center'>
-                    <Label htmlFor='os-number' className='text-right'>
-                      Número da OS:
-                    </Label>
-                    <Input id='os-number' placeholder='Número da OS' className='col-span-3' />
-                  </div>
-                  {/* Data e hora de abertura */}
-                  <div className='grid grid-cols-2 gap-4 items-center'>
-                    <Label htmlFor='os-date' className='text-right'>
-                      Data e hora de abertura:
-                    </Label>
-                    <Input id='os-date' type='datetime-local' className='col-span-3' />
+                <div className='grid grid-cols-2 gap-6 py-4'>
+                  {/* Left Column */}
+                  <div className='space-y-4'>
+                    {/* Número da OS */}
+                    <div className='space-y-2'>
+                      <Label htmlFor='os-number'>
+                        Número da OS:
+                      </Label>
+                      <Input id='os-number' placeholder='Número da OS' />
+                    </div>
+
+                    {/* Data e hora de abertura */}
+                    <div className='space-y-2'>
+                      <Label htmlFor='os-date'>
+                        Data e hora de abertura:
+                      </Label>
+                      <Input id='os-date' type='datetime-local' />
+                    </div>
+
+                    {/* Solicitante */}
+                    <div className='space-y-2'>
+                      <Label htmlFor='solicitante'>
+                        Solicitante:
+                      </Label>
+                      <Input id='solicitante' placeholder='Nome do solicitante' />
+                    </div>
+
+                    {/* Setor / Fórum */}
+                    <div className='space-y-2'>
+                      <Label htmlFor='setor'>
+                        Setor / Fórum:
+                      </Label>
+                      <Select>
+                        <SelectTrigger>
+                          <SelectValue placeholder='Selecione o setor / fórum' />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Setor / Fórum</SelectLabel>
+                            <SelectItem value='setor-forum-1'>Setor 1</SelectItem>
+                            <SelectItem value='setor-forum-2'>Setor 2</SelectItem>
+                            <SelectItem value='setor-forum-3'>Setor 3</SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
 
-                  {/* Solicitante */}
-                  <div className='grid grid-cols-2 gap-4 items-center'>
-                    <Label htmlFor='solicitante' className='text-right'>
-                      Solicitante:
-                    </Label>
-                    <Input id='solicitante' placeholder='Nome do solicitante' className='col-span-3' />
-                  </div>
+                  {/* Right Column */}
+                  <div className='space-y-4'>
+                    {/* Pat. Equipamento */}
+                    <div className='space-y-2'>
+                      <Label htmlFor='patrimonio'>
+                        Pat. Equipamento:
+                      </Label>
+                      <Input id='patrimonio' placeholder='Patrimônio do equipamento' />
+                    </div>
 
-                  {/* Setor / Fórum */}
-                  <div>
-                    <Label htmlFor='setor' className='text-right mb-4'>
-                      Setor / Fórum:
-                    </Label>
-                    <Select>
-                      <SelectTrigger className='w-[300px]'>
-                        <SelectValue placeholder='Selecione o setor / fórum' />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectLabel>Setor / Fórum</SelectLabel>
-                          <SelectItem value='setor-forum-1'>Setor 1</SelectItem>
-                          <SelectItem value='setor-forum-2'>Setor 2</SelectItem>
-                          <SelectItem value='setor-forum-3'>Setor 3</SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
+                    {/* Tipo de Falha */}
+                    <div className='space-y-2'>
+                      <Label htmlFor='tipo-falha'>
+                        Tipo de Falha:
+                      </Label>
+                      <Input id='tipo-falha' placeholder='Tipo de falha' />
+                    </div>
+
+                    {/* Solução técnica */}
+                    <div className='space-y-2'>
+                      <Label htmlFor='solucao-tecnica'>
+                        Solução técnica:
+                      </Label>
+                      <Input id='solucao-tecnica' placeholder='Solução técnica aplicada' />
+                    </div>
+
+                    {/* Técnico Responsável */}
+                    <div className='space-y-2'>
+                      <Label htmlFor='tecnico'>
+                        Técnico Responsável:
+                      </Label>
+                      <Textarea id='tecnico' placeholder='Nome do técnico responsável' />
+                    </div>
                   </div>
                 </div>
                 <DialogFooter>
