@@ -43,6 +43,7 @@ export default function ProjectsPage() {
             </TableRow>
           </TableHeader>
 
+          
           <TableBody>
             <TableRow>
               <TableCell className='font-medium'>0001/2002</TableCell>
@@ -58,6 +59,7 @@ export default function ProjectsPage() {
               <TableCell>Resolvido</TableCell>
               <TableCell className='text-right'>José da Silva</TableCell>
             </TableRow>
+            
           </TableBody>
         </Table>
         
