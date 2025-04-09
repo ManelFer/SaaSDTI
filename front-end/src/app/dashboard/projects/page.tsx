@@ -1,6 +1,17 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
 import DashboardLayout from '@/components/layout/DashboardLayout';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
 import {
   Table,
   TableBody,
@@ -11,6 +22,18 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogTrigger,
+  DialogFooter
+} from "@/components/ui/dialog"
+
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 export default function ProjectsPage() {
   return (
@@ -18,9 +41,71 @@ export default function ProjectsPage() {
       <div className="space-y-6 bg-white rounded-lg p-6">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-800">Cadastro de Ordem de Serviço</h1>
-          <button className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
-            Cadastrar Ordem de Serviço
-          </button>
+          <div className='bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700'>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button >
+                  Cadastrar Ordem de Serviço
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Cadastro de Ordem de Serviço</DialogTitle>
+                  <DialogDescription> Cadastre uma nova ordem de serviço </DialogDescription>
+                </DialogHeader>
+                <div className='grid gap-4 py-4'>
+                  {/* Número da OS */}
+                  <div className='grid grid-cols-2 gap-4 items-center'>
+                    <Label htmlFor='os-number' className='text-right'>
+                      Número da OS:
+                    </Label>
+                    <Input id='os-number' placeholder='Número da OS' className='col-span-3' />
+                  </div>
+                  {/* Data e hora de abertura */}
+                  <div className='grid grid-cols-2 gap-4 items-center'>
+                    <Label htmlFor='os-date' className='text-right'>
+                      Data e hora de abertura:
+                    </Label>
+                    <Input id='os-date' type='datetime-local' className='col-span-3' />
+                  </div>
+
+                  {/* Solicitante */}
+                  <div className='grid grid-cols-2 gap-4 items-center'>
+                    <Label htmlFor='solicitante' className='text-right'>
+                      Solicitante:
+                    </Label>
+                    <Input id='solicitante' placeholder='Nome do solicitante' className='col-span-3' />
+                  </div>
+
+                  {/* Setor / Fórum */}
+                  <div>
+                    <Label htmlFor='setor' className='text-right mb-4'>
+                      Setor / Fórum:
+                    </Label>
+                    <Select>
+                      <SelectTrigger className='w-[300px]'>
+                        <SelectValue placeholder='Selecione o setor / fórum' />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Setor / Fórum</SelectLabel>
+                          <SelectItem value='setor-forum-1'>Setor 1</SelectItem>
+                          <SelectItem value='setor-forum-2'>Setor 2</SelectItem>
+                          <SelectItem value='setor-forum-3'>Setor 3</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button type='submit' className='bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 hover:scale-105 duration-300'>
+                    Salvar OS
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+
+          </div>
         </div>
         
         <Table>
@@ -59,7 +144,7 @@ export default function ProjectsPage() {
               <TableCell>Resolvido</TableCell>
               <TableCell className='text-right'>José da Silva</TableCell>
             </TableRow>
-            
+
           </TableBody>
         </Table>
         
