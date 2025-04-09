@@ -5,9 +5,9 @@ import { usePathname } from 'next/navigation';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard' },
-  { name: 'Projects', href: '/dashboard/projects' },
-  { name: 'Team', href: '/dashboard/team' },
-  { name: 'Settings', href: '/dashboard/settings' },
+  { name: 'Ordens de Serviço', href: '/dashboard/projects' },
+  { name: 'Estoque', href: '/dashboard/team' },
+  { name: 'Lixão', href: '/dashboard/settings' },
 ];
 
 export default function Sidebar() {
