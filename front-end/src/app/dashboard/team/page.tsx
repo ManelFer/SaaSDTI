@@ -1,4 +1,5 @@
 'use client';
+import { Register } from './_components/register';
 import {
   Table,
   TableBody,
@@ -17,10 +18,8 @@ export default function TeamPage() {
     <DashboardLayout>
       <div className="space-y-6 bg-white rounded-lg p-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-800">Cadastro de Equipe</h1>
-          <button className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
-            Cadastrar Equipe
-          </button>
+          <h1 className="text-2xl font-bold text-gray-800">Cadastro de Equipamentos</h1>
+          <Register />
         </div>
 
         <div className="bg-white rounded-lg shadow overflow-hidden">
