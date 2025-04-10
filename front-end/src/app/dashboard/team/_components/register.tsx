@@ -1,7 +1,5 @@
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
 import { Form } from './form';
 
 import {
@@ -19,7 +17,7 @@ export function Register() {
         <div className='bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700'>
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button>
+                    <Button className='bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 hover:scale-105 duration-300'>
                         Cadastro de Equipamentos
                     </Button>
                 </DialogTrigger>

@@ -1,3 +1,28 @@
 buton do project = "<button className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
             Cadastrar Ordem de Serviço
           </button>"
+
+
+{/* Número de série */}
+                <div className='space-y-2'>
+                    <Label htmlFor='numero-serie'>
+                        Número de série:
+                    </Label>
+                    <Input id='numero-serie' placeholder='Número de série do equipamento' />
+                </div>
+                
+                {/*Patrimônio*/}
+                <div className='space-y-2'>
+                    <Label htmlFor='patrimonio'>
+                        Patrimônio:
+                    </Label>
+                    <Input id='patrimonio' placeholder='Patrimônio do equipamento' />
+                </div>
+
+                {/* Lote */}
+                <div className='space-y-2'>
+                    <Label htmlFor='lote'>
+                        Lote:
+                    </Label>
+                    <Input id='lote' placeholder='Lote do equipamento' />
+                </div>

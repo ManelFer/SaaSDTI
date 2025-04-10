@@ -24,7 +24,7 @@ export default function TeamPage() {
 
         <div className="bg-white rounded-lg shadow overflow-hidden">
           <Table>
-            <TableCaption>Lista de Equipes</TableCaption>
+            <TableCaption>Lista de Produtos</TableCaption>
             <TableHeader>
               <TableRow>
                 <TableHead className="w-[100px]">Equipamento</TableHead>
@@ -32,7 +32,8 @@ export default function TeamPage() {
                 <TableHead>Modelo</TableHead>
                 <TableHead>Número de Série</TableHead>
                 <TableHead>Patrimônio</TableHead>
-                <TableHead className='text-right'>Lote</TableHead>
+                <TableHead>Lote</TableHead>
+                <TableHead className='text-right'>Quantidade</TableHead>
               </TableRow>
             </TableHeader>
 
@@ -43,7 +44,8 @@ export default function TeamPage() {
                 <TableCell>Inspiron 15</TableCell>
                 <TableCell>1234567890</TableCell>
                 <TableCell>1234567890</TableCell>
-                <TableCell className='text-right'>1234567890</TableCell>
+                <TableCell>1234567890</TableCell>
+                <TableCell className='text-right'>1</TableCell>
               </TableRow>
             </TableBody>
           </Table>

@@ -49,13 +49,13 @@ export default function ProjectsPage() {
                   Cadastrar Ordem de Serviço
                 </Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[800px]">
+              <DialogContent className="sm:max-w-[1000px]">
                 <DialogHeader>
                   <DialogTitle>Cadastro de Ordem de Serviço</DialogTitle>
                   <DialogDescription> Cadastre uma nova ordem de serviço </DialogDescription>
                 </DialogHeader>
                 <div className='grid grid-cols-3 gap-6 py-4'>
-                  {/* Left Column */}
+                  {/* First Column */}
                   <div className='space-y-4'>
                     {/* Número da OS */}
                     <div className='space-y-2'>
@@ -102,7 +102,7 @@ export default function ProjectsPage() {
                     </div>
                   </div>
 
-                  {/* Right Column */}
+                  {/* Second Column */}
                   <div className='space-y-4'>
                     {/* Pat. Equipamento */}
                     <div className='space-y-2'>
@@ -125,22 +125,20 @@ export default function ProjectsPage() {
                       <Label htmlFor='solucao-tecnica'>
                         Solução técnica:
                       </Label>
-                      <Textarea id='tecnico' placeholder='Nome do técnico responsável' />
+                      <Textarea id='solucao-tecnica' placeholder='Solução técnica aplicada' />
                     </div>
-
 
                     {/* Técnico Responsável */}
                     <div className='space-y-2'>
                       <Label htmlFor='tecnico'>
                         Técnico Responsável:
                       </Label>
-                      <Input id='solucao-tecnica' placeholder='Solução técnica aplicada' />
+                      <Input id='tecnico' placeholder='Nome do técnico' />
                     </div>
                   </div>
 
-                  {/* terceira coluna */}
+                  {/* Third Column */}
                   <div className='space-y-4'>
-
                     {/* Data e hora do recolhimento */}
                     <div className='space-y-2'>
                       <Label htmlFor='os-date-recolhido'>
@@ -183,7 +181,6 @@ export default function ProjectsPage() {
                         </SelectContent>
                       </Select>
                     </div>
-
                   </div>
                 </div>
                 <DialogFooter>
