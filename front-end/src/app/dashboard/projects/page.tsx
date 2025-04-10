@@ -54,7 +54,7 @@ export default function ProjectsPage() {
                   <DialogTitle>Cadastro de Ordem de Serviço</DialogTitle>
                   <DialogDescription> Cadastre uma nova ordem de serviço </DialogDescription>
                 </DialogHeader>
-                <div className='grid grid-cols-2 gap-6 py-4'>
+                <div className='grid grid-cols-3 gap-6 py-4'>
                   {/* Left Column */}
                   <div className='space-y-4'>
                     {/* Número da OS */}
@@ -125,16 +125,65 @@ export default function ProjectsPage() {
                       <Label htmlFor='solucao-tecnica'>
                         Solução técnica:
                       </Label>
-                      <Input id='solucao-tecnica' placeholder='Solução técnica aplicada' />
+                      <Textarea id='tecnico' placeholder='Nome do técnico responsável' />
                     </div>
+
 
                     {/* Técnico Responsável */}
                     <div className='space-y-2'>
                       <Label htmlFor='tecnico'>
                         Técnico Responsável:
                       </Label>
-                      <Textarea id='tecnico' placeholder='Nome do técnico responsável' />
+                      <Input id='solucao-tecnica' placeholder='Solução técnica aplicada' />
                     </div>
+                  </div>
+
+                  {/* terceira coluna */}
+                  <div className='space-y-4'>
+
+                    {/* Data e hora do recolhimento */}
+                    <div className='space-y-2'>
+                      <Label htmlFor='os-date-recolhido'>
+                        Data e hora do recolhimento:
+                      </Label>
+                      <Input id='os-date-recolhimento' type='datetime-local' />
+                    </div>
+
+                    {/* Data e hora do devolvimento */}
+                    <div className='space-y-2'>
+                      <Label htmlFor='os-date-devolucao'>
+                        Data e hora do devolvimento:
+                      </Label>
+                      <Input id='os-date-devolucao' type='datetime-local' />
+                    </div>
+                    
+                    {/* Data e hora do fechamento */}
+                    <div className='space-y-2'>
+                      <Label htmlFor='os-date-fechamento'>
+                        Data e hora do fechamento:
+                      </Label>
+                      <Input id='os-date-fechamento' type='datetime-local' />
+                    </div>
+
+                    {/* Status */}
+                    <div className='space-y-2'>
+                      <Label htmlFor='status'>
+                        Status:
+                      </Label>
+                      <Select>
+                        <SelectTrigger>
+                          <SelectValue placeholder='Status' />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Status</SelectLabel>
+                            <SelectItem value='Resolvido'>Resolvido</SelectItem>
+                            <SelectItem value='Não resolvido'>Não resolvido</SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
                   </div>
                 </div>
                 <DialogFooter>
