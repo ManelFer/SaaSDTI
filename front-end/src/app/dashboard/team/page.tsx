@@ -1,4 +1,5 @@
 'use client';
+import { Retirada } from './_components/retirada';
 import { Register } from './_components/register';
 import {
   Table,
@@ -19,6 +20,7 @@ export default function TeamPage() {
       <div className="space-y-6 bg-white rounded-lg p-6">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-800">Cadastro de Equipamentos</h1>
+          <Retirada />
           <Register />
         </div>
 
