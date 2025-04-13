@@ -42,7 +42,7 @@ export function Form() {
                 {/* Lote */}
                 <div className='space-y-2'>
                     <Label htmlFor='lote'>Lote:</Label>
-                    <Input id='lote' placeholder='Lote do equipamento' />
+                    <Input id='lote' placeholder='Lote do equipamento (Caso não tenha patrimônio)' />
                 </div>
             </div>
         </div>
