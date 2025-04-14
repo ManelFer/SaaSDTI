@@ -6,8 +6,8 @@ import { usePathname } from 'next/navigation';
 const navigation = [
   { name: 'Dashboard', href: '/dashboard' },
   { name: 'Ordens de Serviço', href: '/dashboard/CadastroOs' },
-  { name: 'Estoque', href: '/dashboard/team' },
-  { name: 'Lixão', href: '/dashboard/settings' },
+  { name: 'Estoque', href: '/dashboard/CadastroEst' },
+  { name: 'Lixão', href: '/dashboard/CadastroLix' },
 ];
 
 export default function Sidebar() {
