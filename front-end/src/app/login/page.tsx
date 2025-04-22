@@ -2,23 +2,29 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from "../../lib/firebaseConfig";
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    
+    setLoading(true); // Inicia o estado de carregamento
+
     try {
-      // TODO: Implement actual authentication
-      console.log('Login attempt:', { email, password });
-      router.push('/dashboard');
-    } catch (err) {
-      setError('Invalid credentials');
+      await signInWithEmailAndPassword(auth, email, password);
+      // Redirecionar após o login bem-sucedido
+      router.push('/dashboard'); // Altere para a rota desejada
+    } catch (error) {
+      setError((error as Error).message);
+    } finally {
+      setLoading(false); // Finaliza o estado de carregamento
     }
   };
 
@@ -45,6 +51,7 @@ export default function LoginPage() {
               onChange={(e) => setEmail(e.target.value)}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               placeholder="seu@email.com"
+              required // Adiciona a validação de campo obrigatório
             />
           </div>
 
@@ -59,17 +66,19 @@ export default function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               placeholder="••••••••"
+              required // Adiciona a validação de campo obrigatório
             />
           </div>
 
           <button
             type="submit"
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${loading ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
+            disabled={loading} // Desabilita o botão durante o carregamento
           >
-            Entrar
+            {loading ? 'Entrando...' : 'Entrar'}
           </button>
         </form>
       </div>
     </div>
   );
-} 
+}

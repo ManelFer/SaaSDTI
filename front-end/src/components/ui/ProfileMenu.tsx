@@ -58,7 +58,7 @@ export default function ProfileMenu({ isOpen, onToggle }: ProfileMenuProps) {
           <Menu.Item>
             {({ active }) => (
               <a
-                href="#"
+                href="login"
                 className={`${
                   active ? 'bg-gray-100' : ''
                 } block px-4 py-2 text-sm text-gray-700`}
