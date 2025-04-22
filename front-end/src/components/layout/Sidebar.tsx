@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import Logo from '../../../public/logo.png'
+
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard' },
@@ -17,11 +19,11 @@ export default function Sidebar() {
     <div className="w-64 bg-white shadow-lg">
       <div className="flex flex-col h-full">
         <div className="flex items-center justify-center h-16 border-b">
-          <h1 className="text-xl font-bold text-gray-800">DTI</h1>
+          <img src={Logo.src} alt="logo" className='w-30'/>
           
         </div>
-        <nav className="flex-1 px-4 py-4">
-          <ul className="space-y-2">
+        <nav className="flex-1 px-4 py-4 mt-7 overflow-y-auto">
+          <ul className="space-y-4">
             {navigation.map((item) => (
               <li key={item.name}>
                 <Link
