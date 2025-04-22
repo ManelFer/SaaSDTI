@@ -1,15 +1,21 @@
-'use client';
+"use client";
 
-import { Fragment } from 'react';
-import { Menu, Transition } from '@headlessui/react';
-import { UserCircleIcon } from '@heroicons/react/24/outline';
+import { Fragment } from "react";
+import { Menu, Transition } from "@headlessui/react";
+import { UserCircleIcon } from "@heroicons/react/24/outline";
+import { auth } from "@/lib/firebaseConfig";
 
 interface ProfileMenuProps {
   isOpen: boolean;
   onToggle: () => void;
+  userEmail?: string | null;
 }
 
-export default function ProfileMenu({ isOpen, onToggle }: ProfileMenuProps) {
+export default function ProfileMenu({
+  isOpen,
+  onToggle,
+  userEmail,
+}: ProfileMenuProps) {
   return (
     <Menu as="div" className="relative">
       <Menu.Button
@@ -17,7 +23,10 @@ export default function ProfileMenu({ isOpen, onToggle }: ProfileMenuProps) {
         onClick={onToggle}
       >
         <UserCircleIcon className="h-8 w-8 text-gray-400" />
-        <span className="text-sm font-medium text-gray-700">John Doe</span>
+        <span className="text-sm font-medium text-gray-700">
+          {userEmail || "Usuário"}{" "}
+          {/* Mostra o email ou 'Usuário' se não houver email */}
+        </span>
       </Menu.Button>
 
       <Transition
@@ -36,7 +45,7 @@ export default function ProfileMenu({ isOpen, onToggle }: ProfileMenuProps) {
               <a
                 href="#"
                 className={`${
-                  active ? 'bg-gray-100' : ''
+                  active ? "bg-gray-100" : ""
                 } block px-4 py-2 text-sm text-gray-700`}
               >
                 Your Profile
@@ -48,7 +57,7 @@ export default function ProfileMenu({ isOpen, onToggle }: ProfileMenuProps) {
               <a
                 href="#"
                 className={`${
-                  active ? 'bg-gray-100' : ''
+                  active ? "bg-gray-100" : ""
                 } block px-4 py-2 text-sm text-gray-700`}
               >
                 Settings
@@ -57,18 +66,21 @@ export default function ProfileMenu({ isOpen, onToggle }: ProfileMenuProps) {
           </Menu.Item>
           <Menu.Item>
             {({ active }) => (
-              <a
-                href="login"
+              <button
+                onClick={async () => {
+                  await auth.signOut();
+                  window.location.href = "/login";
+                }}
                 className={`${
-                  active ? 'bg-gray-100' : ''
-                } block px-4 py-2 text-sm text-gray-700`}
+                  active ? "bg-gray-100" : ""
+                } block w-full text-left px-4 py-2 text-sm text-gray-700`}
               >
-                Sign out
-              </a>
+                Sair
+              </button>
             )}
           </Menu.Item>
         </Menu.Items>
       </Transition>
     </Menu>
   );
-} 
+}
