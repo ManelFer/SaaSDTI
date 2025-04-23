@@ -1,5 +1,6 @@
 "use client";
-
+import { Setor } from "./_components/setor";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import DashboardLayout from "@/components/layout/DashboardLayout";
@@ -37,6 +38,55 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export default function ProjectsPage() {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [form, setForm] = useState({
+    osNumber: "",
+    osDate: "",
+    solicitante: "",
+    setor: "",
+    patrimonio: "",
+    tipoFalha: "",
+    solucaoTecnica: "",
+    tecnicoResponsavel: "",
+    osDateRecolhido: "",
+    osDateDevolucao: "",
+    osDateFechamento: "",
+    status: "",
+  });
+  const handleChange = (key: string, value: string) => {
+    setForm((prev) => ({ ...prev, [key]: value }));
+  };
+  const handleSubmit = async () => {
+    try {
+      const res = await fetch("http://localhost:3001/ordens", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      console.log("Resposta do servidor:", data);
+      alert("Ordem de serviço cadastrada com sucesso!");
+      setIsDialogOpen(false);
+      setForm({
+        osNumber: "",
+        osDate: "",
+        solicitante: "",
+        setor: "",
+        patrimonio: "",
+        tipoFalha: "",
+        solucaoTecnica: "",
+        tecnicoResponsavel: "",
+        osDateRecolhido: "",
+        osDateDevolucao: "",
+        osDateFechamento: "",
+        status: "",
+      });
+    } catch (err) {
+      console.error("Erro ao cadastrar ordem de serviço:", err);
+      alert("Erro ao cadastrar ordem de serviço. Tente novamente.");
+    }
+  };
+
   return (
     <DashboardLayout>
       <div className="space-y-6 bg-white rounded-lg p-6">
@@ -48,7 +98,7 @@ export default function ProjectsPage() {
             <Dialog>
               <DialogTrigger asChild>
                 <Button className="bg-[#257432] hover:bg-[#066333] hover:scale-105 duration-300">
-                  Cadastrar Ordem de Serviço 
+                  Cadastrar Ordem de Serviço
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[1000px]">
@@ -65,13 +115,25 @@ export default function ProjectsPage() {
                     {/* Número da OS */}
                     <div className="space-y-2">
                       <Label htmlFor="os-number">Número da OS:</Label>
-                      <Input id="os-number" placeholder="Número da OS" />
+                      <Input
+                        id="os-number"
+                        placeholder="Número da OS"
+                        value={form.osNumber}
+                        onChange={(e) =>
+                          handleChange("osNumber", e.target.value)
+                        }
+                      />
                     </div>
 
                     {/* Data e hora de abertura */}
                     <div className="space-y-2">
                       <Label htmlFor="os-date">Data e hora de abertura:</Label>
-                      <Input id="os-date" type="datetime-local" />
+                      <Input
+                        id="os-date"
+                        type="datetime-local"
+                        value={form.osDate}
+                        onChange={(e) => handleChange("osDate", e.target.value)}
+                      />
                     </div>
 
                     {/* Solicitante */}
@@ -80,32 +142,15 @@ export default function ProjectsPage() {
                       <Input
                         id="solicitante"
                         placeholder="Nome do solicitante"
+                        value={form.solicitante}
+                        onChange={(e) =>
+                          handleChange("solicitante", e.target.value)
+                        }
                       />
                     </div>
 
                     {/* Setor / Fórum */}
-                    <div className="space-y-2">
-                      <Label htmlFor="setor">Setor / Fórum:</Label>
-                      <Select>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecione o setor / fórum" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectGroup>
-                            <SelectLabel>Setor / Fórum</SelectLabel>
-                            <SelectItem value="setor-forum-1">
-                              Setor 1
-                            </SelectItem>
-                            <SelectItem value="setor-forum-2">
-                              Setor 2
-                            </SelectItem>
-                            <SelectItem value="setor-forum-3">
-                              Setor 3
-                            </SelectItem>
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                    </div>
+                    <Setor value={form.setor} onChange={(value) => handleChange("setor", value)} />
                   </div>
 
                   {/* Second Column */}
@@ -116,13 +161,24 @@ export default function ProjectsPage() {
                       <Input
                         id="patrimonio"
                         placeholder="Patrimônio do equipamento"
+                        value={form.patrimonio}
+                        onChange={(e) =>
+                          handleChange("patrimonio", e.target.value)
+                        }
                       />
                     </div>
 
                     {/* Tipo de Falha */}
                     <div className="space-y-2">
                       <Label htmlFor="tipo-falha">Tipo de Falha:</Label>
-                      <Input id="tipo-falha" placeholder="Tipo de falha" />
+                      <Input
+                        id="tipo-falha"
+                        placeholder="Tipo de falha"
+                        value={form.tipoFalha}
+                        onChange={(e) =>
+                          handleChange("tipoFalha", e.target.value)
+                        }
+                      />
                     </div>
 
                     {/* Solução técnica */}
@@ -131,13 +187,17 @@ export default function ProjectsPage() {
                       <Textarea
                         id="solucao-tecnica"
                         placeholder="Solução técnica aplicada"
+                        value={form.solucaoTecnica}
+                        onChange={(e) =>
+                          handleChange("solucaoTecnica", e.target.value)
+                        }
                       />
                     </div>
 
                     {/* Técnico Responsável */}
                     <div className="space-y-2">
                       <Label htmlFor="tecnico">Técnico Responsável:</Label>
-                      <Input id="tecnico" placeholder="Nome do técnico" />
+                      <Input id="tecnico" placeholder="Nome do técnico" value={form.tecnicoResponsavel} onChange={(e) => handleChange("tecnicoResponsavel", e.target.value)}/>
                     </div>
                   </div>
 
@@ -148,7 +208,14 @@ export default function ProjectsPage() {
                       <Label htmlFor="os-date-recolhido">
                         Data e hora do recolhimento:
                       </Label>
-                      <Input id="os-date-recolhimento" type="datetime-local" />
+                      <Input
+                        id="os-date-recolhimento"
+                        type="datetime-local"
+                        value={form.osDateRecolhido}
+                        onChange={(e) =>
+                          handleChange("osDateRecolhido", e.target.value)
+                        }
+                      />
                     </div>
 
                     {/* Data e hora do devolvimento */}
@@ -156,7 +223,14 @@ export default function ProjectsPage() {
                       <Label htmlFor="os-date-devolucao">
                         Data e hora do devolvimento:
                       </Label>
-                      <Input id="os-date-devolucao" type="datetime-local" />
+                      <Input
+                        id="os-date-devolucao"
+                        type="datetime-local"
+                        value={form.osDateDevolucao}
+                        onChange={(e) =>
+                          handleChange("osDateDevolucao", e.target.value)
+                        }
+                      />
                     </div>
 
                     {/* Data e hora do fechamento */}
@@ -164,13 +238,22 @@ export default function ProjectsPage() {
                       <Label htmlFor="os-date-fechamento">
                         Data e hora do fechamento:
                       </Label>
-                      <Input id="os-date-fechamento" type="datetime-local" />
+                      <Input
+                        id="os-date-fechamento"
+                        type="datetime-local"
+                        value={form.osDateFechamento}
+                        onChange={(e) =>
+                          handleChange("osDateFechamento", e.target.value)
+                        }
+                      />
                     </div>
 
                     {/* Status */}
                     <div className="space-y-2">
                       <Label htmlFor="status">Status:</Label>
-                      <Select>
+                      <Select
+                        onValueChange={(value) => handleChange("status", value)}
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="Status" />
                         </SelectTrigger>
@@ -190,6 +273,7 @@ export default function ProjectsPage() {
                 <DialogFooter>
                   <Button
                     type="submit"
+                    onClick={handleSubmit}
                     className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 hover:scale-105 duration-300"
                   >
                     Salvar OS
