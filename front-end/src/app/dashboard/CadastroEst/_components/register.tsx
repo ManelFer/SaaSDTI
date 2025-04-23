@@ -14,10 +14,10 @@ import {
 
 export function Register() {
     return (
-        <div className='bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700'>
+        <div className='bg-[#257432] text-white px-4 py-2 rounded-md hover:bg-[#066333] hover:scale-105 duration-300'>
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button className='bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 hover:scale-105 duration-300'>
+                    <Button className='bg-[#257432] text-white px-4 py-2 rounded-md hover:bg-[#066333] hover:scale-105 duration-300'>
                         Cadastro de Equipamentos
                     </Button>
                 </DialogTrigger>
@@ -29,7 +29,7 @@ export function Register() {
                     {/* Iniciando as colunas do form */}
                     <Form />
                     <DialogFooter>
-                        <Button type='submit' className='bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 hover:scale-105 duration-300'>
+                        <Button type='submit' className='bg-[#257432] text-white px-4 py-2 rounded-md hover:bg-[#066333] hover:scale-105 duration-300'>
                             Salvar Equipamento
                         </Button>
                     </DialogFooter>

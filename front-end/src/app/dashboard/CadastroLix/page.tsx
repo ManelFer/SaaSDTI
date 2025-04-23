@@ -20,7 +20,7 @@ export default function TeamPage() {
     <DashboardLayout>
       <div className="space-y-6 bg-white rounded-lg p-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-800">Lixão</h1>
+          <h1 className="text-2xl font-bold text-gray-800">Lixão🗑️</h1>
           <Coleta/>
           <CadastroL/>
         </div>
@@ -28,7 +28,7 @@ export default function TeamPage() {
         <div className="bg-white rounded-lg shadow overflow-hidden">
           <Table>
             <TableCaption>Lista de Produtos</TableCaption>
-            <TableHeader>
+            <TableHeader className='bg-green-100'>
               <TableRow>
                 <TableHead className="w-[100px]">Equipamento</TableHead>
                 <TableHead>Marca</TableHead>

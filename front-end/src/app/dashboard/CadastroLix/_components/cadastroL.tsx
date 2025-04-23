@@ -15,10 +15,10 @@ import { Label } from "@/components/ui/label";
 
 export function CadastroL() {
     return(
-        <div className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 hover:scale-105 duration-300">
+        <div className="bg-[#257432] text-white px-4 py-2 rounded-md hover:bg-[#066333] hover:scale-105 duration-300">
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 hover:scale-105 duration-300">
+                    <Button className="bg-[#257432] text-white px-4 py-2 rounded-md hover:bg-[#066333] hover:scale-105 duration-300">
                         Cadastro de Lixão
                     </Button>
                 </DialogTrigger>
@@ -36,7 +36,7 @@ export function CadastroL() {
                         </div>
                         
                         <DialogFooter>
-                            <Button type="submit" className="bg-red-700 text-white px-4 py-2 rounded-md hover:bg-red-800 hover:scale-105 duration-300">
+                            <Button type="submit" className="bg-[#257432] text-white px-4 py-2 rounded-md hover:bg-[#066333] hover:scale-105 duration-300">
                                 Salvar Cadastro
                             </Button>
                             

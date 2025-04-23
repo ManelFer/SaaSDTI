@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Logo from '../../../public/logo.png'
 
-
 const navigation = [
   { name: 'Dashboard', href: '/dashboard' },
   { name: 'Ordens de Serviço', href: '/dashboard/CadastroOs' },
@@ -20,7 +19,6 @@ export default function Sidebar() {
       <div className="flex flex-col h-full">
         <div className="flex items-center justify-center h-16 border-b">
           <img src={Logo.src} alt="logo" className='w-30'/>
-          
         </div>
         <nav className="flex-1 px-4 py-4 mt-7 overflow-y-auto">
           <ul className="space-y-4">
@@ -28,10 +26,10 @@ export default function Sidebar() {
               <li key={item.name}>
                 <Link
                   href={item.href}
-                  className={`flex items-center px-4 py-2 text-sm font-medium rounded-md ${
+                  className={`flex items-center hover:scale-105 px-6 py-3 text-base font-medium rounded-md ${
                     pathname === item.href
-                      ? 'bg-indigo-100 text-indigo-700'
-                      : 'text-gray-600 hover:bg-gray-50'
+                      ? 'bg-green-50 text-[#066333]'
+                      : 'text-[#323031] hover:bg-gray-50'
                   }`}
                 >
                   {item.name}
@@ -43,4 +41,4 @@ export default function Sidebar() {
       </div>
     </div>
   );
-} 
+}
