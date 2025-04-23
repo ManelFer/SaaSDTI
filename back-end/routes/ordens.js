@@ -4,7 +4,7 @@ import db from '../db.js';
 const router = express.Router();
 
 // GET todas as OSs
-router.get('/', async (req, res) => {
+router.get('/os', async (req, res) => {
   try {
     const { rows } = await db.query('SELECT * FROM ordens_servico ORDER BY id DESC');
     res.json(rows);

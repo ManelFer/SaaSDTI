@@ -1,7 +1,7 @@
-const express = require('express');
-const cors = require('cors');
-const dotenv = require('dotenv');
-const { Pool } = require('pg');
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import osRouter from './routes/ordens.js'; // importa suas rotas
 
 dotenv.config();
 
@@ -9,19 +9,20 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'ordens_servico',
-  password: '1234',
-  port: 5432,
+// Usa as rotas
+app.use('/', osRouter);
+
+// Teste de conexão com o banco
+app.get('/ping', async (req, res) => {
+  try {
+    const result = await (await import('./db.js')).default.query('SELECT NOW()');
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-app.get('/', async (req, res) => {
-  const result = await pool.query('SELECT NOW()');
-  res.json(result.rows);
-});
-
-app.listen(3001, () => {
-  console.log('Servidor rodando em http://localhost:3001');
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
