@@ -15,14 +15,13 @@ interface SetorProps {
   onChange: (value: string) => void;
 }
 export function Setor({ value, onChange }: SetorProps) {
-  const [selectedValue, setSelectedValue] = useState("");
 
   return (
     <div className="space-y-2">
       <Label htmlFor="setor">Setor / Fórum:</Label>
       <Select
-        value={selectedValue}
-        onValueChange={(value) => setSelectedValue(value)}
+        value={value}
+        onValueChange={(onChange)}
       >
         <SelectTrigger>
           <SelectValue placeholder="Selecione o setor / fórum" />

@@ -36,21 +36,23 @@ import {
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { createOrdens } from "@/services/ordens.services";
+import { Ordem } from "@/models/ordem.model";
 
 export default function ProjectsPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [form, setForm] = useState({
-    osNumber: "",
-    osDate: "",
+    numero_os: "",
+    data_abertura: "",
     solicitante: "",
     setor: "",
     patrimonio: "",
-    tipoFalha: "",
-    solucaoTecnica: "",
-    tecnicoResponsavel: "",
-    osDateRecolhido: "",
-    osDateDevolucao: "",
-    osDateFechamento: "",
+    tipo_falha: "",
+    solucao_tecnica: "",
+    tecnico_responsavel: "",
+    data_recolhimento: "",
+    data_devolucao: "",
+    data_fechamento: "",
     status: "",
   });
   const handleChange = (key: string, value: string) => {
@@ -58,27 +60,38 @@ export default function ProjectsPage() {
   };
   const handleSubmit = async () => {
     try {
-      const res = await fetch("http://localhost:3001/ordens", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-      const data = await res.json();
+      const cleanedForm = {
+        ...form,
+        data_recolhimento: form.data_recolhimento || undefined,
+        data_devolucao: form.data_devolucao || undefined,
+        data_fechamento: form.data_fechamento || undefined,
+      };
+      console.log("Dados do formulário:", cleanedForm);
+      
+      const data = await createOrdens(cleanedForm);
+      
+
+      // const res = await fetch(API_URL + API_ROUTES.ORDENS, {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify(form),
+      // });
+      // const data = await res.json();
       console.log("Resposta do servidor:", data);
-      alert("Ordem de serviço cadastrada com sucesso!");
+      alert(data);
       setIsDialogOpen(false);
       setForm({
-        osNumber: "",
-        osDate: "",
+        numero_os: "",
+        data_abertura: "",
         solicitante: "",
         setor: "",
         patrimonio: "",
-        tipoFalha: "",
-        solucaoTecnica: "",
-        tecnicoResponsavel: "",
-        osDateRecolhido: "",
-        osDateDevolucao: "",
-        osDateFechamento: "",
+        tipo_falha: "",
+        solucao_tecnica: "",
+        tecnico_responsavel: "",
+        data_recolhimento: "",
+        data_devolucao: "",
+        data_fechamento: "",
         status: "",
       });
     } catch (err) {
@@ -114,13 +127,13 @@ export default function ProjectsPage() {
                   <div className="space-y-4">
                     {/* Número da OS */}
                     <div className="space-y-2">
-                      <Label htmlFor="os-number">Número da OS:</Label>
+                      <Label htmlFor="numero_os">Número da OS:</Label>
                       <Input
-                        id="os-number"
+                        id="numero_os"
                         placeholder="Número da OS"
-                        value={form.osNumber}
+                        value={form.numero_os}
                         onChange={(e) =>
-                          handleChange("osNumber", e.target.value)
+                          handleChange("numero_os", e.target.value)
                         }
                       />
                     </div>
@@ -131,8 +144,8 @@ export default function ProjectsPage() {
                       <Input
                         id="os-date"
                         type="datetime-local"
-                        value={form.osDate}
-                        onChange={(e) => handleChange("osDate", e.target.value)}
+                        value={form.data_abertura}
+                        onChange={(e) => handleChange("data_abertura", e.target.value)}
                       />
                     </div>
 
@@ -150,7 +163,10 @@ export default function ProjectsPage() {
                     </div>
 
                     {/* Setor / Fórum */}
-                    <Setor value={form.setor} onChange={(value) => handleChange("setor", value)} />
+                    <Setor
+                      value={form.setor}
+                      onChange={(value) => setForm({ ...form, setor: value })}
+                    />
                   </div>
 
                   {/* Second Column */}
@@ -174,9 +190,9 @@ export default function ProjectsPage() {
                       <Input
                         id="tipo-falha"
                         placeholder="Tipo de falha"
-                        value={form.tipoFalha}
+                        value={form.tipo_falha}
                         onChange={(e) =>
-                          handleChange("tipoFalha", e.target.value)
+                          handleChange("tipo_falha", e.target.value)
                         }
                       />
                     </div>
@@ -187,9 +203,9 @@ export default function ProjectsPage() {
                       <Textarea
                         id="solucao-tecnica"
                         placeholder="Solução técnica aplicada"
-                        value={form.solucaoTecnica}
+                        value={form.solucao_tecnica}
                         onChange={(e) =>
-                          handleChange("solucaoTecnica", e.target.value)
+                          handleChange("solucao_tecnica", e.target.value)
                         }
                       />
                     </div>
@@ -197,7 +213,14 @@ export default function ProjectsPage() {
                     {/* Técnico Responsável */}
                     <div className="space-y-2">
                       <Label htmlFor="tecnico">Técnico Responsável:</Label>
-                      <Input id="tecnico" placeholder="Nome do técnico" value={form.tecnicoResponsavel} onChange={(e) => handleChange("tecnicoResponsavel", e.target.value)}/>
+                      <Input
+                        id="tecnico"
+                        placeholder="Nome do técnico"
+                        value={form.tecnico_responsavel}
+                        onChange={(e) =>
+                          handleChange("tecnico_responsavel", e.target.value)
+                        }
+                      />
                     </div>
                   </div>
 
@@ -211,9 +234,9 @@ export default function ProjectsPage() {
                       <Input
                         id="os-date-recolhimento"
                         type="datetime-local"
-                        value={form.osDateRecolhido}
+                        value={form.data_recolhimento || ""}
                         onChange={(e) =>
-                          handleChange("osDateRecolhido", e.target.value)
+                          handleChange("data_recolhimento", e.target.value)
                         }
                       />
                     </div>
@@ -226,9 +249,9 @@ export default function ProjectsPage() {
                       <Input
                         id="os-date-devolucao"
                         type="datetime-local"
-                        value={form.osDateDevolucao}
+                        value={form.data_devolucao || ""}
                         onChange={(e) =>
-                          handleChange("osDateDevolucao", e.target.value)
+                          handleChange("data_devolucao", e.target.value)
                         }
                       />
                     </div>
@@ -241,9 +264,9 @@ export default function ProjectsPage() {
                       <Input
                         id="os-date-fechamento"
                         type="datetime-local"
-                        value={form.osDateFechamento}
+                        value={form.data_fechamento}
                         onChange={(e) =>
-                          handleChange("osDateFechamento", e.target.value)
+                          handleChange("data_fechamento", e.target.value)
                         }
                       />
                     </div>
@@ -290,19 +313,19 @@ export default function ProjectsPage() {
 
             <TableHeader className="bg-green-100">
               <TableRow>
-                <TableHead className="w-[100px]">Número da OS</TableHead>
-                <TableHead>Data / Hora Abertura</TableHead>
-                <TableHead>Solicitante</TableHead>
-                <TableHead>Setor / Fórum </TableHead>
-                <TableHead>Pat. Equipamento</TableHead>
-                <TableHead>Tipo de Falha</TableHead>
-                <TableHead>Solução técnica</TableHead>
-                <TableHead>Data / Hora Recolhido</TableHead>
-                <TableHead>Data / Hora Devolvido</TableHead>
-                <TableHead>Data / Hora do Fechamento</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead className="w-[100px]">numero_os</TableHead>
+                <TableHead>data_abertura</TableHead>
+                <TableHead>solicitante</TableHead>
+                <TableHead> setor </TableHead>
+                <TableHead>patrimonio</TableHead>
+                <TableHead>tipo_falha</TableHead>
+                <TableHead>solucao_tecnica</TableHead>
+                <TableHead> data_recolhimento</TableHead>
+                <TableHead>data_devolucao</TableHead>
+                <TableHead>data_fechamento</TableHead>
+                <TableHead>status</TableHead>
                 <TableHead className="text-right">
-                  Técnico Responsável
+                  tecnico_responsavel
                 </TableHead>
               </TableRow>
             </TableHeader>
