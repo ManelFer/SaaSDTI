@@ -36,7 +36,7 @@ import {
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { createOrdens } from "@/services/ordens.services";
+import { createOrdens } from "@/services/ordens.service";
 import { Ordem } from "@/models/ordem.model";
 
 export default function ProjectsPage() {
@@ -62,6 +62,8 @@ export default function ProjectsPage() {
     try {
       const cleanedForm = {
         ...form,
+        setor_id: Number(form.setor),
+        setor: form.setor, // Ensure 'setor' is included
         data_recolhimento: form.data_recolhimento || undefined,
         data_devolucao: form.data_devolucao || undefined,
         data_fechamento: form.data_fechamento || undefined,
@@ -81,19 +83,19 @@ export default function ProjectsPage() {
       alert(data);
       setIsDialogOpen(false);
       setForm({
-        numero_os: "",
-        data_abertura: "",
-        solicitante: "",
-        setor: "",
-        patrimonio: "",
-        tipo_falha: "",
-        solucao_tecnica: "",
-        tecnico_responsavel: "",
-        data_recolhimento: "",
-        data_devolucao: "",
-        data_fechamento: "",
-        status: "",
-      });
+              numero_os: "",
+              data_abertura: "",
+              solicitante: "",
+              setor: "",
+              patrimonio: "",
+              tipo_falha: "",
+              solucao_tecnica: "",
+              tecnico_responsavel: "",
+              data_recolhimento: "",
+              data_devolucao: "",
+              data_fechamento: "",
+              status: "",
+            });
     } catch (err) {
       console.error("Erro ao cadastrar ordem de serviço:", err);
       alert("Erro ao cadastrar ordem de serviço. Tente novamente.");
@@ -163,10 +165,7 @@ export default function ProjectsPage() {
                     </div>
 
                     {/* Setor / Fórum */}
-                    <Setor
-                      value={form.setor}
-                      onChange={(value) => setForm({ ...form, setor: value })}
-                    />
+                    <Setor value={form.setor} onChange={(value) => handleChange("setor", value)} />
                   </div>
 
                   {/* Second Column */}

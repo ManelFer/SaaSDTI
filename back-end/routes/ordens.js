@@ -14,6 +14,16 @@ router.get('/os', async (req, res) => {
   }
 });
 
+// Get setores
+router.get('/setores', async (req, res) => {
+  try {
+    const { rows } = await db.query('SELECT * FROM setores ORDER BY id DESC');
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Função converter campos de data vazios em null
 function toNullableTimestamp(value) {
   return value === '' ? null : value;
@@ -24,7 +34,7 @@ router.post('/ordens', async (req, res) => {
   console.log('HEADERS:', req.headers['content-type']);
   console.log('BODY:', req.body);
   const {
-    numero_os, data_abertura, solicitante, setor, patrimonio,
+    numero_os, data_abertura, solicitante, setor_id, patrimonio,
     tipo_falha, solucao_tecnica, tecnico_responsavel,
     data_recolhimento, data_devolucao, data_fechamento, status
   } = req.body;
@@ -48,7 +58,7 @@ router.post('/ordens', async (req, res) => {
     //   RETURNING *;
     // `;
     const values = [
-      numero_os, data_abertura, solicitante, setor, patrimonio,
+      numero_os, data_abertura, solicitante, setor_id, patrimonio,
       tipo_falha, solucao_tecnica, tecnico_responsavel,
       data_recolhimento, data_devolucao, data_fechamento, status
     ];

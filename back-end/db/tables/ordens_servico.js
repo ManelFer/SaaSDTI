@@ -1,40 +1,133 @@
 import db from "../db.js";
 
+// CREATE TABLE
 export function criarTabelaOrdensServico() {
   const query = `
-        CREATE TABLE IF NOT EXISTS public.ordens_servico
-(
-    id integer NOT NULL DEFAULT nextval('ordens_servico_id_seq'::regclass),
-    numero_os character varying(20) COLLATE pg_catalog."default" NOT NULL UNIQUE,
-    data_abertura timestamp without time zone NOT NULL,
-    solicitante character varying(100) COLLATE pg_catalog."default" NOT NULL,
-    setor character varying(100) COLLATE pg_catalog."default" NOT NULL,
-    patrimonio character varying(100) COLLATE pg_catalog."default",
-    tipo_falha text COLLATE pg_catalog."default",
-    solucao_tecnica text COLLATE pg_catalog."default",
-    tecnico_responsavel character varying(100) COLLATE pg_catalog."default",
-    data_recolhimento timestamp without time zone,
-    data_devolucao timestamp without time zone,
-    data_fechamento timestamp without time zone,
-    status character varying(20) COLLATE pg_catalog."default" DEFAULT 'Não resolvido'::character varying,
-    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
-    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT ordens_servico_pkey PRIMARY KEY (id),
-    CONSTRAINT ordens_servico_numero_os_key UNIQUE (numero_os),
-    CONSTRAINT ordens_servico_status_check CHECK (status::text = ANY (ARRAY['Resolvido'::character varying, 'Não resolvido'::character varying]::text[]))
-)
-    `;
+    CREATE TABLE IF NOT EXISTS public.ordens_servico
+    (
+        id SERIAL PRIMARY KEY,
+        numero_os VARCHAR(20) NOT NULL UNIQUE,
+        data_abertura TIMESTAMP NOT NULL,
+        solicitante VARCHAR(100) NOT NULL,
+        setor_id INTEGER NOT NULL,
+        patrimonio VARCHAR(100),
+        tipo_falha TEXT,
+        solucao_tecnica TEXT,
+        tecnico_responsavel VARCHAR(100),
+        data_recolhimento TIMESTAMP,
+        data_devolucao TIMESTAMP,
+        data_fechamento TIMESTAMP,
+        status VARCHAR(20) DEFAULT 'Não resolvido',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+        CONSTRAINT ordens_servico_status_check CHECK (
+          status IN ('Resolvido', 'Não resolvido')
+        ),
+        CONSTRAINT fk_setor FOREIGN KEY (setor_id)
+            REFERENCES setores(id)
+            ON DELETE RESTRICT
+            ON UPDATE CASCADE
+    )
+  `;
   return db.query(query);
 }
-export function inserirOrdemServico(values) {
-  const query = `
+
+// CREATE
+export async function inserirOrdemServico(values) {
+  const insertQuery = `
     INSERT INTO ordens_servico (
-      numero_os, data_abertura, solicitante, setor, patrimonio,
+      numero_os, data_abertura, solicitante, setor_id, patrimonio,
       tipo_falha, solucao_tecnica, tecnico_responsavel,
       data_recolhimento, data_devolucao, data_fechamento, status
     )
     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
     RETURNING *;
   `;
-  return db.query(query, values);
+  const result = await db.query(insertQuery, values);
+  const inserted = result.rows[0];
+
+  const joinQuery = `
+    SELECT os.*, s.nome AS setor_nome
+    FROM ordens_servico os
+    JOIN setores s ON s.id = os.setor_id
+    WHERE os.id = $1
+  `;
+  return db.query(joinQuery, [inserted.id]);
+}
+
+// READ ALL
+export async function listarOrdensServico() {
+  const query = `
+    SELECT os.*, s.nome AS setor_nome
+    FROM ordens_servico os
+    JOIN setores s ON s.id = os.setor_id
+    ORDER BY os.id DESC
+  `;
+  return db.query(query);
+}
+
+// READ BY ID
+export async function buscarOrdemPorId(id) {
+  const query = `
+    SELECT os.*, s.nome AS setor_nome
+    FROM ordens_servico os
+    JOIN setores s ON s.id = os.setor_id
+    WHERE os.id = $1
+  `;
+  return db.query(query, [id]);
+}
+
+// UPDATE
+export async function atualizarOrdemServico(id, data) {
+  const query = `
+    UPDATE ordens_servico
+    SET
+      numero_os = $1,
+      data_abertura = $2,
+      solicitante = $3,
+      setor_id = $4,
+      patrimonio = $5,
+      tipo_falha = $6,
+      solucao_tecnica = $7,
+      tecnico_responsavel = $8,
+      data_recolhimento = $9,
+      data_devolucao = $10,
+      data_fechamento = $11,
+      status = $12,
+      updated_at = CURRENT_TIMESTAMP
+    WHERE id = $13
+    RETURNING *;
+  `;
+  const values = [
+    data.numero_os,
+    data.data_abertura,
+    data.solicitante,
+    data.setor_id,
+    data.patrimonio,
+    data.tipo_falha,
+    data.solucao_tecnica,
+    data.tecnico_responsavel,
+    data.data_recolhimento,
+    data.data_devolucao,
+    data.data_fechamento,
+    data.status,
+    id
+  ];
+  const result = await db.query(query, values);
+  const updated = result.rows[0];
+
+  const joinQuery = `
+    SELECT os.*, s.nome AS setor_nome
+    FROM ordens_servico os
+    JOIN setores s ON s.id = os.setor_id
+    WHERE os.id = $1
+  `;
+  return db.query(joinQuery, [updated.id]);
+}
+
+// DELETE
+export async function deletarOrdemServico(id) {
+  const query = `DELETE FROM ordens_servico WHERE id = $1 RETURNING *`;
+  return db.query(query, [id]);
 }
