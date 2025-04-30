@@ -1,6 +1,6 @@
 "use client";
 import { Setor } from "./_components/setor";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import DashboardLayout from "@/components/layout/DashboardLayout";
@@ -36,11 +36,17 @@ import {
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { createOrdens } from "@/services/ordens.service";
+import { buscarOrdensServicos, createOrdens } from "@/services/ordens.service";
 import { Ordem } from "@/models/ordem.model";
+import { Setor  as SetorModel }from "@/models/setor.model";
+import { buscarSetores } from "@/services/setores.service";
 
 export default function ProjectsPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const [ordens, setOrdens] = useState<Ordem[]>([]);
+  const [setores, setSetores] = useState<SetorModel[]>([]);
+
   const [form, setForm] = useState({
     numero_os: "",
     data_abertura: "",
@@ -55,15 +61,16 @@ export default function ProjectsPage() {
     data_fechamento: "",
     status: "",
   });
+
   const handleChange = (key: string, value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
+
   const handleSubmit = async () => {
     try {
       const cleanedForm = {
         ...form,
         setor_id: Number(form.setor),
-        setor: form.setor, // Ensure 'setor' is included
         data_recolhimento: form.data_recolhimento || undefined,
         data_devolucao: form.data_devolucao || undefined,
         data_fechamento: form.data_fechamento || undefined,
@@ -101,6 +108,21 @@ export default function ProjectsPage() {
       alert("Erro ao cadastrar ordem de serviço. Tente novamente.");
     }
   };
+
+  useEffect(() => {
+    const fetSetores = async () => {
+      const listaSetores = await buscarSetores();
+      setSetores(listaSetores);
+      console.log("Setores:", listaSetores);
+    };
+    fetSetores();
+    
+    const fetchOrdens = async () => {
+      const ordensData = await buscarOrdensServicos();
+      setOrdens(ordensData);
+    };
+    fetchOrdens();
+  }, []);
 
   return (
     <DashboardLayout>
@@ -330,7 +352,29 @@ export default function ProjectsPage() {
             </TableHeader>
 
             <TableBody>
-              <TableRow>
+
+              {ordens.map((ordem) => 
+                <TableRow key={ordem.id}>
+                  <TableCell className="font-medium">
+                    {ordem.numero_os}
+                  </TableCell>
+                  <TableCell>{ordem.data_abertura}</TableCell>
+                  <TableCell>{ordem.solicitante}</TableCell>
+                  <TableCell>{setores.find(a => a.id == ordem.setor_id)?.nome}</TableCell>
+                  <TableCell>{ordem.patrimonio}</TableCell>
+                  <TableCell>{ordem.tipo_falha}</TableCell>
+                  <TableCell>{ordem.solucao_tecnica}</TableCell>
+                  <TableCell>{ordem.data_recolhimento}</TableCell>
+                  <TableCell>{ordem.data_devolucao}</TableCell>
+                  <TableCell>{ordem.data_fechamento}</TableCell>
+                  <TableCell>{ordem.status}</TableCell>
+                  <TableCell className="text-right">
+                    {ordem.tecnico_responsavel}
+                  </TableCell>
+                </TableRow>
+              )}
+
+              {/* <TableRow>
                 <TableCell className="font-medium">0001/2002</TableCell>
                 <TableCell>2025-01-01 10:00:00</TableCell>
                 <TableCell>João da Silva</TableCell>
@@ -343,7 +387,7 @@ export default function ProjectsPage() {
                 <TableCell>2025-01-01 10:00:00</TableCell>
                 <TableCell>Resolvido</TableCell>
                 <TableCell className="text-right">José da Silva</TableCell>
-              </TableRow>
+              </TableRow> */}
             </TableBody>
           </Table>
         </div>

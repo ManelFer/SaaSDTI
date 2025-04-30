@@ -7,7 +7,7 @@ import axios from 'axios';
  * @param {any} form - Formul rio com os dados para a busca
  * @returns {Promise<any>} - Resposta do backend com a lista de Ordens de Servi o
  */
-export async function getSetores(): Promise<Setor> {
+export async function buscarSetor(): Promise<Setor> {
     const res = await fetch(API_URL + API_ROUTES.SETORES, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
@@ -17,7 +17,7 @@ export async function getSetores(): Promise<Setor> {
 }
 
 
-export const fetchSetores = async (): Promise<Setor[]> => {
+export const buscarSetores = async (): Promise<Setor[]> => {
   try {
     const response = await axios.get(`${API_URL}${API_ROUTES.SETORES}`);
     return response.data as Setor[];

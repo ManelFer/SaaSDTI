@@ -15,14 +15,14 @@ router.get('/os', async (req, res) => {
 });
 
 // Get setores
-router.get('/setores', async (req, res) => {
-  try {
-    const { rows } = await db.query('SELECT * FROM setores ORDER BY id DESC');
-    res.json(rows);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+// router.get('/setores', async (req, res) => {
+//   try {
+//     const { rows } = await db.query('SELECT * FROM setores ORDER BY id DESC');
+//     res.json(rows);
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// });
 
 // Função converter campos de data vazios em null
 function toNullableTimestamp(value) {

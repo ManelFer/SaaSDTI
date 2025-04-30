@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { useEffect, useState } from "react";
-import { fetchSetores } from "@/services/setores.service";
+import { buscarSetores } from "@/services/setores.service";
 
 interface SetorProps {
   value: string;
@@ -29,7 +29,7 @@ export function Setor({ value, onChange }: SetorProps) {
   useEffect(() => {
     const carregarSetores = async () => {
       try {
-        const dados = await fetchSetores() as Setor[];
+        const dados = await buscarSetores() as Setor[];
         setSetores(dados);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Erro desconhecido');

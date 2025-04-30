@@ -1,5 +1,6 @@
 import { API_URL, API_ROUTES } from "@/constants/constante";
 import { Ordem } from "@/models/ordem.model";
+import axios from 'axios';
 
 /**
  * Função que busca as Ordens de Serviço no backend
@@ -15,4 +16,14 @@ export async function createOrdens(form: Ordem): Promise<any> {
     const data = await res.json();
     return data;
 }
+
+export const buscarOrdensServicos = async (): Promise<Ordem[]> => {
+    try {
+      const response = await axios.get(`${API_URL}/os`);
+      return response.data as Ordem[];
+    } catch (error) {
+      console.error('Erro ao buscar ordens de serviços:', error);
+      throw error;
+    }
+  };
 

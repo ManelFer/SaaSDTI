@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchSetores } from '@/services/setores.service';
+import { buscarSetores } from '@/services/setores.service';
 
 interface Setor {
   id: number;
@@ -14,7 +14,7 @@ export function useSetores() {
     useEffect(() => {
         const loadSetores = async () => {
             try {
-                const data = await fetchSetores() as Setor[];
+                const data = await buscarSetores() as Setor[];
                 setSetores(data);
             } catch (err: any) {
                 setError(err.message || 'An unexpected error occurred');

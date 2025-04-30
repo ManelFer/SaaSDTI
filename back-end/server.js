@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import osRouter from './routes/ordens.js'; // importa suas rotas
+import seRouter from './routes/setores.js'; // importa suas rotas
 import { criarTabelas  }from './db/db.js'; // importa a função de criação de tabelas
 
 dotenv.config();
@@ -16,6 +17,7 @@ app.use(express.json());
 
 // Usa as rotas
 app.use('/', osRouter);
+app.use('/', seRouter);
 
 // Teste de conexão com o banco
 app.get('/ping', async (req, res) => {
