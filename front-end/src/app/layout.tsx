@@ -15,6 +15,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "DTI - Sistema de Gerenciamento",
   description: "Gerenciamento de atividades e eventos da DTI",
+  
 };
 
 export default function RootLayout({

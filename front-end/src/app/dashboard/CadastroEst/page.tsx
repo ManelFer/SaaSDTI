@@ -10,11 +10,23 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
+import { Estoque } from '@/models/estoque.model';
 
 import DashboardLayout from '@/components/layout/DashboardLayout';
+import { useEffect, useState } from 'react';
+import { buscarEstoque } from '@/services/estoque.service';
 
-export default function TeamPage() {
+export default function EstoquePage() {
+  const [isEstOpen, setEstOpen] = useState(false);
+  const [estoque, setEstoque] = useState<Estoque[]>([]);
+  
+  useEffect(() => {
+    const fetchEstoque = async () => {
+      const estoqueData = await buscarEstoque();
+      setEstoque(Array.isArray(estoqueData) ? estoqueData : [estoqueData]);
+    };
+    fetchEstoque();
+  }, [])
   return (
     <DashboardLayout>
       <div className="space-y-6 bg-white rounded-lg p-6">
@@ -40,15 +52,17 @@ export default function TeamPage() {
             </TableHeader>
 
             <TableBody>
-              <TableRow>
-                <TableCell className="font-medium">Notebook</TableCell>
-                <TableCell>Dell</TableCell>
-                <TableCell>Inspiron 15</TableCell>
-                <TableCell>1234567890</TableCell>
-                <TableCell>1234567890</TableCell>
-                <TableCell>1234567890</TableCell>
-                <TableCell className='text-right'>1</TableCell>
-              </TableRow>
+              {estoque.map((item) => (
+                <TableRow key={item.id}>
+                  <TableCell className="font-medium">{item.nome}</TableCell>
+                  <TableCell>{item.marca}</TableCell>
+                  <TableCell>{item.modelo}</TableCell>
+                  <TableCell>{item.numero_serie}</TableCell>
+                  <TableCell>{item.patrimonio}</TableCell>
+                  <TableCell>{item.lote}</TableCell>
+                  <TableCell className='text-right'>{item.quantidade}</TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </div>

@@ -126,15 +126,15 @@ export default function ProjectsPage() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-6 bg-white rounded-lg p-6">
+      <div className="space-y-6 rounded-lg p-6">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-800">
             Cadastro de Ordem de Serviço 📃
           </h1>
-          <div className="bg-[#257432] hover:bg-[#066333] hover:scale-105 duration-300 text-white px-4 py-2 rounded-md">
+          <div className="bg-[#257432] hover:bg-[#066333] hover:scale-105 duration-300 text-white px-4 py-2 rounded-md shadow-md">
             <Dialog>
               <DialogTrigger asChild>
-                <Button className="bg-[#257432] hover:bg-[#066333] hover:scale-105 duration-300">
+                <Button className="bg-[#257432] hover:bg-[#066333] hover:scale-105 duration-300 ">
                   Cadastrar Ordem de Serviço
                 </Button>
               </DialogTrigger>

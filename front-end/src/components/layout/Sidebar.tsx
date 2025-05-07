@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import Logo from '../../../public/logo.png'
+import Image from 'next/image';
+import Logo from '../../../public/logo.png';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard' },
@@ -15,30 +16,34 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="w-64 bg-white shadow-lg">
-      <div className="flex flex-col h-full">
-        <div className="flex items-center justify-center h-16 border-b">
-          <img src={Logo.src} alt="logo" className='w-30'/>
-        </div>
-        <nav className="flex-1 px-4 py-4 mt-7 overflow-y-auto">
-          <ul className="space-y-4">
-            {navigation.map((item) => (
+    <aside className="w-64 h-screen bg-white border-r shadow-sm flex flex-col">
+      {/* Logo */}
+      <div className="flex items-center justify-center h-20 border-b px-4">
+        <Image src={Logo} alt="Logo" className="w-36 object-contain" priority />
+      </div>
+
+      {/* Navegação */}
+      <nav className="flex-1 overflow-y-auto px-4 py-6">
+        <ul className="space-y-2">
+          {navigation.map((item) => {
+            const isActive = pathname === item.href;
+            return (
               <li key={item.name}>
                 <Link
                   href={item.href}
-                  className={`flex items-center hover:scale-105 px-6 py-3 text-base font-medium rounded-md ${
-                    pathname === item.href
-                      ? 'bg-green-50 text-[#066333]'
-                      : 'text-[#323031] hover:bg-gray-50'
+                  className={`block px-4 py-3 rounded-lg transition-all duration-200 ${
+                    isActive
+                      ? 'bg-green-100 text-green-700 font-semibold shadow-inner'
+                      : 'text-gray-700 hover:bg-gray-100 hover:text-green-700'
                   }`}
                 >
                   {item.name}
                 </Link>
               </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
-    </div>
+            );
+          })}
+        </ul>
+      </nav>
+    </aside>
   );
 }

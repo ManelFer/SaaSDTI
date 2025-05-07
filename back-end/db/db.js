@@ -2,6 +2,7 @@ import pkg from 'pg';
 import dotenv from 'dotenv';
 import {criarTabelaOrdensServico }from './tables/ordens_servico.js'
 import {criarTabelaSetores} from './tables/setores.js';
+import { criarTabelaEstoque } from './tables/estoque.js';
 
 dotenv.config();
 const { Pool } = pkg;
@@ -25,4 +26,5 @@ export default pool;
 export async function criarTabelas() {
   criarTabelaOrdensServico();
   criarTabelaSetores();
+  criarTabelaEstoque();
 }
