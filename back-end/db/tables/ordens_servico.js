@@ -10,7 +10,7 @@ export function criarTabelaOrdensServico() {
         data_abertura TIMESTAMP NOT NULL,
         solicitante VARCHAR(100) NOT NULL,
         setor_id INTEGER NOT NULL,
-        patrimonio VARCHAR(100),
+        patrimonio VARCHAR(100) UNIQUE,
         tipo_falha TEXT,
         solucao_tecnica TEXT,
         tecnico_responsavel VARCHAR(100),
