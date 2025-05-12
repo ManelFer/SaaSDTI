@@ -28,7 +28,7 @@ export function Form({ form, setForm }: FormProps) {
       {/* Left Column */}
       <div className='space-y-4'>
         <div className='space-y-2'>
-          <Label htmlFor='nome'>Nome do equipamento:</Label>
+          <Label htmlFor='nome'>Equipamento:</Label>
           <Input
             id='nome'
             placeholder='Nome do equipamento'

@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 import osRouter from './routes/ordens.js'; // importa suas rotas
 import seRouter from './routes/setores.js'; // importa suas rotas
 import esRouter from './routes/estoque.js'; // importa suas rotas estoque
+import teRouter from './routes/tecnicos.js'; // importa suas rotas tecnicos
+import maRouter from './routes/marcas.js'; // importa suas rotas marcas
 import { criarTabelas  }from './db/db.js'; // importa a função de criação de tabelas
 
 dotenv.config();
@@ -20,6 +22,8 @@ app.use(express.json());
 app.use('/', osRouter);
 app.use('/', seRouter);
 app.use('/', esRouter);
+app.use('/', teRouter);
+app.use('/', maRouter);
 
 // Teste de conexão com o banco
 app.get('/ping', async (req, res) => {

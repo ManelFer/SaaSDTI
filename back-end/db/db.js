@@ -1,6 +1,7 @@
 import pkg from 'pg';
 import dotenv from 'dotenv';
 import {criarTabelaOrdensServico }from './tables/ordens_servico.js'
+import { criarTabelaMarcas } from './tables/marcas.js';
 import {criarTabelaSetores} from './tables/setores.js';
 import { criarTabelaEstoque } from './tables/estoque.js';
 import { criarTabelaTecnicos } from './tables/tecnicos.js';
@@ -30,4 +31,5 @@ export async function criarTabelas() {
   criarTabelaSetores();
   criarTabelaEstoque();
   criarTabelaTecnicos();
+  criarTabelaMarcas();
 }

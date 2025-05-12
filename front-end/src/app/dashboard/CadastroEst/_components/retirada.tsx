@@ -13,7 +13,18 @@ import { Form } from "./form"
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from "@/components/ui/label";
 
+import { useState } from "react";
+
 export function Retirada() {
+    const [form, setForm] = useState({
+        nome: "",
+        marca: "",
+        modelo: "",
+        numero_serie: "",
+        patrimonio: "",
+        lote: "",
+        quantidade: 0,
+    });
     return(
         <div className="bg-red-700 text-white px-4 py-2 rounded-md hover:bg-red-800 hover:scale-105 duration-300">
             <Dialog>
@@ -26,7 +37,7 @@ export function Retirada() {
                     <DialogHeader>
                         <DialogTitle>Retirada</DialogTitle>
                         <DialogDescription>Cadastre uma nova retirada</DialogDescription>
-                        <Form />
+                        <Form form={form} setForm={setForm} />
                         {/* Descrição da retirada */}
                         <div className="space-y-2">
                             <Label htmlFor="descricao">

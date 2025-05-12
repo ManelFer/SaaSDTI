@@ -10,4 +10,6 @@ export const API_ROUTES = {
   ORDENS: "/ordens",
   SETORES: "/setores",
   ESTOQUE: "/estoque",
+  TECNICOS: "/tecnicos",
+  MARCAS: "/marcas",
   }

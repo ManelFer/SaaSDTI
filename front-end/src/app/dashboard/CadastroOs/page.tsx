@@ -1,5 +1,6 @@
 "use client";
 import { Setor } from "./_components/setor";
+import { Tecnicos } from "./_components/tecnicos";
 import { use, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -231,17 +232,9 @@ export default function ProjectsPage() {
                       />
                     </div>
 
-                    {/* Técnico Responsável */}
+                    {/* Técnico Responsável  */}
                     <div className="space-y-2">
-                      <Label htmlFor="tecnico">Técnico Responsável:</Label>
-                      <Input
-                        id="tecnico"
-                        placeholder="Nome do técnico"
-                        value={form.tecnico_responsavel}
-                        onChange={(e) =>
-                          handleChange("tecnico_responsavel", e.target.value)
-                        }
-                      />
+                      <Tecnicos value={form.setor} onChange={(value) => handleChange("setor", value)} />
                     </div>
                   </div>
 
