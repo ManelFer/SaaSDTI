@@ -1,5 +1,7 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Marcas} from './marcas'; 
+import { useEffect, useState } from 'react';
 
 interface FormProps {
   form: {
@@ -15,6 +17,15 @@ interface FormProps {
 }
 
 export function Form({ form, setForm }: FormProps) {
+  const [formData, setFormData] = useState({
+    nome: '',
+    marca: '',
+    modelo: '',
+    numero_serie: '',
+    patrimonio: '',
+    lote: '',
+    quantidade: 0,
+  });
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     setForm((prev: any) => ({
@@ -22,6 +33,14 @@ export function Form({ form, setForm }: FormProps) {
       [id]: id === 'quantidade' ? Number(value) : value,
     }));
   };
+
+  const handleCustomChange = (field: string, value: string) => {
+    setForm((prev: any) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+  
 
   return (
     <div className='grid grid-cols-2 gap-6 py-4'>
@@ -38,13 +57,7 @@ export function Form({ form, setForm }: FormProps) {
         </div>
 
         <div className='space-y-2'>
-          <Label htmlFor='marca'>Marca:</Label>
-          <Input
-            id='marca'
-            placeholder='Marca do equipamento'
-            value={form.marca}
-            onChange={handleChange}
-          />
+          <Marcas value={formData.marca} onChange={(value) => handleCustomChange("marca", value)} />
         </div>
 
         <div className='space-y-2'>
