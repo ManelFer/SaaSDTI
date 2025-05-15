@@ -15,7 +15,16 @@ export function criarTabelaMarcas() {
 }
 
 // CREATE - Adicionar uma nova marca
- 
+export async function adicionarMarca(nome) {
+    const query = `
+        INSERT INTO marcas (nome)
+        VALUES ($1)
+        RETURNING *;
+    `;
+    const values = [nome];
+    const result = await db.query(query, values);
+    return result.rows[0];
+}
 
 // READ - Obter todas as marcas
 export async function obterTodasMarcas() {
