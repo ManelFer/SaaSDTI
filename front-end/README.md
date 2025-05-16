@@ -1,36 +1,140 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SaaS DTI Front-end Application
+
+This is the front-end application for the SaaS DTI project, built with Next.js 14, TypeScript, and Tailwind CSS. The application provides a modern and responsive user interface for managing technical support operations.
+
+## Project Structure
+
+```
+front-end/
+├── src/
+│   ├── app/          # Next.js app router pages and layouts
+│   ├── components/   # Reusable UI components
+│   ├── constants/    # Application constants and configurations
+│   ├── hooks/        # Custom React hooks
+│   ├── lib/          # Utility functions and shared logic
+│   ├── models/       # TypeScript interfaces and type definitions
+│   └── services/     # API service integrations
+├── public/          # Static assets
+└── styles/         # Global styles and Tailwind CSS configuration
+```
+
+## Tech Stack
+
+- **Framework**: Next.js 14
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **State Management**: React Hooks
+- **API Integration**: RESTful APIs
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18.x or later
+- npm or yarn package manager
+
+### Installation
+
+1. Clone the repository
+2. Navigate to the front-end directory:
+   ```bash
+   cd front-end
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+### Development
+
+Run the development server:
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Modern UI with responsive design
+- Type-safe development with TypeScript
+- Component-based architecture
+- API integration with back-end services
+- Authentication and authorization
+- Form handling and validation
+- Error boundary implementation
+- Performance optimizations
 
-## Learn More
+## Development Guidelines
 
-To learn more about Next.js, take a look at the following resources:
+### Component Organization
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Components are organized by feature and reusability
+- Shared components are placed in the `components` directory
+- Page-specific components are co-located with their pages
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Styling
 
-## Deploy on Vercel
+- Tailwind CSS for utility-first styling
+- Custom components use consistent design tokens
+- Responsive design patterns are implemented
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### State Management
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- React hooks for local state management
+- Context API for global state when necessary
+- Custom hooks for shared logic
+
+### API Integration
+
+- Services directory contains API integration logic
+- Type-safe API calls with TypeScript
+- Error handling and loading states
+
+## Building and Deployment
+
+### Production Build
+
+```bash
+npm run build
+# or
+yarn build
+```
+
+### Running Production Build
+
+```bash
+npm start
+# or
+yarn start
+```
+
+### Deployment
+
+The application can be deployed to various platforms:
+
+- Vercel (recommended)
+- Docker containers
+- Traditional hosting
+
+## Contributing
+
+1. Follow the established code style and conventions
+2. Write meaningful commit messages
+3. Document new features and changes
+4. Test your changes thoroughly
+
+## Additional Resources
+
+- [Next.js Documentation](https://nextjs.org/docs)
+- [TypeScript Documentation](https://www.typescriptlang.org/docs)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+
+## License
+
+This project is proprietary and confidential. All rights reserved.
