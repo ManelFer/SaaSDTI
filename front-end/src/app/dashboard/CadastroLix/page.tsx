@@ -1,6 +1,7 @@
 'use client';
 import { Coleta } from './_components/coleta';
 import { CadastroL } from './_components/cadastroL';
+import {Marcas as MarcasModel} from "@/models/marcas.model"
 
 import {
   Table,
@@ -11,11 +12,23 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-
+import { Lixao } from '@/models/lixao.model';
 import DashboardLayout from '@/components/layout/DashboardLayout';
+import { useEffect, useState } from 'react';
+import { buscarLixao } from '@/services/lixao.service';
 
 export default function TeamPage() {
+  const [isEstOpen, setEstOpen] = useState(false);
+  const [lixao, setLixao] = useState<Lixao[]>([]);
+  const [marcas, setMarca] = useState<MarcasModel[]>([]);
+
+  useEffect(() => {
+    const fetchLixao = async () => {
+      const lixaoData = await buscarLixao();
+      setLixao(Array.isArray(lixaoData) ? lixaoData : [lixaoData]);
+    };
+    fetchLixao();
+  }, [])
   return (
     <DashboardLayout>
       <div className="space-y-6 bg-white rounded-lg p-6">
@@ -36,22 +49,24 @@ export default function TeamPage() {
                 <TableHead>Número de Série</TableHead>
                 <TableHead>Patrimônio</TableHead>
                 <TableHead>Lote</TableHead>
-                <TableHead>Defeito</TableHead>
+                <TableHead>Descrição</TableHead>
                 <TableHead className='text-right'>Quantidade</TableHead>
               </TableRow>
             </TableHeader>
 
             <TableBody>
-              <TableRow>
-                <TableCell className="font-medium">Notebook</TableCell>
-                <TableCell>Dell</TableCell>
-                <TableCell>Inspiron 15</TableCell>
-                <TableCell>1234567890</TableCell>
-                <TableCell>1234567890</TableCell>
-                <TableCell>1234567890</TableCell>
-                <TableCell>Tela quebrada</TableCell>
-                <TableCell className='text-right'>1</TableCell>
-              </TableRow>
+              {lixao.map((item) => (
+                <TableRow key={item.id}>
+                  <TableCell className="font-medium">{item.nome}</TableCell>
+                  <TableCell>{marcas.find(a => a.id == item.id_marca)?.nome}</TableCell>
+                  <TableCell>{item.modelo}</TableCell>
+                  <TableCell>{item.numero_serie}</TableCell>
+                  <TableCell>{item.patrimonio}</TableCell>
+                  <TableCell>{item.lote}</TableCell>
+                  <TableCell>{item.descricao}</TableCell>
+                  <TableCell className='text-right'>{item.quantidade}</TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </div>

@@ -12,4 +12,5 @@ export const API_ROUTES = {
   ESTOQUE: "/estoque",
   TECNICOS: "/tecnicos",
   MARCAS: "/marcas",
+  LIXAO: "/lixao",
   }
