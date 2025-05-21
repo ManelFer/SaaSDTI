@@ -1,6 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Marcas } from "../../CadastroEst/_components/marcas";
+import { Equipamentos } from "@/components/layout/Equipamentos";
 
 interface FormProps {
   form: {
@@ -37,12 +38,9 @@ export function Form({ form, setForm }: FormProps) {
       {/* Coluna da Esquerda */}
       <div className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="nome">Equipamento:</Label>
-          <Input
-            id="nome"
-            placeholder="Nome do equipamento"
+          <Equipamentos
             value={form.nome}
-            onChange={handleChange}
+            onChange={(value) => handleCustomChange("nome", value)}
           />
         </div>
 

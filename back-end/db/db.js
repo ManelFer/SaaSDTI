@@ -6,6 +6,7 @@ import {criarTabelaSetores} from './tables/setores.js';
 import { criarTabelaEstoque } from './tables/estoque.js';
 import { criarTabelaTecnicos } from './tables/tecnicos.js';
 import { criarTabelaLixao } from './tables/lixao.js';
+import { criarTabelaEquipamentos } from './tables/equipamentos.js';
 
 
 dotenv.config();
@@ -34,4 +35,5 @@ export async function criarTabelas() {
   criarTabelaTecnicos();
   criarTabelaMarcas();
   criarTabelaLixao();
+  criarTabelaEquipamentos();
 }

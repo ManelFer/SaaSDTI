@@ -46,6 +46,7 @@ export function CadastroL() {
         ...form,
         quantidade: Number(form.quantidade),
         id: 0,
+        id_marca: 0, // Adicione o valor correto para id_marca aqui
       };
 
       console.log("Enviando dados:", payload);

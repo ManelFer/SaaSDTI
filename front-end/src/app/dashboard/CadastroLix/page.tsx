@@ -2,6 +2,7 @@
 import { Coleta } from './_components/coleta';
 import { CadastroL } from './_components/cadastroL';
 import {Marcas as MarcasModel} from "@/models/marcas.model"
+import { Itens } from '@/models/itens.model';
 
 import {
   Table,
@@ -21,6 +22,7 @@ export default function TeamPage() {
   const [isEstOpen, setEstOpen] = useState(false);
   const [lixao, setLixao] = useState<Lixao[]>([]);
   const [marcas, setMarca] = useState<MarcasModel[]>([]);
+  const [itens, setItens] = useState<Itens[]>([]);
 
   useEffect(() => {
     const fetchLixao = async () => {
@@ -57,7 +59,7 @@ export default function TeamPage() {
             <TableBody>
               {lixao.map((item) => (
                 <TableRow key={item.id}>
-                  <TableCell className="font-medium">{item.nome}</TableCell>
+                  <TableCell>{itens.find(a => a.id == item.id_item)?.nome}</TableCell>
                   <TableCell>{marcas.find(a => a.id == item.id_marca)?.nome}</TableCell>
                   <TableCell>{item.modelo}</TableCell>
                   <TableCell>{item.numero_serie}</TableCell>
