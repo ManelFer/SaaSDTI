@@ -1,33 +1,37 @@
+// components/Form.tsx
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea"; // Certifique-se que esse componente existe
 import { Marcas } from "../../CadastroEst/_components/marcas";
 import { Equipamentos } from "@/components/layout/Equipamentos";
 
+interface EquipamentoForm {
+  nome: string;
+  marca: string;
+  modelo: string;
+  numero_serie: string;
+  patrimonio: string;
+  lote: string;
+  descricao: string;
+  quantidade: number;
+}
+
 interface FormProps {
-  form: {
-    nome: string;
-    marca: string;
-    modelo: string;
-    numero_serie: string;
-    patrimonio: string;
-    lote: string;
-    descricao: string;
-    quantidade: number;
-  };
-  setForm: React.Dispatch<React.SetStateAction<any>>;
+  form: EquipamentoForm;
+  setForm: React.Dispatch<React.SetStateAction<EquipamentoForm>>;
 }
 
 export function Form({ form, setForm }: FormProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
-    setForm((prev: any) => ({
+    setForm((prev) => ({
       ...prev,
       [id]: id === "quantidade" ? Number(value) : value,
     }));
   };
 
-  const handleCustomChange = (field: string, value: string) => {
-    setForm((prev: any) => ({
+  const handleCustomChange = (field: keyof EquipamentoForm, value: string) => {
+    setForm((prev) => ({
       ...prev,
       [field]: value,
     }));
@@ -98,20 +102,21 @@ export function Form({ form, setForm }: FormProps) {
           <Label htmlFor="quantidade">Quantidade:</Label>
           <Input
             id="quantidade"
-            placeholder="Quantidade do equipamento"
             type="number"
+            placeholder="Quantidade do equipamento"
             value={form.quantidade}
+            min={0}
             onChange={handleChange}
           />
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="descricao">Descrição:</Label>
-          <Input
+          <Textarea
             id="descricao"
             placeholder="Descrição de retirada"
             value={form.descricao}
-            onChange={handleChange}
+            onChange={(e) => handleCustomChange("descricao", e.target.value)}
           />
         </div>
       </div>

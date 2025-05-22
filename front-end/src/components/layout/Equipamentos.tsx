@@ -49,25 +49,25 @@ export function Equipamentos({ value, onChange }: EquipamentoProps) {
     if (error) {
         return <div className="text-sm text-destructive">Erro: {error}</div>;
     }
-    const itensOptions = itens.map((item) => {
-        return (
-            <SelectItem key={item.id} value={item.id.toString()}>
-                {item.nome}
-            </SelectItem>
-        );
-    });
 
     return (
-        <Select value={value} onValueChange={onChange}>
-            <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Equipamentos" />
-            </SelectTrigger>
-            <SelectContent>
-                <SelectGroup>
-                    <SelectLabel>Equipamentos</SelectLabel>
-                    {itensOptions}
-                </SelectGroup>
-            </SelectContent>
-        </Select>
+        <div className="space-y-2">
+            <Label htmlFor="equipamento">Equipamento:</Label>
+            <Select value={value} onValueChange={onChange}>
+                <SelectTrigger className="w-[180px]" id="equipamento">
+                    <SelectValue placeholder="Equipamentos" />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectGroup>
+                        <SelectLabel>Equipamentos</SelectLabel>
+                        {itens.map((item) => (
+                            <SelectItem key={item.id} value={item.id.toString()}>
+                                {item.nome}
+                            </SelectItem>
+                        ))}
+                    </SelectGroup>
+                </SelectContent>
+            </Select>
+        </div>
     );
 }
