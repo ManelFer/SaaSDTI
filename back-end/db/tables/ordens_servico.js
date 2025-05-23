@@ -38,7 +38,7 @@ export async function inserirOrdemServico(values) {
   const insertQuery = `
     INSERT INTO ordens_servico (
       numero_os, data_abertura, solicitante, setor_id, patrimonio,
-      tipo_falha, solucao_tecnica, tecnico_responsavel,
+      tipo_falha, solucao_tecnica, tecnico_responsavel_id,
       data_recolhimento, data_devolucao, data_fechamento, status
     )
     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)

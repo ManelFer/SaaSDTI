@@ -6,7 +6,7 @@ export class Ordem {
     patrimonio: string | undefined
     tipo_falha: string | undefined
     solucao_tecnica: string | undefined
-    tecnico_responsavel: string | undefined
+    tecnico_responsavel_id: number | undefined
     data_recolhimento: string | null | undefined
     data_devolucao: string | null | undefined
     data_fechamento: string | undefined

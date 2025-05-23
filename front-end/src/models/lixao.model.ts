@@ -1,11 +1,12 @@
 export class Lixao {
     id: number | undefined
+    item_id: number | undefined // ID do item
+    marca_id: number | undefined // ID do marca
     modelo: string | undefined
     numero_serie: string | undefined
     patrimonio: string | undefined
     lote: string | undefined
-    quantidade: number | undefined
     descricao: string | undefined
-    id_marca: number | undefined
-    id_item: number | undefined
+    quantidade: number | undefined
+
 }

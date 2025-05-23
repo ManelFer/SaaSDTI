@@ -57,8 +57,9 @@ export function Tecnicos ({value, onChange}: TecnicoProps) {
                 </SelectTrigger>
                 <SelectContent>
                     <SelectGroup>
+                        <SelectLabel>Técnico</SelectLabel>
                         {tecnicos.map((tecnico) => (
-                            <SelectItem key={tecnico.id} value={String(tecnico.id)}>
+                            <SelectItem key={tecnico.id} value={tecnico.id.toString()}>
                                 {tecnico.nome}
                             </SelectItem>
                         ))}

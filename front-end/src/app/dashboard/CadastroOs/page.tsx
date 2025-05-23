@@ -39,14 +39,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { buscarOrdensServicos, createOrdens } from "@/services/ordens.service";
 import { Ordem } from "@/models/ordem.model";
-import { Setor  as SetorModel }from "@/models/setor.model";
+import { Setor as SetorModel } from "@/models/setor.model";
+import { Tecnico as TecnicoModel } from "@/models/tecnico.model";
 import { buscarSetores } from "@/services/setores.service";
+import { buscarTecnicos } from "@/services/tecnicos.service";
 
 export default function ProjectsPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [Loading, setLoading] = useState(false);
 
   const [ordens, setOrdens] = useState<Ordem[]>([]);
   const [setores, setSetores] = useState<SetorModel[]>([]);
+  const [tecnicos, setTecnicos] = useState<TecnicoModel[]>([]);
 
   const [form, setForm] = useState({
     numero_os: "",
@@ -72,14 +76,14 @@ export default function ProjectsPage() {
       const cleanedForm = {
         ...form,
         setor_id: Number(form.setor),
+        tecnico_responsavel_id: Number(form.tecnico_responsavel), // convert to number
         data_recolhimento: form.data_recolhimento || undefined,
         data_devolucao: form.data_devolucao || undefined,
         data_fechamento: form.data_fechamento || undefined,
       };
       console.log("Dados do formulário:", cleanedForm);
-      
+
       const data = await createOrdens(cleanedForm);
-      
 
       // const res = await fetch(API_URL + API_ROUTES.ORDENS, {
       //   method: "POST",
@@ -91,19 +95,19 @@ export default function ProjectsPage() {
       alert(data);
       setIsDialogOpen(false);
       setForm({
-              numero_os: "",
-              data_abertura: "",
-              solicitante: "",
-              setor: "",
-              patrimonio: "",
-              tipo_falha: "",
-              solucao_tecnica: "",
-              tecnico_responsavel: "",
-              data_recolhimento: "",
-              data_devolucao: "",
-              data_fechamento: "",
-              status: "",
-            });
+        numero_os: "",
+        data_abertura: "",
+        solicitante: "",
+        setor: "",
+        patrimonio: "",
+        tipo_falha: "",
+        solucao_tecnica: "",
+        tecnico_responsavel: "",
+        data_recolhimento: "",
+        data_devolucao: "",
+        data_fechamento: "",
+        status: "",
+      });
     } catch (err) {
       console.error("Erro ao cadastrar ordem de serviço:", err);
       alert("Erro ao cadastrar ordem de serviço. Tente novamente.");
@@ -112,18 +116,36 @@ export default function ProjectsPage() {
 
   useEffect(() => {
     const fetSetores = async () => {
+      // listas de setores e técnicos
+      const listaTecnicos = await buscarTecnicos();
       const listaSetores = await buscarSetores();
+
+      // setando os setores e técnicos
       setSetores(listaSetores);
-      console.log("Setores:", listaSetores);
+      setTecnicos(listaTecnicos);
+      console.log("tecnicos", listaTecnicos);
+
+      setLoading(true);
     };
     fetSetores();
-    
-    const fetchOrdens = async () => {
-      const ordensData = await buscarOrdensServicos();
-      setOrdens(ordensData);
-    };
-    fetchOrdens();
+
+    // const fetchOrdens = async () => {
+    //   const ordensData = await buscarOrdensServicos();
+    //   setOrdens(ordensData);
+    // };
+    // fetchOrdens();
   }, []);
+
+  useEffect(() => {
+    if (Loading ) {
+      const fetchOrdens = async () => {
+        const ordensData = await buscarOrdensServicos();
+        setOrdens(ordensData);
+        console.log("ordens", ordensData);
+      };
+      fetchOrdens();
+    }
+  }, [Loading]);
 
   return (
     <DashboardLayout>
@@ -170,7 +192,9 @@ export default function ProjectsPage() {
                         id="os-date"
                         type="datetime-local"
                         value={form.data_abertura}
-                        onChange={(e) => handleChange("data_abertura", e.target.value)}
+                        onChange={(e) =>
+                          handleChange("data_abertura", e.target.value)
+                        }
                       />
                     </div>
 
@@ -188,7 +212,10 @@ export default function ProjectsPage() {
                     </div>
 
                     {/* Setor / Fórum */}
-                    <Setor value={form.setor} onChange={(value) => handleChange("setor", value)} />
+                    <Setor
+                      value={form.setor}
+                      onChange={(value) => handleChange("setor", value)}
+                    />
                   </div>
 
                   {/* Second Column */}
@@ -234,7 +261,12 @@ export default function ProjectsPage() {
 
                     {/* Técnico Responsável  */}
                     <div className="space-y-2">
-                      <Tecnicos value={form.setor} onChange={(value) => handleChange("setor", value)} />
+                      <Tecnicos
+                        value={form.tecnico_responsavel}
+                        onChange={(value) =>
+                          handleChange("tecnico_responsavel", value)
+                        }
+                      />
                     </div>
                   </div>
 
@@ -289,6 +321,7 @@ export default function ProjectsPage() {
                     <div className="space-y-2">
                       <Label htmlFor="status">Status:</Label>
                       <Select
+                        value={form.status}
                         onValueChange={(value) => handleChange("status", value)}
                       >
                         <SelectTrigger>
@@ -345,15 +378,16 @@ export default function ProjectsPage() {
             </TableHeader>
 
             <TableBody>
-
-              {ordens.map((ordem) => 
+              {ordens.map((ordem) => (
                 <TableRow key={ordem.id}>
                   <TableCell className="font-medium">
                     {ordem.numero_os}
                   </TableCell>
                   <TableCell>{ordem.data_abertura}</TableCell>
                   <TableCell>{ordem.solicitante}</TableCell>
-                  <TableCell>{setores.find(a => a.id == ordem.setor_id)?.nome}</TableCell>
+                  <TableCell>
+                    {setores.find((a) => a.id == ordem.setor_id)?.nome}
+                  </TableCell>
                   <TableCell>{ordem.patrimonio}</TableCell>
                   <TableCell>{ordem.tipo_falha}</TableCell>
                   <TableCell>{ordem.solucao_tecnica}</TableCell>
@@ -362,10 +396,14 @@ export default function ProjectsPage() {
                   <TableCell>{ordem.data_fechamento}</TableCell>
                   <TableCell>{ordem.status}</TableCell>
                   <TableCell className="text-right">
-                    {ordem.tecnico_responsavel}
+                    {/* {tecnicos[0]?.nome} */}
+                    {
+                      tecnicos.find((a) => a.id == ordem.tecnico_responsavel_id)
+                        ?.nome
+                    }
                   </TableCell>
                 </TableRow>
-              )}
+              ))}
 
               {/* <TableRow>
                 <TableCell className="font-medium">0001/2002</TableCell>

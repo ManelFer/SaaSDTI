@@ -59,8 +59,8 @@ export default function TeamPage() {
             <TableBody>
               {lixao.map((item) => (
                 <TableRow key={item.id}>
-                  <TableCell>{itens.find(a => a.id == item.id_item)?.nome}</TableCell>
-                  <TableCell>{marcas.find(a => a.id == item.id_marca)?.nome}</TableCell>
+                  <TableCell>{itens.find(a => a.id == item.item_id)?.nome}</TableCell>
+                  <TableCell>{marcas.find(a => a.id == item.marca_id)?.nome}</TableCell>
                   <TableCell>{item.modelo}</TableCell>
                   <TableCell>{item.numero_serie}</TableCell>
                   <TableCell>{item.patrimonio}</TableCell>

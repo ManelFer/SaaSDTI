@@ -35,7 +35,7 @@ router.post('/ordens', async (req, res) => {
   console.log('BODY:', req.body);
   const {
     numero_os, data_abertura, solicitante, setor_id, patrimonio,
-    tipo_falha, solucao_tecnica, tecnico_responsavel,
+    tipo_falha, solucao_tecnica, tecnico_responsavel_id,
     data_recolhimento, data_devolucao, data_fechamento, status
   } = req.body;
 
@@ -59,11 +59,11 @@ router.post('/ordens', async (req, res) => {
     // `;
     const values = [
       numero_os, data_abertura, solicitante, setor_id, patrimonio,
-      tipo_falha, solucao_tecnica, tecnico_responsavel,
+      tipo_falha, solucao_tecnica, tecnico_responsavel_id,
       data_recolhimento, data_devolucao, data_fechamento, status
     ];
     // console.log('Query:', query);
-    console.log("Receido no back-end:", req.body);
+    console.log("Recebido no back-end:", req.body);
 
     const { rows } = await inserirOrdemServico(values);
 
