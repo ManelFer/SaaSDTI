@@ -1,7 +1,7 @@
 export class Estoque {
     id?: number | undefined
-    nome: string | undefined
-    marca: string | undefined
+    item_id: string | undefined
+    marca_id: string | undefined
     modelo: string | undefined
     numero_serie: string | undefined
     patrimonio: string | undefined

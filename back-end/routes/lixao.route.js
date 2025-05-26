@@ -16,10 +16,10 @@ router.get('/lixao', async (req, res) => {
 
 // POST novo item no lixão
 router.post('/lixao', async (req, res) => {
-  const { nome, marca, modelo, numero_serie, patrimonio, lote, quantidade, descricao } = req.body;
+  const { item_id, marca_id, modelo, numero_serie, patrimonio, lote, quantidade, descricao } = req.body;
 
   try {
-    const values = [nome, marca, modelo, numero_serie, patrimonio, lote, quantidade, descricao];
+    const values = [item_id, marca_id, modelo, numero_serie, patrimonio, lote, quantidade, descricao];
     const newItem = await inserirItemLixao(values);
     res.status(201).json(newItem);
   } catch (err) {
@@ -29,10 +29,10 @@ router.post('/lixao', async (req, res) => {
 // PUT atualizar item do lixão
 router.put('/lixao/:id', async (req, res) => {
   const { id } = req.params;
-  const { nome, marca, modelo, numero_serie, patrimonio, lote, quantidade, descricao } = req.body;
+  const { item_id, marca_id, modelo, numero_serie, patrimonio, lote, quantidade, descricao } = req.body;
 
   try {
-    const updatedItem = await atualizarItemsLixao(id, { nome, marca, modelo, numero_serie, patrimonio, lote, quantidade, descricao });
+    const updatedItem = await atualizarItemsLixao(id, { item_id, marca_id, modelo, numero_serie, patrimonio, lote, quantidade, descricao });
     res.json(updatedItem);
   } catch (err) {
     res.status(500).json({ error: err.message });

@@ -2,12 +2,12 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea"; // Certifique-se que esse componente existe
-import { Marcas } from "../../CadastroEst/_components/marcas";
+import { Marcas } from "../../../../components/layout/marcas";
 import { Equipamentos } from "@/components/layout/Equipamentos";
 
 interface EquipamentoForm {
-  nome: string;
-  marca: string;
+  item_id: string;
+  marca_id: string;
   modelo: string;
   numero_serie: string;
   patrimonio: string;
@@ -43,15 +43,15 @@ export function Form({ form, setForm }: FormProps) {
       <div className="space-y-4">
         <div className="space-y-2">
           <Equipamentos
-            value={form.nome}
-            onChange={(value) => handleCustomChange("nome", value)}
+            value={form.item_id}
+            onChange={(value) => handleCustomChange("item_id", value)}
           />
         </div>
 
         <div className="space-y-2">
           <Marcas
-            value={form.marca}
-            onChange={(value) => handleCustomChange("marca", value)}
+            value={form.marca_id}
+            onChange={(value) => handleCustomChange("marca_id", value)}
           />
         </div>
 

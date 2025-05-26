@@ -17,8 +17,8 @@ export function CadastroL() {
   const [isLixOpen, setLixOpen] = useState(false);
   const [lixao, setLixao] = useState<Lixao[]>([]);
   const [form, setForm] = useState({
-    nome: "",
-    marca: "",
+    item_id: "",
+    marca_id: "",
     modelo: "",
     numero_serie: "",
     patrimonio: "",
@@ -29,8 +29,8 @@ export function CadastroL() {
 
   const resetForm = () => {
     setForm({
-      nome: "",
-      marca: "",
+      item_id: "",
+      marca_id: "",
       modelo: "",
       numero_serie: "",
       patrimonio: "",
@@ -44,9 +44,10 @@ export function CadastroL() {
     try {
       const payload = {
         ...form,
+        item_id: Number(form.item_id),
+        marca_id: Number(form.marca_id),
         quantidade: Number(form.quantidade),
         id: 0,
-        id_marca: 0, // Adicione o valor correto para id_marca aqui
       };
 
       console.log("Enviando dados:", payload);

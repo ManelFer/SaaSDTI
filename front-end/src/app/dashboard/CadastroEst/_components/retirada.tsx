@@ -26,7 +26,7 @@ export function Retirada() {
         quantidade: 0,
     });
     return(
-        <div className="bg-red-700 text-white px-4 py-2 rounded-md hover:bg-red-800 hover:scale-105 duration-300">
+        <div>
             <Dialog>
                 <DialogTrigger asChild>
                     <Button className="bg-red-700 text-white px-4 py-2 rounded-md hover:bg-red-800 hover:scale-105 duration-300">

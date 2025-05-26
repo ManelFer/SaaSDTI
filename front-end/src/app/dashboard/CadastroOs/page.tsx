@@ -154,7 +154,7 @@ export default function ProjectsPage() {
           <h1 className="text-2xl font-bold text-gray-800">
             Cadastro de Ordem de Serviço 📃
           </h1>
-          <div className="bg-[#257432] hover:bg-[#066333] hover:scale-105 duration-300 text-white px-4 py-2 rounded-md shadow-md">
+          <div>
             <Dialog>
               <DialogTrigger asChild>
                 <Button className="bg-[#257432] hover:bg-[#066333] hover:scale-105 duration-300 ">

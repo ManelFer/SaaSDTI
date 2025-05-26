@@ -18,8 +18,8 @@ export function Register() {
   const [isEstOpen, setEstOpen] = useState(false);
   const [estoque, setEstoque] = useState<Estoque[]>([]);
   const [form, setForm] = useState({
-    nome: '',
-    marca: '',
+    item_id: '',
+    marca_id: '',
     modelo: '',
     numero_serie: '',
     patrimonio: '',
@@ -27,38 +27,47 @@ export function Register() {
     quantidade: 0,
   });
 
+  const resetForm = () => {
+    setForm({
+      item_id: '',
+      marca_id: '',
+      modelo: '',
+      numero_serie: '',
+      patrimonio: '',
+      lote: '',
+      quantidade: 0,
+    });
+  };
+
   const handleSubmit = async () => {
     try {
-      const cleanedForm = {
+      const payload = {
         ...form,
+        item_id: form.item_id,
+        marca_id: form.marca_id,
         quantidade: Number(form.quantidade),
+        id: 0,
       };
-      console.log("Dados do formulário", cleanedForm);
-      const data = await createEstoque(cleanedForm);
-      console.log("Dados do estoque", data);
+      console.log("Enviando dados:", payload);
+      const novoItem = await createEstoque(payload);
+      setEstoque((prev) => [...prev, novoItem]);
       alert("Equipamento cadastrado com sucesso!");
-      setEstoque([...estoque, data]);
-      setForm({
-        nome: '',
-        marca: '',
-        modelo: '',
-        numero_serie: '',
-        patrimonio: '',
-        lote: '',
-        quantidade: 0,
-      });
-      setEstOpen(false); // Fecha o diálogo após salvar
+      resetForm();
+      setEstOpen(false);
     } catch (error) {
       console.error("Erro ao cadastrar equipamento", error);
-      console.log("Dados do formulário", form);
       alert("Erro ao cadastrar equipamento. Tente novamente.");
     }
-  };
+  }
 
   useEffect(() => {
     const fetchEstoque = async () => {
-      const estoqueData = await buscarEstoque();
-      setEstoque(Array.isArray(estoqueData) ? estoqueData : [estoqueData]);
+      try {
+        const estoqueData = await buscarEstoque();
+        setEstoque(Array.isArray(estoqueData) ? estoqueData : [estoqueData]);
+      } catch (error) {
+        console.error("Erro ao buscar estoque", error);
+      }
     };
     fetchEstoque();
   }, []);

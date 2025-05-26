@@ -4,14 +4,14 @@ export function criarTabelaLixao() {
   const query = `
         CREATE TABLE IF NOT EXISTS lixao (
         id SERIAL PRIMARY KEY,
-        nome VARCHAR(255) NOT NULL,
-        marca VARCHAR(255) NOT NULL,
+        item_id VARCHAR(255) NOT NULL,
+        marca_id VARCHAR(255) NOT NULL,
         modelo VARCHAR(255) NOT NULL,
         numero_serie VARCHAR(255) NOT NULL UNIQUE,
         patrimonio VARCHAR(255) UNIQUE,
         lote VARCHAR(255) UNIQUE,
         quantidade INTEGER DEFAULT 0,
-        Descrição VARCHAR(255) NOT NULL,
+        descricao VARCHAR(255) NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
@@ -22,7 +22,7 @@ export function criarTabelaLixao() {
 // Insertar um item no lixão
 export async function inserirItemLixao(values) {
   const insertQuery = `
-        INSERT INTO lixao (nome, marca, modelo, numero_serie, patrimonio, lote, quantidade, Descrição)
+        INSERT INTO lixao (item_id, marca_id, modelo, numero_serie, patrimonio, lote, quantidade, descricao)
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
         RETURNING *;
     `;
@@ -44,8 +44,8 @@ export async function atualizarItemsLixao(id, data) {
   const updateQuery = `
         UPDATE lixao
         SET 
-            nome = $1, 
-            marca = $2, 
+            item_id = $1, 
+            marca_id = $2, 
             modelo = $3, 
             numero_serie = $4, 
             patrimonio = $5, 
