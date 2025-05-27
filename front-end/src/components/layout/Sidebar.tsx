@@ -11,6 +11,7 @@ const navigation = [
   { name: 'Ordens de Serviço', href: '/dashboard/CadastroOs', icon: FileText },
   { name: 'Estoque', href: '/dashboard/CadastroEst', icon: Box },
   { name: 'Lixão', href: '/dashboard/CadastroLix', icon: Trash2 },
+  { name: 'cadastros', href: '/dashboard/CadastroFull', icon: FileText },
 ];
 
 export default function Sidebar() {
