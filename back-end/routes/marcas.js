@@ -2,7 +2,8 @@ import express from 'express';
 import db from '../db/db.js';
 
 const router = express.Router();
-// Rota para obter todas as marcas
+
+// Rota para criar uma nova marca
 router.post('/marcas', async (req, res) => {
   const { nome } = req.body;
   try {
@@ -15,7 +16,7 @@ router.post('/marcas', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
+// Rota para obter todas as marcas
 router.get('/marcas', async (req, res) => {
   try {
     const { rows } = await db.query('SELECT * FROM marcas ORDER BY id DESC');

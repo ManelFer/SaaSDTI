@@ -18,10 +18,6 @@ export default function DashboardPage() {
               Sistema de gerenciamento do setor de TI
             </p>
           </div>
-          <div className="flex gap-2">
-            <CadastroMarcas />
-            <CadastroEquipamentos />
-          </div>
         </div>
 
         {/* Card do conteúdo */}
