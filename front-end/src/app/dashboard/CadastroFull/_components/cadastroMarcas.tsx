@@ -8,7 +8,7 @@ import {
   DialogTrigger,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { FormMarcas } from "./formMarcas";
+import { FormMarcas } from "./organisms/formMarcas";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useEffect, useState } from "react";

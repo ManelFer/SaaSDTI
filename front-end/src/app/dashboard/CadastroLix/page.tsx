@@ -89,7 +89,7 @@ export default function TeamPage() {
                   <TableCell>{item.modelo}</TableCell>
                   <TableCell>{item.numero_serie}</TableCell>
                   <TableCell>{item.patrimonio}</TableCell>
-                  <TableCell>{item.lote}</TableCell>
+                  <TableCell>{item.lote || "null"}</TableCell>
                   <TableCell>{item.descricao}</TableCell>
                   <TableCell className='text-right'>{item.quantidade}</TableCell>
                 </TableRow>
