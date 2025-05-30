@@ -12,11 +12,18 @@ import {
 } from "@/components/ui/dialog";
 import { Estoque } from '@/models/estoque.model';
 import { useEffect, useState } from 'react';
+import { Itens as ItensModel } from '@/models/itens.model';
+import { Marcas } from '@/models/marcas.model';
 import { buscarEstoque, createEstoque } from '@/services/estoque.service';
+import { buscarItens, createItens } from '@/services/itens.service';
+import { buscarMarcas, createMarcas } from '@/services/marcas.service';
 
 export function Register() {
   const [isEstOpen, setEstOpen] = useState(false);
   const [estoque, setEstoque] = useState<Estoque[]>([]);
+  const [Loading, setLoading] = useState(false);
+  const [itens, setItens] = useState<ItensModel[]>([]);
+  const [marca, setMarca] = useState<Marcas[]>([]);
   const [form, setForm] = useState({
     item_id: '',
     marca_id: '',
@@ -41,36 +48,68 @@ export function Register() {
 
   const handleSubmit = async () => {
     try {
+      // Validação dos campos obrigatórios
+      if (!form.item_id || !form.marca_id || !form.modelo || form.quantidade <= 0) {
+        alert("Por favor, preencha todos os campos obrigatórios e certifique-se que a quantidade seja maior que zero.");
+        return;
+      }
+
       const payload = {
         ...form,
-        item_id: form.item_id,
-        marca_id: form.marca_id,
+        item_id: Number(form.item_id),
+        marca_id: Number(form.marca_id),
         quantidade: Number(form.quantidade),
-        id: 0,
       };
+
       console.log("Enviando dados:", payload);
-      const novoItem = await createEstoque(payload);
-      setEstoque((prev) => [...prev, novoItem]);
-      alert("Equipamento cadastrado com sucesso!");
-      resetForm();
-      setEstOpen(false);
-    } catch (error) {
-      console.error("Erro ao cadastrar equipamento", error);
-      alert("Erro ao cadastrar equipamento. Tente novamente.");
-    }
+
+      const data = await createEstoque(payload);
+      
+     console.log("Dados do estoque", data);
+     alert(data);
+     setForm({
+       item_id: '',
+       marca_id: '',
+       modelo: '',
+       numero_serie: '',
+       patrimonio: '',
+       lote: '',
+       quantidade: 0,
+     });
+
+  } catch (err) {
+    console.log("Erro de cadastro", err);
+    alert("Erro ao cadastrar equipamento. Tente novamente.");
   }
+  }; // <-- Fechando handleSubmit corretamente
 
   useEffect(() => {
-    const fetchEstoque = async () => {
-      try {
+    const fetEstoque = async () => {
+      // listar equipamentos e marcas
+      const listaItem = await buscarItens();
+      const listaMarca = await buscarMarcas();
+
+      //setando itens e marcas
+      setItens(listaItem);
+      setMarca(listaMarca);
+      console.log("itens", listaItem);
+      console.log("marcas", listaMarca);
+      setLoading(true);
+    };
+    fetEstoque();
+  }, []);
+
+  useEffect (() => {
+    if (Loading) {
+      const fetchEstoque = async () => {
         const estoqueData = await buscarEstoque();
         setEstoque(Array.isArray(estoqueData) ? estoqueData : [estoqueData]);
-      } catch (error) {
-        console.error("Erro ao buscar estoque", error);
-      }
-    };
-    fetchEstoque();
-  }, []);
+        console.log("estoque", estoqueData);
+        setLoading(false);
+      };
+      fetchEstoque();
+    }
+  }, [Loading]);
 
   return (
     <div className='bg-[#257432] text-white px-4 py-2 rounded-md hover:bg-[#066333] hover:scale-105 duration-300'>

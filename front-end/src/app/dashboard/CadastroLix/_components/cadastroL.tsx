@@ -42,6 +42,12 @@ export function CadastroL() {
 
   const handleSubmit = async () => {
     try {
+      // Validação dos campos obrigatórios
+      if (!form.item_id || !form.marca_id || !form.modelo || form.quantidade <= 0) {
+        alert("Por favor, preencha todos os campos obrigatórios e certifique-se que a quantidade seja maior que zero.");
+        return;
+      }
+
       const payload = {
         ...form,
         item_id: Number(form.item_id),
@@ -53,14 +59,18 @@ export function CadastroL() {
       console.log("Enviando dados:", payload);
 
       const novoItem = await createLixao(payload);
-      setLixao((prev) => [...prev, novoItem]);
+      
+      if (!novoItem) {
+        throw new Error("Não foi possível cadastrar o equipamento");
+      }
 
+      setLixao((prev) => [...prev, novoItem]);
       alert("Equipamento cadastrado com sucesso!");
       resetForm();
       setLixOpen(false);
     } catch (error) {
       console.error("Erro ao cadastrar equipamento", error);
-      alert("Erro ao cadastrar equipamento. Tente novamente.");
+      alert("Erro ao cadastrar equipamento. Verifique os dados e tente novamente.");
     }
   };
 

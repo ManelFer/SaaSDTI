@@ -48,10 +48,11 @@ export default function EstoquePage() {
         const estoqueData = await buscarEstoque();
         setEstoque(Array.isArray(estoqueData) ? estoqueData : [estoqueData]);
         console.log("estoque", estoqueData);
+        setLoading(false);
       };
       fetchEstoque();
     }
-  })
+  }, [Loading])
   return (
     <DashboardLayout>
       <div className="space-y-6 p-6">
@@ -98,4 +99,4 @@ export default function EstoquePage() {
       </div>
     </DashboardLayout>
   );
-} 
+}
