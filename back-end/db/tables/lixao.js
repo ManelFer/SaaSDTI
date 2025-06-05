@@ -9,7 +9,7 @@ export function criarTabelaLixao() {
         modelo VARCHAR(255) NOT NULL,
         numero_serie VARCHAR(255) NOT NULL UNIQUE,
         patrimonio VARCHAR(255) UNIQUE,
-        lote VARCHAR(255) UNIQUE,
+        lote VARCHAR(255),
         quantidade INTEGER DEFAULT 0,
         descricao VARCHAR(255) NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

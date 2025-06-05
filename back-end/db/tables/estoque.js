@@ -9,7 +9,7 @@ export function criarTabelaEstoque() {
         modelo VARCHAR(255) NOT NULL,
         numero_serie VARCHAR(255) NOT NULL UNIQUE,
         patrimonio VARCHAR(255) UNIQUE,
-        lote VARCHAR(255) UNIQUE,
+        lote VARCHAR(255) ,
         quantidade INTEGER DEFAULT 0,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

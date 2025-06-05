@@ -43,6 +43,7 @@ import { Setor as SetorModel } from "@/models/setor.model";
 import { Tecnico as TecnicoModel } from "@/models/tecnico.model";
 import { buscarSetores } from "@/services/setores.service";
 import { buscarTecnicos } from "@/services/tecnicos.service";
+import { formatDateTime } from "@/components/ui/DateTime";
 
 export default function ProjectsPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -383,7 +384,7 @@ export default function ProjectsPage() {
                   <TableCell className="font-medium">
                     {ordem.numero_os}
                   </TableCell>
-                  <TableCell>{ordem.data_abertura}</TableCell>
+                  <TableCell>{formatDateTime(ordem.data_abertura || "")}</TableCell>
                   <TableCell>{ordem.solicitante}</TableCell>
                   <TableCell>
                     {setores.find((a) => a.id == ordem.setor_id)?.nome}
@@ -391,9 +392,9 @@ export default function ProjectsPage() {
                   <TableCell>{ordem.patrimonio}</TableCell>
                   <TableCell>{ordem.tipo_falha}</TableCell>
                   <TableCell>{ordem.solucao_tecnica}</TableCell>
-                  <TableCell>{ordem.data_recolhimento}</TableCell>
-                  <TableCell>{ordem.data_devolucao}</TableCell>
-                  <TableCell>{ordem.data_fechamento}</TableCell>
+                  <TableCell>{formatDateTime(ordem.data_recolhimento || "")}</TableCell>
+                  <TableCell>{formatDateTime(ordem.data_devolucao || "")}</TableCell>
+                  <TableCell>{formatDateTime(ordem.data_fechamento || "")}</TableCell>
                   <TableCell>{ordem.status}</TableCell>
                   <TableCell className="text-right">
                     {/* {tecnicos[0]?.nome} */}
