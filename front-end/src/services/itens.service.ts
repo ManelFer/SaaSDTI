@@ -11,6 +11,16 @@ export async function buscarItens(): Promise<Itens[]> {
     return data;
 }
 
+// busca equipamento por id
+export async function buscarItem(id: number): Promise<Itens> {
+    const res = await fetch(API_URL + API_ROUTES.ITENS + `/${id}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+    });
+    const data = await res.json();
+    return data;
+}
+
 export async function createItens(form: Partial<Itens>): Promise<any> {
     const res = await fetch(API_URL + API_ROUTES.ITENS, {
         method: "POST",

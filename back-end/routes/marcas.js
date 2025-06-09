@@ -26,4 +26,16 @@ router.get('/marcas', async (req, res) => {
   }
 });
 // Rota para obter uma marca por ID
+router.get('/marcas/:id', async(req, res) => {
+  const { id } = req.params;
+  try {
+    const { rows } = await db.query('SELECT * FROM marcas WHERE id = $1', [id]);
+    if (rows.length === 0) {
+      return res.status(404).json({ error: 'Marca não encontrada' });
+    }
+    res.json(rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+})
 export default router;

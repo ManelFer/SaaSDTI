@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 export function TableEquipamentos() {
   const [itens, setItens] = useState<Itens[]>([]);
   const [loading, setLoading] = useState(false);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const fetchTableItens = async () => {
@@ -37,19 +38,30 @@ export function TableEquipamentos() {
     }
   }, [loading]);
 
+  const itensFiltrados = itens.filter((item) =>
+    item.nome?.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div className="overflow-x-auto">
+      <input
+        type="text"
+        placeholder="Pesquisar..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="mb-4 p-2 border rounded w-full"
+      />
+      {itens.length === 0 && <p>Carregando...</p>}
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead>Equipamentos</TableHead>
           </TableRow>
         </TableHeader>
-
         <TableBody>
-          {itens.slice(0, 3).map((item) => (
+          {itensFiltrados.slice(0, 3).map((item) => (
             <TableRow key={item.id}>
-              <TableCell>{item.nome}</TableCell>
+              <TableCell className="font-medium">{item.nome}</TableCell>
             </TableRow>
           ))}
         </TableBody>
