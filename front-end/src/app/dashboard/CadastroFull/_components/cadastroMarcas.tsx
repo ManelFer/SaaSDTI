@@ -9,8 +9,6 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { FormMarcas } from "./organisms/formMarcas";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import { useEffect, useState } from "react";
 import { buscarMarcas, createMarcas } from "@/services/marcas.service";
 import { Marcas } from "@/models/marcas.model";

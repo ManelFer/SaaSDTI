@@ -1,4 +1,4 @@
-// formMarcas.tsx
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -16,7 +16,7 @@ export function FormMarcas({ form, setForm }: FormMarcasProps) {
           <Input
             id="nome"
             value={form.nome}
-            placeholder="Nome da marca"
+            placeholder="Nome da marca..."
             onChange={(e) => setForm({ ...form, nome: e.target.value })}
           />
         </div>

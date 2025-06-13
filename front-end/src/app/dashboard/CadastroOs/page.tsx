@@ -1,7 +1,7 @@
 "use client";
 import { Setor } from "./_components/setor";
 import { Tecnicos } from "./_components/tecnicos";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import DashboardLayout from "@/components/layout/DashboardLayout";
@@ -14,7 +14,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
 import {
   Table,
   TableBody,
@@ -24,7 +23,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
 import {
   Dialog,
   DialogContent,
@@ -34,7 +32,6 @@ import {
   DialogTrigger,
   DialogFooter,
 } from "@/components/ui/dialog";
-
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { buscarOrdensServicos, createOrdens } from "@/services/ordens.service";
@@ -44,11 +41,12 @@ import { Tecnico as TecnicoModel } from "@/models/tecnico.model";
 import { buscarSetores } from "@/services/setores.service";
 import { buscarTecnicos } from "@/services/tecnicos.service";
 import { formatDateTime } from "@/components/ui/DateTime";
+import { Search } from "lucide-react";
 
 export default function ProjectsPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [Loading, setLoading] = useState(false);
-
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
   const [ordens, setOrdens] = useState<Ordem[]>([]);
   const [setores, setSetores] = useState<SetorModel[]>([]);
   const [tecnicos, setTecnicos] = useState<TecnicoModel[]>([]);
@@ -77,23 +75,18 @@ export default function ProjectsPage() {
       const cleanedForm = {
         ...form,
         setor_id: Number(form.setor),
-        tecnico_responsavel_id: Number(form.tecnico_responsavel), // convert to number
+        tecnico_responsavel_id: Number(form.tecnico_responsavel),
         data_recolhimento: form.data_recolhimento || undefined,
         data_devolucao: form.data_devolucao || undefined,
         data_fechamento: form.data_fechamento || undefined,
       };
-      console.log("Dados do formulário:", cleanedForm);
 
-      const data = await createOrdens(cleanedForm);
-
-      // const res = await fetch(API_URL + API_ROUTES.ORDENS, {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(form),
-      // });
-      // const data = await res.json();
-      console.log("Resposta do servidor:", data);
-      alert(data);
+      await createOrdens(cleanedForm);
+      
+      // Atualiza a lista de ordens após cadastro
+      const ordensData = await buscarOrdensServicos();
+      setOrdens(ordensData);
+      
       setIsDialogOpen(false);
       setForm({
         numero_os: "",
@@ -109,6 +102,8 @@ export default function ProjectsPage() {
         data_fechamento: "",
         status: "",
       });
+      
+      alert("Ordem de serviço cadastrada com sucesso!");
     } catch (err) {
       console.error("Erro ao cadastrar ordem de serviço:", err);
       alert("Erro ao cadastrar ordem de serviço. Tente novamente.");
@@ -116,49 +111,59 @@ export default function ProjectsPage() {
   };
 
   useEffect(() => {
-    const fetSetores = async () => {
-      // listas de setores e técnicos
-      const listaTecnicos = await buscarTecnicos();
-      const listaSetores = await buscarSetores();
+    const fetchData = async () => {
+      try {
+        const [listaTecnicos, listaSetores, ordensData] = await Promise.all([
+          buscarTecnicos(),
+          buscarSetores(),
+          buscarOrdensServicos()
+        ]);
 
-      // setando os setores e técnicos
-      setSetores(listaSetores);
-      setTecnicos(listaTecnicos);
-      console.log("tecnicos", listaTecnicos);
-
-      setLoading(true);
+        setTecnicos(listaTecnicos);
+        setSetores(listaSetores);
+        setOrdens(ordensData);
+        setLoading(false);
+      } catch (error) {
+        console.error("Erro ao carregar dados:", error);
+        setLoading(false);
+      }
     };
-    fetSetores();
 
-    // const fetchOrdens = async () => {
-    //   const ordensData = await buscarOrdensServicos();
-    //   setOrdens(ordensData);
-    // };
-    // fetchOrdens();
+    fetchData();
   }, []);
 
-  useEffect(() => {
-    if (Loading ) {
-      const fetchOrdens = async () => {
-        const ordensData = await buscarOrdensServicos();
-        setOrdens(ordensData);
-        console.log("ordens", ordensData);
-      };
-      fetchOrdens();
-    }
-  }, [Loading]);
+  const ordensFiltradas = ordens.filter((ordem) => {
+    const searchLower = search.toLowerCase();
+    return (
+      ordem.numero_os?.toLowerCase().includes(searchLower) ||
+      ordem.solicitante?.toLowerCase().includes(searchLower) ||
+      ordem.patrimonio?.toLowerCase().includes(searchLower) ||
+      ordem.tipo_falha?.toLowerCase().includes(searchLower) ||
+      ((setores.find((a) => a.id == ordem.setor_id)?.nome?.toLowerCase() ?? "").includes(searchLower)) ||
+      (tecnicos.find((a) => a.id == ordem.tecnico_responsavel_id)?.nome?.toLowerCase().includes(searchLower))
+    );
+  });
 
   return (
     <DashboardLayout>
       <div className="space-y-6 rounded-lg p-6">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-800">
-            Cadastro de Ordem de Serviço 📃
+            Cadastro de Ordem de Serviço
           </h1>
-          <div>
+          <div className="flex items-center gap-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Input
+                className="pl-9 w-[300px]"
+                placeholder="Buscar por OS, solicitante, patrimônio..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
             <Dialog>
               <DialogTrigger asChild>
-                <Button className="bg-[#257432] hover:bg-[#066333] hover:scale-105 duration-300 ">
+                <Button className="bg-[#257432] hover:bg-[#066333] hover:scale-105 duration-300">
                   Cadastrar Ordem de Serviço
                 </Button>
               </DialogTrigger>
@@ -166,129 +171,104 @@ export default function ProjectsPage() {
                 <DialogHeader>
                   <DialogTitle>Cadastro de Ordem de Serviço</DialogTitle>
                   <DialogDescription>
-                    {" "}
-                    Cadastre uma nova ordem de serviço{" "}
+                    Cadastre uma nova ordem de serviço
                   </DialogDescription>
                 </DialogHeader>
                 <div className="grid grid-cols-3 gap-6 py-4">
-                  {/* First Column */}
+                  {/* Primeira coluna */}
                   <div className="space-y-4">
-                    {/* Número da OS */}
                     <div className="space-y-2">
                       <Label htmlFor="numero_os">Número da OS:</Label>
                       <Input
                         id="numero_os"
                         placeholder="Número da OS"
                         value={form.numero_os}
-                        onChange={(e) =>
-                          handleChange("numero_os", e.target.value)
-                        }
+                        onChange={(e) => handleChange("numero_os", e.target.value)}
+                        required
                       />
                     </div>
 
-                    {/* Data e hora de abertura */}
                     <div className="space-y-2">
                       <Label htmlFor="os-date">Data e hora de abertura:</Label>
                       <Input
                         id="os-date"
                         type="datetime-local"
                         value={form.data_abertura}
-                        onChange={(e) =>
-                          handleChange("data_abertura", e.target.value)
-                        }
+                        onChange={(e) => handleChange("data_abertura", e.target.value)}
+                        required
                       />
                     </div>
 
-                    {/* Solicitante */}
                     <div className="space-y-2">
                       <Label htmlFor="solicitante">Solicitante:</Label>
                       <Input
                         id="solicitante"
                         placeholder="Nome do solicitante"
                         value={form.solicitante}
-                        onChange={(e) =>
-                          handleChange("solicitante", e.target.value)
-                        }
+                        onChange={(e) => handleChange("solicitante", e.target.value)}
+                        required
                       />
                     </div>
 
-                    {/* Setor / Fórum */}
                     <Setor
                       value={form.setor}
                       onChange={(value) => handleChange("setor", value)}
                     />
                   </div>
 
-                  {/* Second Column */}
+                  {/* Segunda coluna */}
                   <div className="space-y-4">
-                    {/* Pat. Equipamento */}
                     <div className="space-y-2">
                       <Label htmlFor="patrimonio">Pat. Equipamento:</Label>
                       <Input
                         id="patrimonio"
                         placeholder="Patrimônio do equipamento"
                         value={form.patrimonio}
-                        onChange={(e) =>
-                          handleChange("patrimonio", e.target.value)
-                        }
+                        onChange={(e) => handleChange("patrimonio", e.target.value)}
                       />
                     </div>
 
-                    {/* Tipo de Falha */}
                     <div className="space-y-2">
                       <Label htmlFor="tipo-falha">Tipo de Falha:</Label>
                       <Input
                         id="tipo-falha"
                         placeholder="Tipo de falha"
                         value={form.tipo_falha}
-                        onChange={(e) =>
-                          handleChange("tipo_falha", e.target.value)
-                        }
+                        onChange={(e) => handleChange("tipo_falha", e.target.value)}
+                        required
                       />
                     </div>
 
-                    {/* Solução técnica */}
                     <div className="space-y-2">
                       <Label htmlFor="solucao-tecnica">Solução técnica:</Label>
                       <Textarea
                         id="solucao-tecnica"
                         placeholder="Solução técnica aplicada"
                         value={form.solucao_tecnica}
-                        onChange={(e) =>
-                          handleChange("solucao_tecnica", e.target.value)
-                        }
+                        onChange={(e) => handleChange("solucao_tecnica", e.target.value)}
                       />
                     </div>
 
-                    {/* Técnico Responsável  */}
-                    <div className="space-y-2">
-                      <Tecnicos
-                        value={form.tecnico_responsavel}
-                        onChange={(value) =>
-                          handleChange("tecnico_responsavel", value)
-                        }
-                      />
-                    </div>
+                    <Tecnicos
+                      value={form.tecnico_responsavel}
+                      onChange={(value) => handleChange("tecnico_responsavel", value)}
+                    />
                   </div>
 
-                  {/* Third Column */}
+                  {/* Terceira coluna */}
                   <div className="space-y-4">
-                    {/* Data e hora do recolhimento */}
                     <div className="space-y-2">
-                      <Label htmlFor="os-date-recolhido">
+                      <Label htmlFor="os-date-recolhimento">
                         Data e hora do recolhimento:
                       </Label>
                       <Input
                         id="os-date-recolhimento"
                         type="datetime-local"
                         value={form.data_recolhimento || ""}
-                        onChange={(e) =>
-                          handleChange("data_recolhimento", e.target.value)
-                        }
+                        onChange={(e) => handleChange("data_recolhimento", e.target.value)}
                       />
                     </div>
 
-                    {/* Data e hora do devolvimento */}
                     <div className="space-y-2">
                       <Label htmlFor="os-date-devolucao">
                         Data e hora do devolvimento:
@@ -297,13 +277,10 @@ export default function ProjectsPage() {
                         id="os-date-devolucao"
                         type="datetime-local"
                         value={form.data_devolucao || ""}
-                        onChange={(e) =>
-                          handleChange("data_devolucao", e.target.value)
-                        }
+                        onChange={(e) => handleChange("data_devolucao", e.target.value)}
                       />
                     </div>
 
-                    {/* Data e hora do fechamento */}
                     <div className="space-y-2">
                       <Label htmlFor="os-date-fechamento">
                         Data e hora do fechamento:
@@ -312,13 +289,10 @@ export default function ProjectsPage() {
                         id="os-date-fechamento"
                         type="datetime-local"
                         value={form.data_fechamento}
-                        onChange={(e) =>
-                          handleChange("data_fechamento", e.target.value)
-                        }
+                        onChange={(e) => handleChange("data_fechamento", e.target.value)}
                       />
                     </div>
 
-                    {/* Status */}
                     <div className="space-y-2">
                       <Label htmlFor="status">Status:</Label>
                       <Select
@@ -326,7 +300,7 @@ export default function ProjectsPage() {
                         onValueChange={(value) => handleChange("status", value)}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="Status" />
+                          <SelectValue placeholder="Selecione o status" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectGroup>
@@ -334,6 +308,9 @@ export default function ProjectsPage() {
                             <SelectItem value="Resolvido">Resolvido</SelectItem>
                             <SelectItem value="Não resolvido">
                               Não resolvido
+                            </SelectItem>
+                            <SelectItem value="Em andamento">
+                              Em andamento
                             </SelectItem>
                           </SelectGroup>
                         </SelectContent>
@@ -345,7 +322,7 @@ export default function ProjectsPage() {
                   <Button
                     type="submit"
                     onClick={handleSubmit}
-                    className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 hover:scale-105 duration-300"
+                    className="bg-[#257432] text-white px-4 py-2 rounded-md hover:bg-[#066333] hover:scale-105 duration-300"
                   >
                     Salvar OS
                   </Button>
@@ -358,68 +335,72 @@ export default function ProjectsPage() {
         <div className="bg-white rounded-lg shadow overflow-hidden">
           <Table>
             <TableCaption>Lista de Ordens de Serviço</TableCaption>
-
             <TableHeader className="bg-green-100">
               <TableRow>
-                <TableHead className="w-[100px]">numero_os</TableHead>
-                <TableHead>data_abertura</TableHead>
-                <TableHead>solicitante</TableHead>
-                <TableHead> setor </TableHead>
-                <TableHead>patrimonio</TableHead>
-                <TableHead>tipo_falha</TableHead>
-                <TableHead>solucao_tecnica</TableHead>
-                <TableHead> data_recolhimento</TableHead>
-                <TableHead>data_devolucao</TableHead>
-                <TableHead>data_fechamento</TableHead>
-                <TableHead>status</TableHead>
-                <TableHead className="text-right">
-                  tecnico_responsavel
-                </TableHead>
+                <TableHead className="w-[100px]">Número OS</TableHead>
+                <TableHead>Abertura</TableHead>
+                <TableHead>Solicitante</TableHead>
+                <TableHead>Setor</TableHead>
+                <TableHead>Patrimônio</TableHead>
+                <TableHead>Tipo de Falha</TableHead>
+                <TableHead>Solução</TableHead>
+                <TableHead>Recolhimento</TableHead>
+                <TableHead>Devolução</TableHead>
+                <TableHead>Fechamento</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead className="text-right">Técnico</TableHead>
               </TableRow>
             </TableHeader>
 
             <TableBody>
-              {ordens.map((ordem) => (
-                <TableRow key={ordem.id}>
-                  <TableCell className="font-medium">
-                    {ordem.numero_os}
-                  </TableCell>
-                  <TableCell>{formatDateTime(ordem.data_abertura || "")}</TableCell>
-                  <TableCell>{ordem.solicitante}</TableCell>
-                  <TableCell>
-                    {setores.find((a) => a.id == ordem.setor_id)?.nome}
-                  </TableCell>
-                  <TableCell>{ordem.patrimonio}</TableCell>
-                  <TableCell>{ordem.tipo_falha}</TableCell>
-                  <TableCell>{ordem.solucao_tecnica}</TableCell>
-                  <TableCell>{formatDateTime(ordem.data_recolhimento || "")}</TableCell>
-                  <TableCell>{formatDateTime(ordem.data_devolucao || "")}</TableCell>
-                  <TableCell>{formatDateTime(ordem.data_fechamento || "")}</TableCell>
-                  <TableCell>{ordem.status}</TableCell>
-                  <TableCell className="text-right">
-                    {/* {tecnicos[0]?.nome} */}
-                    {
-                      tecnicos.find((a) => a.id == ordem.tecnico_responsavel_id)
-                        ?.nome
-                    }
+              {loading ? (
+                <TableRow>
+                  <TableCell colSpan={12} className="text-center py-4">
+                    Carregando...
                   </TableCell>
                 </TableRow>
-              ))}
-
-              {/* <TableRow>
-                <TableCell className="font-medium">0001/2002</TableCell>
-                <TableCell>2025-01-01 10:00:00</TableCell>
-                <TableCell>João da Silva</TableCell>
-                <TableCell>Setor de Controle</TableCell>
-                <TableCell>ABC1234567890</TableCell>
-                <TableCell>Falha no sistema</TableCell>
-                <TableCell>Reinício do sistema</TableCell>
-                <TableCell>2025-01-01 10:00:00</TableCell>
-                <TableCell>2025-01-01 10:00:00</TableCell>
-                <TableCell>2025-01-01 10:00:00</TableCell>
-                <TableCell>Resolvido</TableCell>
-                <TableCell className="text-right">José da Silva</TableCell>
-              </TableRow> */}
+              ) : ordensFiltradas.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={12} className="text-center py-4">
+                    Nenhuma ordem encontrada
+                  </TableCell>
+                </TableRow>
+              ) : (
+                ordensFiltradas.map((ordem) => (
+                  <TableRow key={ordem.id}>
+                    <TableCell className="font-medium">
+                      {ordem.numero_os}
+                    </TableCell>
+                    <TableCell>{formatDateTime(ordem.data_abertura || "")}</TableCell>
+                    <TableCell>{ordem.solicitante}</TableCell>
+                    <TableCell>
+                      {setores.find((a) => a.id == ordem.setor_id)?.nome}
+                    </TableCell>
+                    <TableCell>{ordem.patrimonio}</TableCell>
+                    <TableCell>{ordem.tipo_falha}</TableCell>
+                    <TableCell className="max-w-[200px] truncate">
+                      {ordem.solucao_tecnica}
+                    </TableCell>
+                    <TableCell>{formatDateTime(ordem.data_recolhimento || "")}</TableCell>
+                    <TableCell>{formatDateTime(ordem.data_devolucao || "")}</TableCell>
+                    <TableCell>{formatDateTime(ordem.data_fechamento || "")}</TableCell>
+                    <TableCell>
+                      <span className={`px-2 py-1 rounded-full text-xs ${
+                        ordem.status === "Resolvido" 
+                          ? "bg-green-100 text-green-800" 
+                          : ordem.status === "Não resolvido" 
+                            ? "bg-red-100 text-red-800" 
+                            : "bg-yellow-100 text-yellow-800"
+                      }`}>
+                        {ordem.status}
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {tecnicos.find((a) => a.id == ordem.tecnico_responsavel_id)?.nome}
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
             </TableBody>
           </Table>
         </div>
