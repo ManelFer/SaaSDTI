@@ -21,7 +21,6 @@ import { buscarMarcas } from '@/services/marcas.service';
 import { buscarItens } from '@/services/itens.service';
 
 export default function TeamPage() {
-  const [isEstOpen, setEstOpen] = useState(false);
   const [Loading, setLoading] = useState(false);
   const [lixao, setLixao] = useState<Lixao[]>([]);
   const [marcas, setMarca] = useState<MarcasModel[]>([]);

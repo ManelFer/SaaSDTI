@@ -152,6 +152,7 @@ export default function ProjectsPage() {
             Cadastro de Ordem de Serviço
           </h1>
           <div className="flex items-center gap-4">
+            {/* Busca */}
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
               <Input
@@ -161,6 +162,7 @@ export default function ProjectsPage() {
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
+            {/* fim busca */}
             <Dialog>
               <DialogTrigger asChild>
                 <Button className="bg-[#257432] hover:bg-[#066333] hover:scale-105 duration-300">

@@ -1,8 +1,6 @@
 "use client";
-
 import DashboardLayout from "@/components/layout/DashboardLayout";
-import { CadastroMarcas } from "./CadastroFull/_components/cadastroMarcas";
-import { CadastroEquipamentos } from "./CadastroFull/_components/cadastroEquipamentos";
+
 
 export default function DashboardPage() {
   return (

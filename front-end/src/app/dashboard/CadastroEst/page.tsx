@@ -21,7 +21,6 @@ import { buscarMarcas } from '@/services/marcas.service';
 import { buscarItens } from '@/services/itens.service';
 
 export default function EstoquePage() {
-  const [isEstOpen, setEstOpen] = useState(false);
   const [estoque, setEstoque] = useState<Estoque[]>([]);
   const [Loading, setLoading] = useState(false);
   const [marcas, setMarca] = useState<Marcas[]>([]);
