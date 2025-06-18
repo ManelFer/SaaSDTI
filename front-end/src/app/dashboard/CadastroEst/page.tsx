@@ -19,10 +19,13 @@ import { useEffect, useState } from 'react';
 import { buscarEstoque } from '@/services/estoque.service';
 import { buscarMarcas } from '@/services/marcas.service';
 import { buscarItens } from '@/services/itens.service';
+import { Search } from 'lucide-react';
+import { Input } from "@/components/ui/input";
 
 export default function EstoquePage() {
   const [estoque, setEstoque] = useState<Estoque[]>([]);
   const [Loading, setLoading] = useState(false);
+  const [search, setSearch] = useState("");
   const [marcas, setMarca] = useState<Marcas[]>([]);
   const [itens, setItens] = useState<Itens[]>([]);
   
@@ -41,6 +44,16 @@ export default function EstoquePage() {
     fetchEstoque();
   }, []);
 
+  const estoqueFiltradas = estoque.filter((estoque) => {
+    const searchLower = search.toLowerCase();
+    return(
+      estoque.item_id !== undefined && estoque.item_id !== null && estoque.item_id.toString().toLowerCase().includes(searchLower) ||
+      estoque.marca_id !== undefined && estoque.marca_id !== null && estoque.marca_id.toString().toLowerCase().includes(searchLower) ||
+      estoque.modelo?.toLowerCase().includes(searchLower) ||
+      estoque.numero_serie?.toLowerCase().includes(searchLower)
+    )
+  })
+
   useEffect(() => {
     if (Loading) {
       const fetchEstoque = async () => {
@@ -56,9 +69,19 @@ export default function EstoquePage() {
     <DashboardLayout>
       <div className="space-y-6 p-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-800">Cadastro de Equipamentos 📦</h1>
+          <h1 className="text-2xl font-bold text-gray-800">Estoque</h1>
           <Retirada />
           <Register />
+          <div className='relative'>
+            <Input
+              type="text"
+              placeholder="Pesquisar..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="pl-10"
+            />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
+          </div>
         </div>
 
         <div className="bg-white rounded-lg shadow overflow-hidden">
@@ -77,7 +100,7 @@ export default function EstoquePage() {
             </TableHeader>
 
             <TableBody>
-              {estoque.map((item) => (
+              {estoqueFiltradas.map((item) => (
                 <TableRow key={item.id}>
                   <TableCell className="font-medium">
                     {itens.find((a) => a.id == item.item_id)?.nome}

@@ -19,12 +19,15 @@ import { useEffect, useState } from 'react';
 import { buscarLixao } from '@/services/lixao.service';
 import { buscarMarcas } from '@/services/marcas.service';
 import { buscarItens } from '@/services/itens.service';
+import { Search } from 'lucide-react';
+import { Input } from "@/components/ui/input";
 
 export default function TeamPage() {
   const [Loading, setLoading] = useState(false);
   const [lixao, setLixao] = useState<Lixao[]>([]);
   const [marcas, setMarca] = useState<MarcasModel[]>([]);
   const [itens, setItens] = useState<Itens[]>([]);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const fetchTable = async () => {
@@ -41,6 +44,19 @@ export default function TeamPage() {
     fetchTable();
   }, []);
 
+  const lixaoFiltradas = lixao.filter((lixao) => {
+    const searchLower = search.toLowerCase();
+    return(
+      lixao.item_id !== undefined && lixao.item_id !== null && lixao.item_id.toString().toLowerCase().includes(searchLower) ||
+      lixao.marca_id !== undefined && lixao.marca_id !== null && lixao.marca_id.toString().toLowerCase().includes(searchLower) ||
+      lixao.modelo?.toLowerCase().includes(searchLower) ||
+      lixao.numero_serie?.toLowerCase().includes(searchLower) ||
+      lixao.patrimonio?.toLowerCase().includes(searchLower) ||
+      lixao.lote?.toLowerCase().includes(searchLower) ||
+      lixao.descricao?.toLowerCase().includes(searchLower)
+    )
+  })
+
   useEffect(() => {
     if (Loading) {
       const fetchLixao = async () => {
@@ -55,9 +71,18 @@ export default function TeamPage() {
     <DashboardLayout>
       <div className="space-y-6 rounded-lg p-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-800 ">Lixão🗑️</h1>
+          <h1 className="text-2xl font-bold text-gray-800 ">Lixão</h1>
           <Coleta/>
           <CadastroL/>
+          <div className='relative'>
+            <Search className='absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400'/>
+            <Input
+              className='pl-9 w-[300px]'
+              placeholder='Pesquisar...'
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
         </div>
 
         <div className="bg-white rounded-lg shadow overflow-hidden">
@@ -77,7 +102,7 @@ export default function TeamPage() {
             </TableHeader>
 
             <TableBody>
-              {lixao.map((item) => (
+              {lixaoFiltradas.map((item) => (
                 <TableRow key={item.id}>
                   <TableCell>
                     {itens.find((a) => a.id == item.item_id)?.nome}
