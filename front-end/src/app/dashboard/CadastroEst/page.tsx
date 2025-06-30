@@ -1,6 +1,6 @@
-'use client';
-import { Retirada } from './_components/retirada';
-import { Register } from './_components/register';
+"use client";
+import { Retirada } from "./_components/retirada";
+import { Register } from "./_components/register";
 import {
   Table,
   TableBody,
@@ -10,17 +10,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Marcas } from '@/models/marcas.model';
-import { Itens } from '@/models/itens.model';
-import { Estoque } from '@/models/estoque.model';
+import { Marcas } from "@/models/marcas.model";
+import { Itens } from "@/models/itens.model";
+import { Estoque } from "@/models/estoque.model";
 
-import DashboardLayout from '@/components/layout/DashboardLayout';
-import { useEffect, useState } from 'react';
-import { buscarEstoque } from '@/services/estoque.service';
-import { buscarMarcas } from '@/services/marcas.service';
-import { buscarItens } from '@/services/itens.service';
-import { Search } from 'lucide-react';
+import DashboardLayout from "@/components/layout/DashboardLayout";
+import { useEffect, useState } from "react";
+import { buscarEstoque } from "@/services/estoque.service";
+import { buscarMarcas } from "@/services/marcas.service";
+import { buscarItens } from "@/services/itens.service";
+import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function EstoquePage() {
   const [estoque, setEstoque] = useState<Estoque[]>([]);
@@ -28,14 +29,14 @@ export default function EstoquePage() {
   const [search, setSearch] = useState("");
   const [marcas, setMarca] = useState<Marcas[]>([]);
   const [itens, setItens] = useState<Itens[]>([]);
-  
+
   useEffect(() => {
     const fetchEstoque = async () => {
       //lista de marcas, produtos e estoque
       const estoqueData = await buscarEstoque();
       const marcasData = await buscarMarcas();
       const itensData = await buscarItens();
-      
+
       // setando marcas, itens e estoque data
       setMarca(marcasData);
       setItens(itensData);
@@ -46,13 +47,17 @@ export default function EstoquePage() {
 
   const estoqueFiltradas = estoque.filter((estoque) => {
     const searchLower = search.toLowerCase();
-    return(
-      estoque.item_id !== undefined && estoque.item_id !== null && estoque.item_id.toString().toLowerCase().includes(searchLower) ||
-      estoque.marca_id !== undefined && estoque.marca_id !== null && estoque.marca_id.toString().toLowerCase().includes(searchLower) ||
+    return (
+      (estoque.item_id !== undefined &&
+        estoque.item_id !== null &&
+        estoque.item_id.toString().toLowerCase().includes(searchLower)) ||
+      (estoque.marca_id !== undefined &&
+        estoque.marca_id !== null &&
+        estoque.marca_id.toString().toLowerCase().includes(searchLower)) ||
       estoque.modelo?.toLowerCase().includes(searchLower) ||
       estoque.numero_serie?.toLowerCase().includes(searchLower)
-    )
-  })
+    );
+  });
 
   useEffect(() => {
     if (Loading) {
@@ -64,7 +69,7 @@ export default function EstoquePage() {
       };
       fetchEstoque();
     }
-  }, [Loading])
+  }, [Loading]);
   return (
     <DashboardLayout>
       <div className="space-y-6 p-6">
@@ -72,7 +77,7 @@ export default function EstoquePage() {
           <h1 className="text-2xl font-bold text-gray-800">Estoque</h1>
           <Retirada />
           <Register />
-          <div className='relative'>
+          <div className="relative">
             <Input
               type="text"
               placeholder="Pesquisar..."
@@ -87,7 +92,7 @@ export default function EstoquePage() {
         <div className="bg-white rounded-lg shadow overflow-hidden">
           <Table>
             <TableCaption>Lista de Produtos</TableCaption>
-            <TableHeader className='bg-green-100'>
+            <TableHeader className="bg-green-100">
               <TableRow>
                 <TableHead className="w-[100px]">Equipamento</TableHead>
                 <TableHead>Marca</TableHead>
@@ -95,7 +100,7 @@ export default function EstoquePage() {
                 <TableHead>Número de Série</TableHead>
                 <TableHead>Patrimônio</TableHead>
                 <TableHead>Lote</TableHead>
-                <TableHead className='text-right'>Quantidade</TableHead>
+                <TableHead className="text-right">Quantidade</TableHead>
               </TableRow>
             </TableHeader>
 
@@ -112,12 +117,20 @@ export default function EstoquePage() {
                   <TableCell>{item.numero_serie}</TableCell>
                   <TableCell>{item.patrimonio}</TableCell>
                   <TableCell>{item.lote}</TableCell>
-                  <TableCell className='text-right'>{item.quantidade}</TableCell>
+                  <TableCell className="text-right">
+                    {item.quantidade}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </div>
+        <Button
+          type="submit"
+          className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 hover:scale-105 duration-300"
+        >
+          Gerar Relatório
+        </Button>
       </div>
     </DashboardLayout>
   );

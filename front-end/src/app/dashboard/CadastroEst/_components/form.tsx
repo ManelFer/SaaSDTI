@@ -1,7 +1,6 @@
 // components/Form.tsx
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea"; // Certifique-se que esse componente existe
 import { Marcas } from "../../../../components/layout/marcas";
 import { Equipamentos } from "@/components/layout/Equipamentos";
 

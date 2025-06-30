@@ -28,11 +28,13 @@ export async function inserirItemEstoque(values) {
   return result.rows[0];
 }
 
+
 export async function listarItemsEstoque() {
   const query = `
         SELECT * FROM estoque;
     `;
-  const result = await db;
+  const result = await db.query(query);
+  return result.rows;
 }
 
 export async function atualizarItemsEstoque(id, data) {

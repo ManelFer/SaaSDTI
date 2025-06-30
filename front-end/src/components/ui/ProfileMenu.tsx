@@ -4,6 +4,7 @@ import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
 import { auth } from "@/lib/firebaseConfig";
+import { signOut } from "firebase/auth";
 
 interface ProfileMenuProps {
   isOpen: boolean;
@@ -66,10 +67,11 @@ export default function ProfileMenu({
           </Menu.Item>
           <Menu.Item>
             {({ active }) => (
+              //Route protection
               <button
                 onClick={async () => {
-                  await auth.signOut();
-                  window.location.href = "/login";
+                  await signOut(auth);
+                  window.location.replace("/login");
                 }}
                 className={`${
                   active ? "bg-gray-100" : ""

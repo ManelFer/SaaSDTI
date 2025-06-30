@@ -10,6 +10,7 @@ import { criarTabelaEquipamentos } from './tables/equipamentos.js';
 import { criarTabelaEstagiarios } from './tables/estagiario.js';
 import { criarTabelaServidores } from './tables/servidor.js';
 import { criarTabelaDefensores } from './tables/defensor.js';
+import { criarTabelaRetiradaEstoque } from './tables/retirada_estoque.js';
 
 
 dotenv.config();
@@ -42,4 +43,5 @@ export async function criarTabelas() {
   criarTabelaEstagiarios();
   criarTabelaServidores();
   criarTabelaDefensores();
+  criarTabelaRetiradaEstoque();
 }
