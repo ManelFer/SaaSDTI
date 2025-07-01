@@ -48,7 +48,7 @@ export function CadastroMarcas() {
     fetchMarcas();
   }, []);
   return (
-    <div>
+    <div >
       <Dialog>
         <DialogTrigger asChild>
           <Button
@@ -58,7 +58,7 @@ export function CadastroMarcas() {
             Cadastro de Marcas
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[800px]">
+        <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Cadastro de Marcas</DialogTitle>
             <DialogDescription>Cadastre marcas</DialogDescription>

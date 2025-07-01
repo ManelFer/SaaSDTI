@@ -4,13 +4,14 @@ import { useState, useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../lib/firebaseConfig';
 import ProfileMenu from '../ui/ProfileMenu';
-import { usePathname } from 'next/navigation';
+import Image from 'next/image';
+
 
 
 export default function Header() {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
-  const pathname = usePathname();
+
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -26,8 +27,16 @@ export default function Header() {
         {/* Logo + Título + Breadcrumbs */}
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-3">
-            <h1 className="text-xl font-semibold text-gray-800 tracking-tight">
-              Cronos
+            <Image
+              src="/logodpe.png" // Substitua pelo caminho correto da sua imagem
+              alt="Logo"
+              width={50}
+              height={50}
+              className="rounded-full justify-center items-center mt-2"
+            />
+            {/* centralize */}
+            <h1 className='text-2xl font-bold text-[#066333] mt-2'>
+              (CoTI)
             </h1>
           </div>
         </div>
