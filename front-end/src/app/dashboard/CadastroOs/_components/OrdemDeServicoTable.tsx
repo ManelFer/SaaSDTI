@@ -12,6 +12,7 @@ import { Ordem } from "@/models/ordem.model";
 import { Setor as SetorModel } from "@/models/setor.model";
 import { Tecnico as TecnicoModel } from "@/models/tecnico.model";
 import { formatDateTime } from "@/components/ui/DateTime";
+import { Button } from "@/components/ui/button";
 
 interface OrdemDeServicoTableProps {
   loading: boolean;
@@ -20,7 +21,12 @@ interface OrdemDeServicoTableProps {
   tecnicos: TecnicoModel[];
 }
 
-export function OrdemDeServicoTable({ loading, ordens, setores, tecnicos }: OrdemDeServicoTableProps) {
+export function OrdemDeServicoTable({
+  loading,
+  ordens,
+  setores,
+  tecnicos,
+}: OrdemDeServicoTableProps) {
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden">
       <Table>
@@ -57,10 +63,10 @@ export function OrdemDeServicoTable({ loading, ordens, setores, tecnicos }: Orde
           ) : (
             ordens.map((ordem) => (
               <TableRow key={ordem.id}>
-                <TableCell className="font-medium">
-                  {ordem.numero_os}
+                <TableCell className="font-medium">{ordem.numero_os}</TableCell>
+                <TableCell>
+                  {formatDateTime(ordem.data_abertura || "")}
                 </TableCell>
-                <TableCell>{formatDateTime(ordem.data_abertura || "")}</TableCell>
                 <TableCell>{ordem.solicitante}</TableCell>
                 <TableCell>
                   {setores.find((a) => a.id == ordem.setor_id)?.nome}
@@ -70,22 +76,33 @@ export function OrdemDeServicoTable({ loading, ordens, setores, tecnicos }: Orde
                 <TableCell className="max-w-[200px] truncate">
                   {ordem.solucao_tecnica}
                 </TableCell>
-                <TableCell>{formatDateTime(ordem.data_recolhimento || "")}</TableCell>
-                <TableCell>{formatDateTime(ordem.data_devolucao || "")}</TableCell>
-                <TableCell>{formatDateTime(ordem.data_fechamento || "")}</TableCell>
                 <TableCell>
-                  <span className={`px-2 py-1 rounded-full text-xs ${
-                    ordem.status === "Resolvido" 
-                      ? "bg-green-100 text-green-800" 
-                      : ordem.status === "Não resolvido" 
-                        ? "bg-red-100 text-red-800" 
+                  {formatDateTime(ordem.data_recolhimento || "")}
+                </TableCell>
+                <TableCell>
+                  {formatDateTime(ordem.data_devolucao || "")}
+                </TableCell>
+                <TableCell>
+                  {formatDateTime(ordem.data_fechamento || "")}
+                </TableCell>
+                <TableCell>
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs ${
+                      ordem.status === "Resolvido"
+                        ? "bg-green-100 text-green-800"
+                        : ordem.status === "Não resolvido"
+                        ? "bg-red-100 text-red-800"
                         : "bg-yellow-100 text-yellow-800"
-                  }`}>
+                    }`}
+                  >
                     {ordem.status}
                   </span>
                 </TableCell>
                 <TableCell className="text-right">
-                  {tecnicos.find((a) => a.id == ordem.tecnico_responsavel_id)?.nome}
+                  {
+                    tecnicos.find((a) => a.id == ordem.tecnico_responsavel_id)
+                      ?.nome
+                  }
                 </TableCell>
               </TableRow>
             ))

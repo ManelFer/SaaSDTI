@@ -22,6 +22,8 @@ import { buscarItens } from "@/services/itens.service";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 export default function EstoquePage() {
   const [estoque, setEstoque] = useState<Estoque[]>([]);
@@ -70,6 +72,37 @@ export default function EstoquePage() {
       fetchEstoque();
     }
   }, [Loading]);
+
+  const generatePdf = () => {
+    const doc = new jsPDF();
+    const tableColumn = ["Equipamento", "Marca", "Modelo", "Número de Série", "Patrimônio", "Lote", "Quantidade"];
+    const tableRows: (string | number)[][] = [];
+
+    estoqueFiltradas.forEach(item => {
+      const itemData = [
+        itens.find((a) => a.id == item.item_id)?.nome || '',
+        marcas.find((a) => a.id == item.marca_id)?.nome || '',
+        item.modelo || '',
+        item.numero_serie || '',
+        item.patrimonio || '',
+        item.lote || '',
+        item.quantidade || 0
+      ];
+      tableRows.push(itemData);
+    });
+
+    autoTable(doc, {
+      head: [tableColumn],
+      body: tableRows,
+      startY: 20,
+      theme: 'grid',
+      headStyles: { fillColor: [22, 160, 133] },
+    });
+    doc.text("Relatório de Estoque", 14, 15);
+    doc.save("relatorio_estoque.pdf");
+  };
+
+
   return (
     <DashboardLayout>
       <div className="space-y-6 p-6">
@@ -128,6 +161,7 @@ export default function EstoquePage() {
         <Button
           type="submit"
           className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 hover:scale-105 duration-300"
+          onClick={generatePdf}
         >
           Gerar Relatório
         </Button>

@@ -10,6 +10,7 @@ import { buscarTecnicos } from "@/services/tecnicos.service";
 import { OrdemDeServicoTable } from "./_components/OrdemDeServicoTable";
 import { Header } from "./_components/Header";
 import { CadastroOSDialog } from "./_components/CadastroOSDialog";
+import { Button } from "@/components/ui/button";
 
 export default function ProjectsPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -50,10 +51,10 @@ export default function ProjectsPage() {
       };
 
       await createOrdens(cleanedForm);
-      
+
       const ordensData = await buscarOrdensServicos();
       setOrdens(ordensData);
-      
+
       setIsDialogOpen(false);
       setForm({
         numero_os: "",
@@ -69,7 +70,7 @@ export default function ProjectsPage() {
         data_fechamento: "",
         status: "",
       });
-      
+
       alert("Ordem de serviço cadastrada com sucesso!");
     } catch (err) {
       console.error("Erro ao cadastrar ordem de serviço:", err);
@@ -83,7 +84,7 @@ export default function ProjectsPage() {
         const [listaTecnicos, listaSetores, ordensData] = await Promise.all([
           buscarTecnicos(),
           buscarSetores(),
-          buscarOrdensServicos()
+          buscarOrdensServicos(),
         ]);
 
         setTecnicos(listaTecnicos);
@@ -106,18 +107,23 @@ export default function ProjectsPage() {
       ordem.solicitante?.toLowerCase().includes(searchLower) ||
       ordem.patrimonio?.toLowerCase().includes(searchLower) ||
       ordem.tipo_falha?.toLowerCase().includes(searchLower) ||
-      ((setores.find((a) => a.id == ordem.setor_id)?.nome?.toLowerCase() ?? "").includes(searchLower)) ||
-      (tecnicos.find((a) => a.id == ordem.tecnico_responsavel_id)?.nome?.toLowerCase().includes(searchLower))
+      (
+        setores.find((a) => a.id == ordem.setor_id)?.nome?.toLowerCase() ?? ""
+      ).includes(searchLower) ||
+      tecnicos
+        .find((a) => a.id == ordem.tecnico_responsavel_id)
+        ?.nome?.toLowerCase()
+        .includes(searchLower)
     );
   });
 
   return (
     <DashboardLayout>
       <div className="space-y-6 rounded-lg p-6">
-        <Header 
-          search={search} 
-          setSearch={setSearch} 
-          openDialog={() => setIsDialogOpen(true)} 
+        <Header
+          search={search}
+          setSearch={setSearch}
+          openDialog={() => setIsDialogOpen(true)}
         />
         <CadastroOSDialog
           isOpen={isDialogOpen}

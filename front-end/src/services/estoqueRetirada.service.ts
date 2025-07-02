@@ -1,22 +1,14 @@
-import { API_URL, API_ROUTES } from "@/constants/constante";
-import { EstoqueRetirada } from "@/models/estoqueRetirada.model";
-//import axios from 'axios';
+import axios from 'axios';
+import { EstoqueRetirada } from '@/models/estoqueRetirada.model';
 
-export async function createEstoqueRetirada(form: EstoqueRetirada): Promise<any> {
-    const res = await fetch(API_URL + API_ROUTES.ESTOQUE_RETIRADA, {
-        method: "POST",
-        headers: {"content-Type": "application/json"},
-        body: JSON.stringify(form),
-    });
-    const data = await res.json();
-    return data;
-}
+const API_URL = 'http://localhost:3001';
 
-export async function buscarEstoqueRetirada(): Promise<EstoqueRetirada>{
-    const res = await fetch(API_URL + API_ROUTES.ESTOQUE_RETIRADA, {
-        method: "GET",
-        headers: {"Content-Type": "application/json"},
-    });
-    const data = await res.json();
-    return data;
-}
+export const retirarDoEstoque = async (data: EstoqueRetirada): Promise<EstoqueRetirada> => {
+    try {
+        const response = await axios.post(`${API_URL}/retirada-estoque`, data);
+        return response.data;
+    } catch (error) {
+        console.error("Erro ao retirar do estoque:", error);
+        throw error;
+    }
+};
