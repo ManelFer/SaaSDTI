@@ -46,13 +46,7 @@ export function Marcas({ value, onChange }: MarcaProps) {
     if (error) {
         return <div className="text-sm text-destructive">Erro: {error}</div>;
     }
-    const marcasOptions = marcas.map((marca) => {
-        return (
-            <SelectItem key={marca.id} value={marca.id.toString()}>
-                {marca.nome}
-            </SelectItem>
-        );
-    })
+    
     return (
         <div className="space-y-2">
             <Label htmlFor="marca">Marca:</Label>

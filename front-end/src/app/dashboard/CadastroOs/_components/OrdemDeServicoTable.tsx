@@ -12,7 +12,7 @@ import { Ordem } from "@/models/ordem.model";
 import { Setor as SetorModel } from "@/models/setor.model";
 import { Tecnico as TecnicoModel } from "@/models/tecnico.model";
 import { formatDateTime } from "@/components/ui/DateTime";
-import { Button } from "@/components/ui/button";
+
 
 interface OrdemDeServicoTableProps {
   loading: boolean;

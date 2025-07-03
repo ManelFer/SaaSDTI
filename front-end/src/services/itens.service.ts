@@ -21,7 +21,7 @@ export async function buscarItem(id: number): Promise<Itens> {
     return data;
 }
 
-export async function createItens(form: Partial<Itens>): Promise<any> {
+export async function createItens(form: Partial<Itens>): Promise<Itens> {
     const res = await fetch(API_URL + API_ROUTES.ITENS, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

@@ -26,7 +26,7 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
 export default function TeamPage() {
-  const [Loading, setLoading] = useState(false);
+  const [Loading, ] = useState(false);
   const [lixao, setLixao] = useState<Lixao[]>([]);
   const [marcas, setMarca] = useState<MarcasModel[]>([]);
   const [itens, setItens] = useState<Itens[]>([]);

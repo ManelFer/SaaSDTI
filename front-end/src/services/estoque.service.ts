@@ -8,7 +8,7 @@ import axios from 'axios';
  * @param {any} form - Formul rio com os dados para a busca
  * @returns {Promise<any>} - Resposta do backend com a lista de Estoques
  */
-export async function createEstoque(form: Estoque): Promise<any> {
+export async function createEstoque(form: Estoque): Promise<Estoque> {
     const res = await fetch(API_URL + API_ROUTES.ESTOQUE, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

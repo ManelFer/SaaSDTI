@@ -15,7 +15,7 @@ import { createLixao, buscarLixao } from "@/services/lixao.service";
 
 export function CadastroL() {
   const [isLixOpen, setLixOpen] = useState(false);
-  const [lixao, setLixao] = useState<Lixao[]>([]);
+  const [, setLixao] = useState<Lixao[]>([]);
   const [form, setForm] = useState({
     item_id: "",
     marca_id: "",

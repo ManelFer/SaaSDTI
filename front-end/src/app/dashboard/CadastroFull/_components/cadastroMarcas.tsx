@@ -14,7 +14,7 @@ import { buscarMarcas, createMarcas } from "@/services/marcas.service";
 import { Marcas } from "@/models/marcas.model";
 
 export function CadastroMarcas() {
-  const [isMarOpen, setMarOpen] = useState(false);
+  const [, setMarOpen] = useState(false);
   const [marcas, setMarcas] = useState<Marcas[]>([]);
   const [form, setForm] = useState({
     nome: "",

@@ -15,15 +15,15 @@ import { useEffect, useState } from 'react';
 import { Itens as ItensModel } from '@/models/itens.model';
 import { Marcas } from '@/models/marcas.model';
 import { buscarEstoque, createEstoque } from '@/services/estoque.service';
-import { buscarItens, createItens } from '@/services/itens.service';
-import { buscarMarcas, createMarcas } from '@/services/marcas.service';
+import { buscarItens } from '@/services/itens.service';
+import { buscarMarcas } from '@/services/marcas.service';
 
 export function Register() {
   const [isEstOpen, setEstOpen] = useState(false);
-  const [estoque, setEstoque] = useState<Estoque[]>([]);
+  const [, setEstoque] = useState<Estoque[]>([]);
   const [Loading, setLoading] = useState(false);
-  const [itens, setItens] = useState<ItensModel[]>([]);
-  const [marca, setMarca] = useState<Marcas[]>([]);
+  const [, setItens] = useState<ItensModel[]>([]);
+  const [, setMarca] = useState<Marcas[]>([]);
   const [form, setForm] = useState({
     item_id: '',
     marca_id: '',
@@ -34,17 +34,6 @@ export function Register() {
     quantidade: 0,
   });
 
-  const resetForm = () => {
-    setForm({
-      item_id: '',
-      marca_id: '',
-      modelo: '',
-      numero_serie: '',
-      patrimonio: '',
-      lote: '',
-      quantidade: 0,
-    });
-  };
 
   const handleSubmit = async () => {
     try {

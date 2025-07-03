@@ -1,10 +1,6 @@
 import { useState, useEffect } from 'react';
 import { buscarSetores } from '@/services/setores.service';
-
-interface Setor {
-  id: number;
-  name: string;
-}
+import { Setor } from '@/models/setor.model'; // Ensures the correct model is used
 
 export function useSetores() {
     const [setores, setSetores] = useState<Setor[]>([]);
@@ -14,10 +10,15 @@ export function useSetores() {
     useEffect(() => {
         const loadSetores = async () => {
             try {
-                const data = await buscarSetores() as Setor[];
+                // The service now returns the correctly typed data
+                const data = await buscarSetores();
                 setSetores(data);
-            } catch (err: any) {
-                setError(err.message || 'An unexpected error occurred');
+            } catch (err: unknown) {
+                if (err instanceof Error) {
+                    setError(err.message);
+                } else {
+                    setError('An unexpected error occurred');
+                }
             } finally {
                 setLoading(false);
             }
@@ -27,8 +28,4 @@ export function useSetores() {
     }, []);
 
     return { setores, loading, error };
-}
-
-function setError(message: any) {
-    throw new Error('Function not implemented.');
 }

@@ -1,5 +1,4 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,12 +7,24 @@ import { Setor } from "./setor";
 import { Tecnicos } from "./tecnicos";
 
 interface CadastroOSFormProps {
-  form: any;
+  form: {
+    numero_os: string;
+    data_abertura: string;
+    solicitante: string;
+    setor: string;
+    patrimonio: string;
+    tipo_falha: string;
+    solucao_tecnica: string;
+    tecnico_responsavel: string;
+    data_recolhimento: string;
+    data_devolucao: string;
+    data_fechamento: string;
+    status: string;
+  };
   handleChange: (key: string, value: string) => void;
-  handleSubmit: () => void;
 }
 
-export function CadastroOSForm({ form, handleChange, handleSubmit }: CadastroOSFormProps) {
+export function CadastroOSForm({ form, handleChange }: CadastroOSFormProps) {
   return (
     <div className="grid grid-cols-3 gap-6 py-4">
       {/* Primeira coluna */}

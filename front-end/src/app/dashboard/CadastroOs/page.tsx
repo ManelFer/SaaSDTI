@@ -10,7 +10,7 @@ import { buscarTecnicos } from "@/services/tecnicos.service";
 import { OrdemDeServicoTable } from "./_components/OrdemDeServicoTable";
 import { Header } from "./_components/Header";
 import { CadastroOSDialog } from "./_components/CadastroOSDialog";
-import { Button } from "@/components/ui/button";
+
 
 export default function ProjectsPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);

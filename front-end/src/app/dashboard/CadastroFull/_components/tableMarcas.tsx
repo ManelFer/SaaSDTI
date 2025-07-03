@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 
 export function TableMarcas() {
   const [marcas, setMarca] = useState<Marcas[]>([]);
-  const [Loading, setLoading] = useState(false);
+  const [Loading, ] = useState(false);
   const [search, setSearch] = useState("");
 
   useEffect (() => {

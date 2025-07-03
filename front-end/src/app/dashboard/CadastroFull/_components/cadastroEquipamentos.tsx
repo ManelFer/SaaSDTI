@@ -14,7 +14,7 @@ import { buscarItens, createItens } from "@/services/itens.service";
 import { Itens } from "@/models/itens.model";
 
 export function CadastroEquipamentos() {
-    const [isOpen, setIsOpen] = useState(false);
+    const [, setIsOpen] = useState(false);
     const [itens, setItens] = useState<Itens[]>([]);
     const [form, setForm] = useState({
         nome: "",

@@ -2,7 +2,7 @@ import { API_URL, API_ROUTES } from "@/constants/constante";
 import { Lixao } from "@/models/lixao.model";
 import axios from 'axios';
 
-export async function createLixao(form: Lixao): Promise<any> {
+export async function createLixao(form: Lixao): Promise<Lixao> {
     const res = await fetch(API_URL + API_ROUTES.LIXAO, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

@@ -7,7 +7,7 @@ import axios from 'axios';
  * @param {Ordem} ordem - Dados da ordem de serviço a ser criada
  * @returns {Promise<any>} - Resposta do backend
  */
-export async function createOrdens(ordem: Ordem): Promise<any> {
+export async function createOrdens(ordem: Ordem): Promise<Ordem> {
     try {
         const res = await fetch(API_URL + API_ROUTES.ORDENS, {
             method: "POST",

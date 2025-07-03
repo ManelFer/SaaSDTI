@@ -3,10 +3,25 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { CadastroOSForm } from "./CadastroOSForm";
 
+interface CadastroOSFormProps {
+  numero_os: string;
+  data_abertura: string;
+  solicitante: string;
+  setor: string;
+  patrimonio: string;
+  tipo_falha: string;
+  solucao_tecnica: string;
+  tecnico_responsavel: string;
+  data_recolhimento: string;
+  data_devolucao: string;
+  data_fechamento: string;
+  status: string;
+}
+
 interface CadastroOSDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  form: any;
+  form: CadastroOSFormProps;
   handleChange: (key: string, value: string) => void;
   handleSubmit: () => void;
 }
@@ -24,7 +39,6 @@ export function CadastroOSDialog({ isOpen, onClose, form, handleChange, handleSu
         <CadastroOSForm
           form={form}
           handleChange={handleChange}
-          handleSubmit={handleSubmit}
         />
         <DialogFooter>
           <Button

@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 
 export function TableEquipamentos() {
   const [itens, setItens] = useState<Itens[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, ] = useState(false);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
