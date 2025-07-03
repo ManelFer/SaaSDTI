@@ -12,3 +12,13 @@ export const retirarDoEstoque = async (data: EstoqueRetirada): Promise<EstoqueRe
         throw error;
     }
 };
+
+export const buscarRetiradas = async (): Promise<EstoqueRetirada[]> => {
+    try {
+        const response = await axios.get(`${API_URL}/retirada-estoque`);
+        return response.data as EstoqueRetirada[];
+    } catch (error) {
+        console.error("Erro ao buscar retiradas:", error);
+        throw error;
+    }
+};

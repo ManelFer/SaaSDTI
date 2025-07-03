@@ -62,6 +62,7 @@ export function Setor({ value, onChange }: SetorProps) {
             {setores.map((setor) => (
               <SelectItem key={setor.id} value={setor.id.toString()}>
                 {setor.nome}
+                <p>teste</p>
               </SelectItem>
             ))}
           </SelectGroup>

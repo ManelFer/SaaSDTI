@@ -1,4 +1,3 @@
-// usar o data table
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,13 +9,12 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Form } from "./form";
-import { Textarea } from "@/components/ui/textarea";
+import { Textarea } from '@/components/ui/textarea';
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import { retirarDoEstoque } from "@/services/estoqueRetirada.service";
-import { EstoqueRetirada } from "@/models/estoqueRetirada.model";
-import { Marcas as MarcasModel } from "@/models/marcas.model";
-import { Itens } from "@/models/itens.model";
+import { retirarDoEstoque, buscarRetiradas } from "@/services/estoqueRetirada.service";
+import { buscarItens } from "@/services/itens.service";
+import { buscarMarcas } from "@/services/marcas.service";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
@@ -31,10 +29,6 @@ export function Retirada() {
     quantidade: 0,
   });
   const [descricao, setDescricao] = useState("");
-  const [retirada,] = useState<EstoqueRetirada[]>([]);
-  const [search, ] = useState("");
-    const [marcas, ] = useState<MarcasModel[]>([]);
-    const [itens, ] = useState<Itens[]>([]);
 
   const handleSubmit = async () => {
     try {
@@ -49,55 +43,55 @@ export function Retirada() {
       alert("Erro ao realizar a retirada.");
     }
   };
-  const retiradaFiltradas = retirada.filter((retirada) => {
-    const searchLower = search.toLowerCase();
-    return (
-      (retirada.item_id !== undefined &&
-        retirada.item_id !== null &&
-        retirada.item_id.toString().toLowerCase().includes(searchLower)) ||
-      (retirada.marca_id !== undefined &&
-        retirada.marca_id !== null &&
-        retirada.marca_id.toString().toLowerCase().includes(searchLower))
-    );
-  });
 
-  const generatePdf = () => {
-    const doc = new jsPDF();
-    const tableColumn = [
-      "Equipamento",
-      "Marca",
-      "Modelo",
-      "Número de Série",
-      "Patrimônio",
-      "Lote",
-      "Descrição",
-      "Quantidade",
-    ];
-    const tableRows: (string | number)[][] = [];
+  const generatePdf = async () => {
+    try {
+      const [retiradas, itens, marcas] = await Promise.all([
+        buscarRetiradas(),
+        buscarItens(),
+        buscarMarcas(),
+      ]);
 
-    retiradaFiltradas.forEach((item) => {
-      const itemData = [
-        itens.find((a) => a.id == item.item_id)?.nome || "",
-        marcas.find((a) => a.id == item.marca_id)?.nome || "",
-        item.modelo || "",
-        item.numero_serie || "",
-        item.patrimonio || "",
-        item.lote || "",
-        item.descricao || "",
-        item.quantidade || 0,
+      const doc = new jsPDF();
+      const tableColumn = [
+        "Equipamento",
+        "Marca",
+        "Modelo",
+        "N/S",
+        "Patrimônio",
+        "Lote",
+        "Descrição",
+        "Qtd",
       ];
-      tableRows.push(itemData);
-    });
+      const tableRows: (string | number)[][] = [];
 
-    autoTable(doc, {
-      head: [tableColumn],
-      body: tableRows,
-      startY: 20,
-      theme: "grid",
-      headStyles: { fillColor: [22, 160, 133] },
-    });
-    doc.text("Relatório de Retirada", 14, 15);
-    doc.save("relatorio_retirada.pdf");
+      retiradas.forEach((item) => {
+        const itemData = [
+          itens.find((a) => a.id == item.item_id)?.nome || "",
+          marcas.find((a) => a.id == item.marca_id)?.nome || "",
+          item.modelo || "",
+          item.numero_serie || "",
+          item.patrimonio || "",
+          item.lote || "",
+          item.descricao || "",
+          item.quantidade || 0,
+        ];
+        tableRows.push(itemData);
+      });
+
+      autoTable(doc, {
+        head: [tableColumn],
+        body: tableRows,
+        startY: 20,
+        theme: "grid",
+        headStyles: { fillColor: [22, 160, 133] },
+      });
+      doc.text("Relatório de Retirada", 14, 15);
+      doc.save("relatorio_retirada.pdf");
+    } catch (error) {
+      console.error("Erro ao gerar PDF:", error);
+      alert("Não foi possível gerar o relatório. Tente novamente.");
+    }
   };
 
   return (
@@ -113,7 +107,6 @@ export function Retirada() {
             <DialogTitle>Retirada</DialogTitle>
             <DialogDescription>Cadastre uma nova retirada</DialogDescription>
             <Form form={form} setForm={setForm} />
-            {/* Descrição da retirada */}
             <div className="space-y-2">
               <Label htmlFor="descricao">Descrição da retirada:</Label>
               <Textarea
@@ -133,7 +126,7 @@ export function Retirada() {
                 Salvar Retirada
               </Button>
               <Button
-                type="submit"
+                type="button"
                 className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 hover:scale-105 duration-300"
                 onClick={generatePdf}
               >
