@@ -11,3 +11,14 @@ export function criarTabelaSetores () {
     `;
     return db.query(query);
 }
+
+export async function adicionarSetor(nome) {
+    const query = `
+        INSERT INTO setores (nome)
+        VALUES ($1)
+        RETURNING *;
+    `;
+    const values = [nome];
+    const result = await db.query(query, values);
+    return result.rows[0];
+}
