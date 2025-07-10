@@ -10,7 +10,7 @@ router.post('/login', async (req, res) => {
   const { email, senha } = req.body;
 
   if (!email || !senha) {
-    return res.status(400).json({ error: 'Email and senha are required' });
+    return res.status(400).json({ error: 'Email e senha são obrigatorios' });
   }
 
   try {
@@ -18,19 +18,20 @@ router.post('/login', async (req, res) => {
     const user = result.rows[0];
 
     if (!user) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).json({ error: 'Dados invalidos' });
     }
 
     const isMatch = await bcrypt.compare(senha, user.senha);
 
     if (!isMatch) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).json({ error: 'Dados invalidos' });
     }
 
     const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, {
       expiresIn: '1h',
     });
 
+    console.log(token);
     res.json({ token });
   } catch (err) {
     res.status(500).json({ error: err.message });

@@ -12,7 +12,6 @@ export default function Header() {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
 
-
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUserEmail(user?.email || null);

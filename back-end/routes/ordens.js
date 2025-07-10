@@ -1,11 +1,15 @@
 import express from 'express';
 import db from '../db/db.js';
-import { inserirOrdemServico } from '../db/tables/ordens_servico.js'; // Importa a função de inserção de OS
+import { inserirOrdemServico } from '../db/tables/ordens_servico.js'; 
+import validateToken from '../services/auth.guard.js';
 
 const router = express.Router();
 
 // GET todas as OSs
 router.get('/os', async (req, res) => {
+  if (!validateToken(req.headers.authorization)) {
+    return res.status(401).json({ error: 'Token inválido ou ausente' });
+  }
   try {
     const { rows } = await db.query('SELECT * FROM ordens_servico ORDER BY id DESC');
     res.json(rows);

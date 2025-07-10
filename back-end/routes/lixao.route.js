@@ -1,11 +1,15 @@
 import express from 'express';
 import db from '../db/db.js';
-import { inserirItemLixao, listarItemsLixao, atualizarItemsLixao, deletarItemLixao } from '../db/tables/lixao.js'; // Importa a função de inserção de OS
+import { inserirItemLixao, atualizarItemsLixao, deletarItemLixao } from '../db/tables/lixao.js';
+import validateToken from '../services/auth.guard.js';
 
 const router = express.Router();
 
 // GET todas os itens do lixão
 router.get('/lixao', async (req, res) => {
+  if (!validateToken(req.headers.authorization)) {
+    return res.status(401).json({ error: 'Token inválido ou ausente' });
+  }
   try {
     const { rows } = await db.query('SELECT * FROM lixao ORDER BY id DESC');
     res.json(rows);

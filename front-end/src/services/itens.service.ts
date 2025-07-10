@@ -15,7 +15,8 @@ export async function buscarItens(): Promise<Itens[]> {
 export async function buscarItem(id: number): Promise<Itens> {
     const res = await fetch(API_URL + API_ROUTES.ITENS + `/${id}`, {
         method: "GET",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+        "Authorization": `${localStorage.getItem("token")}` },
     });
     const data = await res.json();
     return data;
@@ -24,7 +25,9 @@ export async function buscarItem(id: number): Promise<Itens> {
 export async function createItens(form: Partial<Itens>): Promise<Itens> {
     const res = await fetch(API_URL + API_ROUTES.ITENS, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+                    "Authorization": `${localStorage.getItem("token")}`
+                  },
         body: JSON.stringify(form),
     });
     const contentType = res.headers.get("content-type");

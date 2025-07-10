@@ -40,8 +40,10 @@ export default function EstoquePage() {
       const itensData = await buscarItens();
 
       // setando marcas, itens e estoque data
-      setMarca(marcasData);
-      setItens(itensData);
+      setMarca(Array.isArray(marcasData) ? marcasData : (marcasData && 'data' in marcasData ? (marcasData as { data: Itens[] }).data : []));
+      setEstoque(Array.isArray(estoqueData) ? estoqueData : [estoqueData]);
+      
+      setItens(Array.isArray(itensData) ? itensData : (itensData && 'data' in itensData ? (itensData as { data: Itens[] }).data : []));
       setEstoque(Array.isArray(estoqueData) ? estoqueData : [estoqueData]);
     };
     fetchEstoque();
@@ -65,6 +67,8 @@ export default function EstoquePage() {
     if (Loading) {
       const fetchEstoque = async () => {
         const estoqueData = await buscarEstoque();
+        console.log("estoqueData", estoqueData);
+        
         setEstoque(Array.isArray(estoqueData) ? estoqueData : [estoqueData]);
         console.log("estoque", estoqueData);
         setLoading(false);
@@ -81,13 +85,14 @@ export default function EstoquePage() {
     estoqueFiltradas.forEach(item => {
       const itemData = [
         itens.find((a) => a.id == item.item_id)?.nome || '',
-        marcas.find((a) => a.id == item.marca_id)?.nome || '',
+        marcas.find((a) => a.id == item.marca_id)?.nome || ' ',
         item.modelo || '',
         item.numero_serie || '',
         item.patrimonio || '',
         item.lote || '',
         item.quantidade || 0
       ];
+      
       tableRows.push(itemData);
     });
 
@@ -141,10 +146,10 @@ export default function EstoquePage() {
               {estoqueFiltradas.map((item) => (
                 <TableRow key={item.id}>
                   <TableCell className="font-medium">
-                    {itens.find((a) => a.id == item.item_id)?.nome}
+                    {itens && itens.find((a) => a.id == item.item_id)?.nome}
                   </TableCell>
                   <TableCell>
-                    {marcas.find((a) => a.id == item.marca_id)?.nome}
+                    {marcas && marcas.find((a) => a.id == item.marca_id)?.nome}
                   </TableCell>
                   <TableCell>{item.modelo}</TableCell>
                   <TableCell>{item.numero_serie}</TableCell>

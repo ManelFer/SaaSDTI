@@ -1,5 +1,6 @@
 import express from 'express';
 import db from '../db/db.js';
+import validateToken from '../services/auth.guard.js';
 
 const router = express.Router();
 
@@ -18,6 +19,9 @@ router.post('/marcas', async (req, res) => {
 });
 // Rota para obter todas as marcas
 router.get('/marcas', async (req, res) => {
+  if (!validateToken(req.headers.authorization)) {
+    return res.status(401).json({ error: 'Token inválido ou ausente' });
+  }
   try {
     const { rows } = await db.query('SELECT * FROM marcas ORDER BY id DESC');
     res.json(rows);

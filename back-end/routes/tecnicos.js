@@ -2,6 +2,7 @@ import express from 'express';
 import db from '../db/db.js';
 import bcrypt from 'bcryptjs';
 
+
 const router = express.Router();
 
 router.get('/tecnicos', async (req, res) => {

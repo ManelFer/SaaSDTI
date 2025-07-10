@@ -1,5 +1,6 @@
 import express from 'express';
 import db from '../db/db.js';
+import  validateToken  from '../services/auth.guard.js'; 
 
 const router = express.Router();
 
@@ -17,6 +18,10 @@ router.post("/estoque", async (req, res) => {
 
 
 router.get("/estoque", async (req, res) => {
+    // Verifica se o token é válido proteção de rota
+    if (!validateToken(req.headers.authorization)) {
+        return res.status(401).json({error: "Token inválido ou ausente"});
+    }
     try {
         const {rows} = await db.query("SELECT * FROM estoque ORDER BY id DESC");
         res.json(rows);

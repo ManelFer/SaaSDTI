@@ -3,13 +3,13 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { jwtDecode } from 'jwt-decode';
 
-// Define the shape of the user object from the decoded token
+
 interface User {
   id: number;
   email: string;
 }
 
-// Define the shape of the context value
+
 interface AuthContextType {
   user: User | null;
   loading: boolean;

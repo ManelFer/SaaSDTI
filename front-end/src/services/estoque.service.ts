@@ -11,7 +11,9 @@ import axios from 'axios';
 export async function createEstoque(form: Estoque): Promise<Estoque> {
     const res = await fetch(API_URL + API_ROUTES.ESTOQUE, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+          "Authorization": `${localStorage.getItem("token")}`
+        },
         body: JSON.stringify(form),
     });
     const data = await res.json();
@@ -20,7 +22,9 @@ export async function createEstoque(form: Estoque): Promise<Estoque> {
 export async function buscarEstoque(): Promise<Estoque> {
     const res = await fetch(API_URL + API_ROUTES.ESTOQUE, {
         method: "GET",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+          "Authorization": `${localStorage.getItem("token")}`
+         },
     });
     const data = await res.json();
     return data;
