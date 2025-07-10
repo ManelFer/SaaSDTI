@@ -1,3 +1,4 @@
+
 "use client";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import useAuth from "@/hooks/useAuth";
@@ -36,3 +37,4 @@ export default function DashboardPage() {
     </DashboardLayout>
   );
 }
+

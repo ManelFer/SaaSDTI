@@ -3,8 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from "../../lib/firebaseConfig";
+import { useAuthContext } from '@/contexts/auth.context';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -12,6 +11,7 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { login } = useAuthContext();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,8 +19,21 @@ export default function LoginPage() {
     setLoading(true); // Inicia o estado de carregamento
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      // Redirecionar após o login bem-sucedido
+      const response = await fetch('http://localhost:3001/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, senha: password }),
+      });
+
+      if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.error || 'Algo deu errado ao fazer login');
+      }
+
+      const { token } = await response.json();
+      login(token);
       router.push('/dashboard'); // Altere para a rota desejada
     } catch (error) {
       setError((error as Error).message);
