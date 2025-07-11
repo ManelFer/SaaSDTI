@@ -1,4 +1,5 @@
 import { API_URL, API_ROUTES } from "@/constants/constante";
+import { getHeaders } from "@/lib/getHeaders";
 import { Ordem } from "@/models/ordem.model";
 import axios from 'axios';
 
@@ -11,9 +12,7 @@ export async function createOrdens(ordem: Ordem): Promise<Ordem> {
     try {
         const res = await fetch(API_URL + API_ROUTES.ORDENS, {
             method: "POST",
-            headers: { 
-                "Content-Type": "application/json" 
-            },
+            headers: getHeaders(),
             body: JSON.stringify(ordem) // Adiciona os dados no corpo da requisição
         });
         

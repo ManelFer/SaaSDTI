@@ -1,11 +1,12 @@
 import { API_ROUTES, API_URL } from "@/constants/constante";
+import { getHeaders } from "@/lib/getHeaders";
 import { Itens } from "@/models/itens.model";
 import axios from "axios";
 
 export async function buscarItens(): Promise<Itens[]> {
     const res = await fetch(API_URL + API_ROUTES.ITENS, {
         method: "GET",
-        headers: { "Content-Type": "application/json" },
+        headers: getHeaders(),
     });
     const data = await res.json();
     return data;

@@ -1,7 +1,33 @@
+import { API_ROUTES, API_URL } from '@/constants/constante';
 import axios from 'axios';
 import { EstoqueRetirada } from '@/models/estoqueRetirada.model';
 
-const API_URL = 'http://localhost:3001';
+export async function buscarRetiradas() : Promise<EstoqueRetirada[]> {
+    const res = await fetch(API_URL + API_ROUTES. ESTOQUE_RETIRADA, {
+        method: "GET",
+        headers: { "Content-Type": "application/json",
+          "Authorization": `${localStorage.getItem("token")}` },
+    });
+    const data = await res.json();
+    return data;
+}
+
+export async function createRetirada(form: Partial<EstoqueRetirada>): Promise<EstoqueRetirada> {
+    const res = await fetch(API_URL + API_ROUTES.ESTOQUE_RETIRADA, {
+        method: "POST",
+        headers: { "Content-Type": "application/json",
+          "Authorization": `${localStorage.getItem("token")}` },
+        body: JSON.stringify(form),
+    });
+    const contentType = res.headers.get("content-type");
+    if (contentType && contentType.includes("application/json")) {
+        return await res.json();
+    } else {
+        const text = await res.text();
+        console.error("Resposta não JSON:", text);
+        throw new Error("Resposta não foi JSON.");
+    }
+}
 
 export const retirarDoEstoque = async (data: EstoqueRetirada): Promise<EstoqueRetirada> => {
     try {
@@ -13,12 +39,3 @@ export const retirarDoEstoque = async (data: EstoqueRetirada): Promise<EstoqueRe
     }
 };
 
-export const buscarRetiradas = async (): Promise<EstoqueRetirada[]> => {
-    try {
-        const response = await axios.get(`${API_URL}/retirada-estoque`);
-        return response.data as EstoqueRetirada[];
-    } catch (error) {
-        console.error("Erro ao buscar retiradas:", error);
-        throw error;
-    }
-};

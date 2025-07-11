@@ -1,13 +1,12 @@
 import { API_ROUTES, API_URL } from "@/constants/constante";
+import { getHeaders } from "@/lib/getHeaders";
 import { Marcas } from "@/models/marcas.model";
 
 
 export async function buscarMarcas(): Promise<Marcas[]> {
     const res = await fetch(API_URL + API_ROUTES.MARCAS, {
         method: "GET",
-        headers: { "Content-Type": "application/json",
-          "Authorization": `${localStorage.getItem("token")}`
-         },
+        headers: getHeaders(),
     });
     const data = await res.json();
     return data;
@@ -19,9 +18,7 @@ export async function buscarMarcas(): Promise<Marcas[]> {
 export async function createMarcas(form: Partial<Marcas>): Promise<Marcas> {
   const res = await fetch(API_URL + API_ROUTES.MARCAS, {
     method: "POST",
-    headers: { "Content-Type": "application/json",
-                "Authorization": `${localStorage.getItem("token")}`
-              },
+    headers: getHeaders(),
     body: JSON.stringify(form),
   });
 

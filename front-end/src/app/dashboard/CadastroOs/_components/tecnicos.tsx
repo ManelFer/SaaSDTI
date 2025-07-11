@@ -61,7 +61,6 @@ export function Tecnicos ({value, onChange}: TecnicoProps) {
                         {tecnicos.map((tecnico) => (
                             <SelectItem key={tecnico.id} value={tecnico.id.toString()}>
                                 {tecnico.nome}
-                                <p>teste</p>
                             </SelectItem>
                         ))}
                     </SelectGroup>

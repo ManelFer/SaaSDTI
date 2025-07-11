@@ -6,6 +6,7 @@ import { jwtDecode } from 'jwt-decode';
 
 interface User {
   id: number;
+  nome: string;
   email: string;
 }
 

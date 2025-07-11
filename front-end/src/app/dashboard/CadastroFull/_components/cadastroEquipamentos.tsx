@@ -12,6 +12,7 @@ import { FormEquipamentos } from "./organisms/formEquipamentos";
 import { useEffect, useState } from "react";
 import { buscarItens, createItens } from "@/services/itens.service";
 import { Itens } from "@/models/itens.model";
+import { toast } from "react-toastify";
 
 export function CadastroEquipamentos() {
     const [, setIsOpen] = useState(false);
@@ -22,19 +23,18 @@ export function CadastroEquipamentos() {
 
     const handleSubmit = async () => {
         try {
+            toast.success("Equipamento cadastrado com sucesso!");
             const cleanedForm = {
                 ...form,
             };
-            console.log("Dados do formulário", cleanedForm);
             const data = await createItens(cleanedForm);
-            console.log("Dados do estoque", data);
-            alert("Equipamento cadastrado com sucesso!");
             setItens([...itens, data]);
             setForm({
                 nome: "",
             });
             setIsOpen(false); // Fecha o diálogo após salvar
         } catch (error) {
+            toast.error("Erro ao cadastrar equipamento");
             console.error("Erro ao cadastrar equipamento", error);
             console.log("Dados do formulário", form);
             alert("Erro ao cadastrar equipamento. Tente novamente.");

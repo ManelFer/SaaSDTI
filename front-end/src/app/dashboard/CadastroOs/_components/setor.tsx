@@ -10,26 +10,22 @@ import {
 import { Label } from "@/components/ui/label";
 import { useEffect, useState } from "react";
 import { buscarSetores } from "@/services/setores.service";
+import { Setor as SetorModel } from "@/models/setor.model";
 
 interface SetorProps {
   value: string;
   onChange: (value: string) => void;
 }
 
-interface Setor {
-  id: number;
-  nome: string;
-}
-
 export function Setor({ value, onChange }: SetorProps) {
-  const [setores, setSetores] = useState<Setor[]>([]);
+  const [setores, setSetores] = useState<SetorModel[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const carregarSetores = async () => {
       try {
-        const dados = await buscarSetores() as Setor[];
+        const dados = await buscarSetores();
         setSetores(dados);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Erro desconhecido');
@@ -59,8 +55,10 @@ export function Setor({ value, onChange }: SetorProps) {
         <SelectContent>
           <SelectGroup>
             <SelectLabel>Setores disponíveis</SelectLabel>
-            {setores.map((setor) => (
-              <SelectItem key={setor.id} value={setor.id.toString()}>
+            {setores
+              .filter((setor) => setor.id !== undefined && setor.nome)
+              .map((setor) => (
+              <SelectItem key={setor.id} value={setor.id!.toString()}>
                 {setor.nome}
               </SelectItem>
             ))}

@@ -1,6 +1,12 @@
 import jwt from "jsonwebtoken";
 
-const validateToken = (token) => {
+const validateToken = (authHeader) => {
+  if (!authHeader) {
+    return false;
+  }
+
+  const token = authHeader.split(' ')[1];
+
   if (!token) {
     return false;
   }

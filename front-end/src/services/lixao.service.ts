@@ -1,12 +1,12 @@
 import { API_URL, API_ROUTES } from "@/constants/constante";
+import { getHeaders } from "@/lib/getHeaders";
 import { Lixao } from "@/models/lixao.model";
 import axios from 'axios';
 
 export async function createLixao(form: Lixao): Promise<Lixao> {
     const res = await fetch(API_URL + API_ROUTES.LIXAO, {
         method: "POST",
-        headers: { "Content-Type": "application/json",
-                    "Authorization": `${localStorage.getItem("token")}` },
+        headers: getHeaders(),
         body: JSON.stringify(form),
     });
     const data = await res.json();
@@ -16,8 +16,7 @@ export async function createLixao(form: Lixao): Promise<Lixao> {
 export const buscarLixao = async (): Promise<Lixao[]> => {
     try {
         const response = await axios.get(`${API_URL}/lixao`, {
-            headers: { "Content-Type": "application/json",
-                        "Authorization": `${localStorage.getItem("token")}` }
+            headers: getHeaders()
         });
         return response.data as Lixao[];
     } catch (error) {
