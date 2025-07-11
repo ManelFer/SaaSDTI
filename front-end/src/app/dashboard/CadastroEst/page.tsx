@@ -40,10 +40,10 @@ export default function EstoquePage() {
       const itensData = await buscarItens();
 
       // setando marcas, itens e estoque data
-      setMarca(Array.isArray(marcasData) ? marcasData : (marcasData && 'data' in marcasData ? (marcasData as { data: Itens[] }).data : []));
+      setMarca(marcasData);
       setEstoque(Array.isArray(estoqueData) ? estoqueData : [estoqueData]);
       
-      setItens(Array.isArray(itensData) ? itensData : (itensData && 'data' in itensData ? (itensData as { data: Itens[] }).data : []));
+      setItens(itensData);
       setEstoque(Array.isArray(estoqueData) ? estoqueData : [estoqueData]);
     };
     fetchEstoque();

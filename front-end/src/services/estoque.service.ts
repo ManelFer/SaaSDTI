@@ -1,4 +1,5 @@
 import { API_URL, API_ROUTES } from "@/constants/constante";
+import { getHeaders } from "@/lib/getHeaders";
 import { Estoque } from "@/models/estoque.model";
 import axios from 'axios';
 
@@ -11,9 +12,7 @@ import axios from 'axios';
 export async function createEstoque(form: Estoque): Promise<Estoque> {
     const res = await fetch(API_URL + API_ROUTES.ESTOQUE, {
         method: "POST",
-        headers: { "Content-Type": "application/json",
-          "Authorization": `${localStorage.getItem("token")}`
-        },
+        headers: getHeaders(),
         body: JSON.stringify(form),
     });
     const data = await res.json();
@@ -22,9 +21,7 @@ export async function createEstoque(form: Estoque): Promise<Estoque> {
 export async function buscarEstoque(): Promise<Estoque> {
     const res = await fetch(API_URL + API_ROUTES.ESTOQUE, {
         method: "GET",
-        headers: { "Content-Type": "application/json",
-          "Authorization": `${localStorage.getItem("token")}`
-         },
+        headers: getHeaders(),
     });
     const data = await res.json();
     return data;

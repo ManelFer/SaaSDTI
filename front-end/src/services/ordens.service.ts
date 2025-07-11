@@ -33,10 +33,30 @@ export async function createOrdens(ordem: Ordem): Promise<Ordem> {
  */
 export const buscarOrdensServicos = async (): Promise<Ordem[]> => {
     try {
-        const response = await axios.get(`${API_URL}/os`);
+        const response = await axios.get(`${API_URL}/os` , {
+            headers: getHeaders()
+        });
         return response.data as Ordem[];
     } catch (error) {
         console.error('Erro ao buscar ordens de serviços:', error);
         throw error;
     }
 };
+
+// export async function buscarOrdens(): Promise<Ordem[]> {
+//     try {
+//         const res = await fetch(API_URL + API_ROUTES.ORDENS, {
+//             method: "GET",
+//             headers: getHeaders(),
+//         });
+        
+//         if (!res.ok) {
+//             throw new Error(`Erro HTTP: ${res.status}`);
+//         }
+        
+//         return await res.json();
+//     } catch (error) {
+//         console.error('Erro ao buscar ordens de serviço:', error);
+//         throw error;
+//     }
+// }
