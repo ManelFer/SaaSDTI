@@ -18,6 +18,7 @@ import { buscarItens } from "@/services/itens.service";
 import { buscarMarcas } from "@/services/marcas.service";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import { toast } from "react-toastify";
 
 export function Retirada() {
   const [form, setForm] = useState({
@@ -39,9 +40,9 @@ export function Retirada() {
         marca_id: Number(form.marca_id),
         descricao,
       });
-      alert("Retirada realizada com sucesso!");
+      toast.success("Retirada realizada com sucesso!");
     } catch {
-      alert("Erro ao realizar a retirada.");
+      toast.error("Erro ao realizar a retirada.");
     }
   };
 
@@ -91,7 +92,7 @@ export function Retirada() {
       doc.save("relatorio_retirada.pdf");
     } catch (error) {
       console.error("Erro ao gerar PDF:", error);
-      alert("Não foi possível gerar o relatório. Tente novamente.");
+      toast.error("Erro ao gerar relatório. Tente novamente.");
     }
   };
 

@@ -17,6 +17,7 @@ import { Marcas } from '@/models/marcas.model';
 import { buscarEstoque, createEstoque } from '@/services/estoque.service';
 import { buscarItens } from '@/services/itens.service';
 import { buscarMarcas } from '@/services/marcas.service';
+import { toast } from 'react-toastify';
 
 export function Register() {
   const [isEstOpen, setEstOpen] = useState(false);
@@ -39,7 +40,7 @@ export function Register() {
     try {
       // Validação dos campos obrigatórios
       if (!form.item_id || !form.marca_id || !form.modelo || form.quantidade <= 0) {
-        alert("Por favor, preencha todos os campos obrigatórios e certifique-se que a quantidade seja maior que zero.");
+        toast.error("Por favor, preencha todos os campos obrigatórios e certifique-se que a quantidade seja maior que zero.");
         return;
       }
 
@@ -55,7 +56,7 @@ export function Register() {
       const data = await createEstoque(payload);
       
      console.log("Dados do estoque", data);
-     alert(data);
+     toast.success("Equipamento cadastrado com sucesso!");
      setForm({
        item_id: '',
        marca_id: '',
@@ -68,7 +69,7 @@ export function Register() {
 
   } catch (err) {
     console.log("Erro de cadastro", err);
-    alert("Erro ao cadastrar equipamento. Tente novamente.");
+    toast.error("Erro ao cadastrar equipamento. Tente novamente.");
   }
   }; // <-- Fechando handleSubmit corretamente
 

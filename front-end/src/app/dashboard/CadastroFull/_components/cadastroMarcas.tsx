@@ -12,6 +12,7 @@ import { FormMarcas } from "./organisms/formMarcas";
 import { useEffect, useState } from "react";
 import { buscarMarcas, createMarcas } from "@/services/marcas.service";
 import { Marcas } from "@/models/marcas.model";
+import { toast } from "react-toastify";
 
 export function CadastroMarcas() {
   const [, setMarOpen] = useState(false);
@@ -28,7 +29,7 @@ export function CadastroMarcas() {
       console.log("Dados do formulário", cleanedForm);
       const data = await createMarcas(cleanedForm);
       console.log("Dados do estoque", data);
-      alert("Marca cadastrada com sucesso!");
+      toast.success("Marca cadastrada com sucesso!");
       setMarcas([...marcas, data]);
       setForm({
         nome: "",
@@ -37,7 +38,7 @@ export function CadastroMarcas() {
     } catch (error) {
       console.error("Erro ao cadastrar marca", error);
       console.log("Dados do formulário", form);
-      alert("Erro ao cadastrar marca. Tente novamente.");
+      toast.error("Erro ao cadastrar marca. Tente novamente.");
     }
   };
   useEffect(() => {

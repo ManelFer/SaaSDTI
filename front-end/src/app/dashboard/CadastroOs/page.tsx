@@ -10,6 +10,7 @@ import { buscarTecnicos } from "@/services/tecnicos.service";
 import { OrdemDeServicoTable } from "./_components/OrdemDeServicoTable";
 import { Header } from "./_components/Header";
 import { CadastroOSDialog } from "./_components/CadastroOSDialog";
+import { toast } from "react-toastify";
 
 
 export default function ProjectsPage() {
@@ -70,11 +71,10 @@ export default function ProjectsPage() {
         data_fechamento: "",
         status: "",
       });
-
-      alert("Ordem de serviço cadastrada com sucesso!");
+      toast.success("Ordem de serviço cadastrada com sucesso!");
     } catch (err) {
       console.error("Erro ao cadastrar ordem de serviço:", err);
-      alert("Erro ao cadastrar ordem de serviço. Tente novamente.");
+      toast.error("Erro ao cadastrar ordem de serviço. Tente novamente.");
     }
   };
 

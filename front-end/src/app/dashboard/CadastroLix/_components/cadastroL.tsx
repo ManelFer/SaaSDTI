@@ -12,6 +12,7 @@ import { Form } from "./formL";
 import { useEffect, useState } from "react";
 import { Lixao } from "@/models/lixao.model";
 import { createLixao, buscarLixao } from "@/services/lixao.service";
+import { toast } from "react-toastify";
 
 export function CadastroL() {
   const [isLixOpen, setLixOpen] = useState(false);
@@ -44,7 +45,7 @@ export function CadastroL() {
     try {
       // Validação dos campos obrigatórios
       if (!form.item_id || !form.marca_id || !form.modelo || form.quantidade <= 0) {
-        alert("Por favor, preencha todos os campos obrigatórios e certifique-se que a quantidade seja maior que zero.");
+        toast.error("Por favor, preencha todos os campos obrigatórios e certifique-se que a quantidade seja maior que zero.");
         return;
       }
 
@@ -65,12 +66,12 @@ export function CadastroL() {
       }
 
       setLixao((prev) => [...prev, novoItem]);
-      alert("Equipamento cadastrado com sucesso!");
+      toast.success("Equipamento cadastrado com sucesso!");
       resetForm();
       setLixOpen(false);
     } catch (error) {
       console.error("Erro ao cadastrar equipamento", error);
-      alert("Erro ao cadastrar equipamento. Verifique os dados e tente novamente.");
+      toast.error("Erro ao cadastrar equipamento. Tente novamente.");
     }
   };
 
