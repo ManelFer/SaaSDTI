@@ -5,6 +5,7 @@ import { CadastroEquipamentos } from "./_components/cadastroEquipamentos";
 import { TableMarcas } from "./_components/tableMarcas";
 import { TableEquipamentos } from "./_components/tableEquipamentos";
 
+
 export default function CadastroFullPage() {
   return (
     <DashboardLayout>

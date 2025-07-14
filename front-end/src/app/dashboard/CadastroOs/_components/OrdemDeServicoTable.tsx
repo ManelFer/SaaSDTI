@@ -12,6 +12,8 @@ import { Ordem } from "@/models/ordem.model";
 import { Setor as SetorModel } from "@/models/setor.model";
 import { Tecnico as TecnicoModel } from "@/models/tecnico.model";
 import { formatDateTime } from "@/components/ui/DateTime";
+import { deletarOrdemServico} from '@/services/ordens.service';
+import { Trash2 } from 'lucide-react';
 
 
 interface OrdemDeServicoTableProps {
@@ -19,6 +21,7 @@ interface OrdemDeServicoTableProps {
   ordens: Ordem[];
   setores: SetorModel[];
   tecnicos: TecnicoModel[];
+  onOrdemDeleted: () => void;
 }
 
 export function OrdemDeServicoTable({
@@ -26,6 +29,7 @@ export function OrdemDeServicoTable({
   ordens,
   setores,
   tecnicos,
+  onOrdemDeleted,
 }: OrdemDeServicoTableProps) {
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden">
@@ -45,6 +49,7 @@ export function OrdemDeServicoTable({
             <TableHead>Fechamento</TableHead>
             <TableHead>Status</TableHead>
             <TableHead className="text-right">Técnico</TableHead>
+            <TableHead className="text-right">Delete</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -103,6 +108,26 @@ export function OrdemDeServicoTable({
                     tecnicos.find((a) => a.id == ordem.tecnico_responsavel_id)
                       ?.nome
                   }
+                </TableCell>
+
+                <TableCell className="text-right">
+                  <button
+                    className="text-red-500 hover:text-red-700 px-4 py-2 rounded-md hover:bg-red-50 transition-colors duration-200"
+                    onClick={async () => {
+                      try {
+                        if (ordem.id != null) {
+                          await deletarOrdemServico(ordem.id);
+                          onOrdemDeleted();
+                        } else {
+                          console.error("ID da ordem é indefinido.");
+                        }
+                      } catch (error) {
+                        console.error("Erro ao deletar ordem de serviço", error);
+                      }
+                    }}
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
                 </TableCell>
               </TableRow>
             ))

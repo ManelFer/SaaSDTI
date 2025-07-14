@@ -60,3 +60,20 @@ export const buscarOrdensServicos = async (): Promise<Ordem[]> => {
 //         throw error;
 //     }
 // }
+
+//metodo deleta uma ordem de serviço
+export async function deletarOrdemServico(id: number): Promise<void> {
+    try {
+        const res = await fetch(`${API_URL}/os/${id}`, {
+            method: "DELETE",
+            headers: getHeaders(),
+        });
+        
+        if (!res.ok) {
+            throw new Error(`Erro HTTP: ${res.status}`);
+        }
+    } catch (error) {
+        console.error('Erro ao deletar ordem de serviço:', error);
+        throw error;
+    }
+}

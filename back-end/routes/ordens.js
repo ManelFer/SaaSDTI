@@ -79,4 +79,20 @@ router.post('/ordens', async (req, res) => {
   }
 });
 
+// Rota para deletar uma ordem de serviço
+router.delete('/os/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deleteQuery = 'DELETE FROM ordens_servico WHERE id = $1';
+    const { rowCount } = await db.query(deleteQuery, [id]);
+    if (rowCount === 0) {
+      return res.status(404).json({ error: 'Ordem de serviço não encontrada.' });
+    }
+    res.status(204).send();
+  } catch (err) {
+    console.error('Erro ao deletar ordem de serviço:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 export default router;

@@ -4,6 +4,7 @@ import DashboardLayout from "@/components/layout/DashboardLayout";
 import useAuth from "@/hooks/useAuth";
 
 
+
 export default function DashboardPage() {
   const { user, loading } = useAuth(true);
   if (loading) return <div>Carregando...</div>

@@ -16,7 +16,7 @@ import { Estoque } from "@/models/estoque.model";
 
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { useEffect, useState } from "react";
-import { buscarEstoque } from "@/services/estoque.service";
+import { buscarEstoque, deletarItemEstoque } from "@/services/estoque.service";
 import { buscarMarcas } from "@/services/marcas.service";
 import { buscarItens } from "@/services/itens.service";
 import { Search } from "lucide-react";
@@ -24,6 +24,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import { Trash2 } from 'lucide-react';
+import { toast } from "react-toastify";
 
 export default function EstoquePage() {
   const [estoque, setEstoque] = useState<Estoque[]>([]);
@@ -139,6 +141,7 @@ export default function EstoquePage() {
                 <TableHead>Patrimônio</TableHead>
                 <TableHead>Lote</TableHead>
                 <TableHead className="text-right">Quantidade</TableHead>
+                <TableHead className="text-right">Delete</TableHead>
               </TableRow>
             </TableHeader>
 
@@ -157,6 +160,26 @@ export default function EstoquePage() {
                   <TableCell>{item.lote}</TableCell>
                   <TableCell className="text-right">
                     {item.quantidade}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={async () => {
+                        try {
+                          if (item.id !== undefined) {
+                            await deletarItemEstoque(item.id);
+                            setEstoque(estoque.filter((e) => e.id !== item.id));
+                            toast.success("Item deletado com sucesso!");
+                          }
+                        } catch (error) {
+                          console.error("Erro ao deletar item", error);
+                          toast.error("Erro ao deletar item. Tente novamente.");
+                        }
+                      }}
+                    >
+                      <Trash2 className="h-4 w-4 text-red-600" />
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}

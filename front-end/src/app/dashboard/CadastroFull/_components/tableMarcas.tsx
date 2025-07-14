@@ -7,9 +7,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { buscarMarcas } from "@/services/marcas.service";
+import { buscarMarcas, deleteMarcas } from "@/services/marcas.service";
 import { Marcas } from "@/models/marcas.model";
 import { useEffect, useState } from "react";
+import { Trash2 } from 'lucide-react';
+import { toast } from "react-toastify";
+
 
 export function TableMarcas() {
   const [marcas, setMarca] = useState<Marcas[]>([]);
@@ -58,6 +61,28 @@ export function TableMarcas() {
           {marcasFiltradas.slice(0, 3).map((marca) => (
             <TableRow key={marca.id}>
               <TableCell className="font-medium">{marca.nome}</TableCell>
+              <TableCell>
+                <button
+                  onClick={async () => {
+                    try {
+                      if (marca.id !== undefined) {
+                        await deleteMarcas(marca.id);
+                        setMarca(marcas.filter((m) => m.id !== marca.id));
+                        toast.success("Marca deletada com sucesso!");
+                      } else {
+                        console.error("ID da marca é indefinido.");
+                      }
+                    } catch (error) {
+                      console.error("Erro ao deletar marca", error);
+                      toast.error("Erro ao deletar marca. Tente novamente.");
+                    }
+                  }}
+
+                  className="text-red-500 hover:text-red-700"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

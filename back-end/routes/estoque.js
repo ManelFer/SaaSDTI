@@ -31,4 +31,19 @@ router.get("/estoque", async (req, res) => {
     }
 })
 
+// rota para deletar um item do estoque
+router.delete('/estoque/:id', async (req, res) => {
+    const {id} = req.params;
+    try {
+        const {rowCount} = await db.query("DELETE FROM estoque WHERE id = $1", [id]);
+        if (rowCount === 0) {
+            return res.status(404).json({error: "Aparelho não encontrado"});
+        }
+        res.status(204).send();
+        console.log(`Aparelho com ID ${id} deletado com sucesso.`);
+    } catch (err) {
+        res.status(500).json({error: err.message});
+        console.error("Erro ao deletar aparelho:", err);
+    }
+});
 export default router;

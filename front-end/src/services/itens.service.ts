@@ -50,3 +50,20 @@ export const buscarItensAxios = async (): Promise<Itens[]> => {
         throw error;
     }
 };
+
+// metodo deleta um equipamento
+export async function deleteItens(id: number): Promise<void> {
+    try {
+        const res = await fetch(`${API_URL}${API_ROUTES.ITENS}/${id}`, {
+            method: "DELETE",
+            headers: getHeaders(),
+        });
+        
+        if (!res.ok) {
+            throw new Error(`Erro HTTP: ${res.status}`);
+        }
+    } catch (error) {
+        console.error('Erro ao deletar equipamento:', error);
+        throw error;
+    }
+}

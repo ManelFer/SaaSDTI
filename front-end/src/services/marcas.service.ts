@@ -31,3 +31,20 @@ export async function createMarcas(form: Partial<Marcas>): Promise<Marcas> {
     throw new Error("Resposta não foi JSON.");
   }
 }
+
+// metodo deleta uma marca
+export async function deleteMarcas(id: number): Promise<void> {
+  try {
+    const res = await fetch(`${API_URL}/marcas/${id}`, {
+      method: "DELETE",
+      headers: getHeaders(),
+    });
+    
+    if (!res.ok) {
+      throw new Error(`Erro HTTP: ${res.status}`);
+    }
+  } catch (error) {
+    console.error('Erro ao deletar marca:', error);
+    throw error;
+  }
+}

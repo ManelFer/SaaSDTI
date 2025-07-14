@@ -36,3 +36,20 @@ export const buscarEstoques = async (): Promise<Estoque[]> => {
     throw error;
   }
 };
+
+//metodo deleta um estoque
+export async function deletarItemEstoque(id: number): Promise<void> {
+    try {
+        const res = await fetch(`${API_URL}/estoque/${id}`, {
+            method: "DELETE",
+            headers: getHeaders(),
+        });
+        
+        if (!res.ok) {
+            throw new Error(`Erro HTTP: ${res.status}`);
+        }
+    } catch (error) {
+        console.error('Erro ao deletar estoque:', error);
+        throw error;
+    }
+}

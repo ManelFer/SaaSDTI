@@ -42,4 +42,20 @@ router.get('/marcas/:id', async(req, res) => {
     res.status(500).json({ error: err.message });
   }
 })
+
+// rota para deletar uma marca
+router.delete('/marcas/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const { rowCount } = await db.query('DELETE FROM marcas WHERE id = $1', [id]);
+    if (rowCount === 0) {
+      return res.status(404).json({ error: 'Marca não encontrada' });
+    }
+    res.status(204).send();
+    console.log(`Marca com ID ${id} deletada com sucesso.`);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+    console.error('Erro ao deletar marca:', err);
+  }
+});
 export default router;

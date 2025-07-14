@@ -43,4 +43,21 @@ router.get('/equipamentos/:id', async (req, res) => {
     }
 });
 
+// rota para deletar um equipamento
+router.delete('/equipamentos/:id', async (req, res) => {
+    if (!validateToken(req.headers.authorization)) {
+        return res.status(401).json({ error: 'Token inválido ou ausente' });
+    }
+    const { id } = req.params;
+    try {
+        const { rowCount } = await db.query('DELETE FROM equipamentos WHERE id = $1', [id]);
+        if (rowCount === 0) {
+            return res.status(404).json({ error: 'Equipamento nao encontrado' });
+        }
+        res.status(204).send();
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 export default router;

@@ -100,6 +100,17 @@ export default function ProjectsPage() {
     fetchData();
   }, []);
 
+  const handleOrdemDeleted = async () => {
+    try {
+      const ordensData = await buscarOrdensServicos();
+      setOrdens(ordensData);
+      toast.success("Ordem de serviço deletada com sucesso!");
+    } catch (error) {
+      console.error("Erro ao atualizar a lista de ordens de serviço:", error);
+      toast.error("Erro ao atualizar a lista de ordens de serviço.");
+    }
+  };
+
   const ordensFiltradas = ordens.filter((ordem) => {
     const searchLower = search.toLowerCase();
     return (
@@ -137,6 +148,7 @@ export default function ProjectsPage() {
           ordens={ordensFiltradas}
           setores={setores}
           tecnicos={tecnicos}
+          onOrdemDeleted={handleOrdemDeleted}
         />
       </div>
     </DashboardLayout>
