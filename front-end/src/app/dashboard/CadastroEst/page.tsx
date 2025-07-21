@@ -26,6 +26,7 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { Trash2 } from 'lucide-react';
 import { toast } from "react-toastify";
+import { AtualizacaoE } from "./_components/atualizacaoE";
 
 export default function EstoquePage() {
   const [estoque, setEstoque] = useState<Estoque[]>([]);
@@ -50,6 +51,10 @@ export default function EstoquePage() {
     };
     fetchEstoque();
   }, []);
+
+ const handleUpdate = () => {
+    setLoading(true);
+  };
 
   const estoqueFiltradas = estoque.filter((estoque) => {
     const searchLower = search.toLowerCase();
@@ -180,6 +185,12 @@ export default function EstoquePage() {
                     >
                       <Trash2 className="h-4 w-4 text-red-600" />
                     </Button>
+                    <AtualizacaoE
+                      estoqueItem={item}
+                      itens={itens}
+                      marcas={marcas}
+                      onUpdate={handleUpdate}
+                    />
                   </TableCell>
                 </TableRow>
               ))}

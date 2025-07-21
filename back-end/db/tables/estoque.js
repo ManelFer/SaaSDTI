@@ -47,8 +47,9 @@ export async function atualizarItemsEstoque(id, data) {
             numero_serie = $4, 
             patrimonio = $5, 
             lote = $6,
+            quantidade = $7,
             updated_at = CURRENT_TIMESTAMP
-        WHERE id = $7
+        WHERE id = $8
         RETURNING *;
     `;
   const values = [
@@ -60,7 +61,7 @@ export async function atualizarItemsEstoque(id, data) {
     data.lote,
     data.quantidade,
     id,
-  ]
+  ];
   const result = await db.query(updateQuery, values);
   return result.rows[0];
 }

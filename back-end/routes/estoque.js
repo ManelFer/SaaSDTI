@@ -1,5 +1,6 @@
 import express from 'express';
 import db from '../db/db.js';
+import { atualizarItemsEstoque } from '../db/tables/estoque.js';
 import  validateToken  from '../services/auth.guard.js'; 
 
 const router = express.Router();
@@ -46,4 +47,17 @@ router.delete('/estoque/:id', async (req, res) => {
         console.error("Erro ao deletar aparelho:", err);
     }
 });
+
+// rota para atualizar um item do estoque
+router.put('/estoque/:id', async (req, res) => {
+    const {id} = req.params;
+    const {item_id, marca_id, modelo, numero_serie, patrimonio, lote, quantidade} = req.body;
+
+    try {
+        const updatedItem = await atualizarItemsEstoque(id, {item_id, marca_id, modelo, numero_serie, patrimonio, lote, quantidade});
+        res.json(updatedItem);
+    } catch (err) {
+        res.status(500).json({error: err.message});
+    }
+})
 export default router;

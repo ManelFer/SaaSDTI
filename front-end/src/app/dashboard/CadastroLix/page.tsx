@@ -3,7 +3,6 @@ import { Coleta } from "./_components/coleta";
 import { CadastroL } from "./_components/cadastroL";
 import { Marcas as MarcasModel } from "@/models/marcas.model";
 import { Itens } from "@/models/itens.model";
-
 import {
   Table,
   TableBody,
@@ -24,30 +23,34 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import { Trash2 } from 'lucide-react';
+import { Trash2 } from "lucide-react";
 import { toast } from "react-toastify";
+import { AtualizacaoL } from "./_components/atualizacaoL";
+import { ConfirmacaoDelecao } from "./_components/confirmacaoDelecao";
 
 export default function TeamPage() {
-  const [Loading, ] = useState(false);
   const [lixao, setLixao] = useState<Lixao[]>([]);
   const [marcas, setMarca] = useState<MarcasModel[]>([]);
   const [itens, setItens] = useState<Itens[]>([]);
   const [search, setSearch] = useState("");
 
-  useEffect(() => {
-    const fetchTable = async () => {
-      //lista de marcas e productos
-      const lixaoData = await buscarLixao();
-      const marcasData = await buscarMarcas();
-      const itensData = await buscarItens();
+  const fetchTableData = async () => {
+    const lixaoData = await buscarLixao();
+    const marcasData = await buscarMarcas();
+    const itensData = await buscarItens();
 
-      // setando marcas and itens data
-      setMarca(marcasData);
-      setItens(itensData);
-      setLixao(Array.isArray(lixaoData) ? lixaoData : [lixaoData]);
-    };
-    fetchTable();
+    setMarca(marcasData);
+    setItens(itensData);
+    setLixao(Array.isArray(lixaoData) ? lixaoData : [lixaoData]);
+  };
+
+  useEffect(() => {
+    fetchTableData();
   }, []);
+
+  const handleUpdate = () => {
+    fetchTableData();
+  };
 
   const lixaoFiltradas = lixao.filter((lixao) => {
     const searchLower = search.toLowerCase();
@@ -66,30 +69,35 @@ export default function TeamPage() {
     );
   });
 
-  useEffect(() => {
-    if (Loading) {
-      const fetchLixao = async () => {
-        const lixaoData = await buscarLixao();
-        setLixao(lixaoData);
-        console.log("lixao", lixaoData);
-      };
-      fetchLixao();
+  const handleDelete = async (id: number) => {
+    try {
+      await deletarLixao(id);
+      setLixao(lixao.filter((l) => l.id !== id));
+      toast.success("Item do lixão deletado com sucesso!");
+    } catch (error) {
+      toast.error("Erro ao deletar item do lixão.");
     }
-  }, [Loading]);
+  };
 
   const generatePdf = () => {
     const doc = new jsPDF();
-    const tableColumn = ["Equipamento", "Marca", "Patrimônio", "Lote", "Descrição"];
+    const tableColumn = [
+      "Equipamento",
+      "Marca",
+      "Patrimônio",
+      "Lote",
+      "Descrição",
+    ];
     const tableRows: (string | number)[][] = [];
 
-    lixaoFiltradas.forEach(item => {
+    lixaoFiltradas.forEach((item) => {
       const itemData = [
-        itens.find((a) => a.id == item.item_id)?.nome || '',
-        marcas.find((a) => a.id == item.marca_id)?.nome || '',
-        item.patrimonio || '',
-        item.lote || '',
-        item.descricao || '',
-        item.quantidade || 0
+        itens.find((a) => a.id == item.item_id)?.nome || "",
+        marcas.find((a) => a.id == item.marca_id)?.nome || "",
+        item.patrimonio || "",
+        item.lote || "",
+        item.descricao || "",
+        item.quantidade || 0,
       ];
       tableRows.push(itemData);
     });
@@ -97,12 +105,12 @@ export default function TeamPage() {
       head: [tableColumn],
       body: tableRows,
       startY: 20,
-      theme: 'grid',
-      headStyles: {fillColor: [22, 160, 133]},
+      theme: "grid",
+      headStyles: { fillColor: [22, 160, 133] },
     });
     doc.text("Relatório de Lixão", 14, 15);
     doc.save("relatorio_lixao.pdf");
-  } 
+  };
 
   return (
     <DashboardLayout>
@@ -135,7 +143,7 @@ export default function TeamPage() {
                 <TableHead>Lote</TableHead>
                 <TableHead>Descrição</TableHead>
                 <TableHead className="text-right">Quantidade</TableHead>
-                <TableHead className="text-right">Atualização</TableHead>
+                <TableHead className="text-right">Ações</TableHead>
               </TableRow>
             </TableHeader>
 
@@ -157,25 +165,15 @@ export default function TeamPage() {
                     {item.quantidade}
                   </TableCell>
                   <TableCell className="text-right">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={async () => {
-                        try {
-                          if (item.id !== undefined) {
-                            await deletarLixao(item.id);
-                            setLixao(lixao.filter((l) => l.id !== item.id));
-                            toast.success("Item do lixão deletado com sucesso!");
-                          } else {
-                            console.error("ID do item do lixão é indefinido.");
-                          }
-                        } catch (error) {
-                          toast.error("Erro ao deletar item do lixão.");
-                        }
-                      }}
-                    >
-                      <Trash2 className="h-4 w-4 text-red-600" />
-                    </Button>
+                    <ConfirmacaoDelecao
+                      onConfirm={() => item.id !== undefined && handleDelete(item.id)}
+                    />
+                    <AtualizacaoL
+                      lixaoItem={item}
+                      marcas={marcas}
+                      itens={itens}
+                      onUpdate={handleUpdate}
+                    />
                   </TableCell>
                 </TableRow>
               ))}

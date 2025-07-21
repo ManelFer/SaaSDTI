@@ -51,20 +51,20 @@ export async function atualizarItemsLixao(id, data) {
             patrimonio = $5, 
             lote = $6,
             quantidade = $7,
-            Descrição = $8,
+            descricao = $8,
             updated_at = CURRENT_TIMESTAMP
         WHERE id = $9
         RETURNING *;
     `;
   const values = [
-    data.nome,
-    data.marca,
+    data.item_id,
+    data.marca_id,
     data.modelo,
     data.numero_serie,
     data.patrimonio,
     data.lote,
     data.quantidade,
-    data.Descrição,
+    data.descricao,
     id,
   ];
   const result = await db.query(updateQuery, values);

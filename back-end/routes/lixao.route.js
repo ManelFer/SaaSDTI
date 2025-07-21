@@ -57,4 +57,6 @@ router.delete('/lixao/:id', async (req, res) => {
   }
 });
 
+
+
 export default router;

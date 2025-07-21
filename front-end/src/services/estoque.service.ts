@@ -53,3 +53,17 @@ export async function deletarItemEstoque(id: number): Promise<void> {
         throw error;
     }
 }
+
+// atualiza um estoque
+export async function atualizarEstoque(id: number, form: Estoque): Promise<Estoque> {
+    const res = await fetch(`${API_URL}${API_ROUTES.ESTOQUE}/${id}`, {
+        method: "PUT",
+        headers: getHeaders(),
+        body: JSON.stringify(form),
+    });
+    if (!res.ok) {
+        throw new Error(`Erro ao atualizar estoque: ${res.statusText}`);
+    }
+    const data = await res.json();
+    return data;
+}

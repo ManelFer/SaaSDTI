@@ -39,3 +39,16 @@ export async function deletarLixao(id: number): Promise<void> {
         throw error;
     }
 }
+
+export async function atualizarLixao(id: number, form: Lixao): Promise<Lixao> {
+    const res = await fetch(`${API_URL}${API_ROUTES.LIXAO}/${id}`, {
+        method: "PUT",
+        headers: getHeaders(),
+        body: JSON.stringify(form),
+    });
+    if (!res.ok) {
+        throw new Error(`Erro ao atualizar item do lixão: ${res.statusText}`);
+    }
+    const data = await res.json();
+    return data;
+}
