@@ -24,3 +24,18 @@ export const buscarLixao = async (): Promise<Lixao[]> => {
         throw error;
     }
 };
+
+export async function deletarLixao(id: number): Promise<void> {
+    try {
+        const res = await fetch(`${API_URL}${API_ROUTES.LIXAO}/${id}`, {
+            method: "DELETE",
+            headers: getHeaders(),
+        });
+        if (!res.ok) {
+            throw new Error(`Erro ao deletar item do lixão: ${res.statusText}`);
+        }
+    } catch (error) {
+        console.error("Erro ao deletar item do lixão:", error);
+        throw error;
+    }
+}

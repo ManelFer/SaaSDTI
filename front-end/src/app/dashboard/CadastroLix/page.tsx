@@ -16,7 +16,7 @@ import {
 import { Lixao } from "@/models/lixao.model";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { useEffect, useState } from "react";
-import { buscarLixao } from "@/services/lixao.service";
+import { buscarLixao, deletarLixao } from "@/services/lixao.service";
 import { buscarMarcas } from "@/services/marcas.service";
 import { buscarItens } from "@/services/itens.service";
 import { Search } from "lucide-react";
@@ -24,6 +24,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import { Trash2 } from 'lucide-react';
+import { toast } from "react-toastify";
 
 export default function TeamPage() {
   const [Loading, ] = useState(false);
@@ -133,6 +135,7 @@ export default function TeamPage() {
                 <TableHead>Lote</TableHead>
                 <TableHead>Descrição</TableHead>
                 <TableHead className="text-right">Quantidade</TableHead>
+                <TableHead className="text-right">Atualização</TableHead>
               </TableRow>
             </TableHeader>
 
@@ -152,6 +155,27 @@ export default function TeamPage() {
                   <TableCell>{item.descricao}</TableCell>
                   <TableCell className="text-right">
                     {item.quantidade}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={async () => {
+                        try {
+                          if (item.id !== undefined) {
+                            await deletarLixao(item.id);
+                            setLixao(lixao.filter((l) => l.id !== item.id));
+                            toast.success("Item do lixão deletado com sucesso!");
+                          } else {
+                            console.error("ID do item do lixão é indefinido.");
+                          }
+                        } catch (error) {
+                          toast.error("Erro ao deletar item do lixão.");
+                        }
+                      }}
+                    >
+                      <Trash2 className="h-4 w-4 text-red-600" />
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}

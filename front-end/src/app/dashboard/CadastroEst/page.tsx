@@ -141,7 +141,7 @@ export default function EstoquePage() {
                 <TableHead>Patrimônio</TableHead>
                 <TableHead>Lote</TableHead>
                 <TableHead className="text-right">Quantidade</TableHead>
-                <TableHead className="text-right">Delete</TableHead>
+                <TableHead className="text-right">Atualização</TableHead>
               </TableRow>
             </TableHeader>
 
