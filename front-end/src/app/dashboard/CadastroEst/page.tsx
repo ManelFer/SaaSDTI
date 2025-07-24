@@ -24,9 +24,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import { Trash2 } from 'lucide-react';
 import { toast } from "react-toastify";
 import { AtualizacaoE } from "./_components/atualizacaoE";
+import { ConfirmacaoDelecao } from "@/components/ui/confirmacaoDelecao";
 
 export default function EstoquePage() {
   const [estoque, setEstoque] = useState<Estoque[]>([]);
@@ -52,10 +52,23 @@ export default function EstoquePage() {
     fetchEstoque();
   }, []);
 
+  //update
  const handleUpdate = () => {
     setLoading(true);
   };
 
+  //delete
+  const handleDelete = async (id: number) => {
+    try {
+      await deletarItemEstoque(id);
+      setEstoque(estoque.filter((e) => e.id !== id));
+      toast.success("Item deletado com sucesso!");
+    } catch (error) {
+      toast.error("Erro ao deletar item. Tente novamente.");
+    }
+  }
+
+  //filter
   const estoqueFiltradas = estoque.filter((estoque) => {
     const searchLower = search.toLowerCase();
     return (
@@ -84,6 +97,7 @@ export default function EstoquePage() {
     }
   }, [Loading]);
 
+  // Gerar PDF
   const generatePdf = () => {
     const doc = new jsPDF();
     const tableColumn = ["Equipamento", "Marca", "Modelo", "Número de Série", "Patrimônio", "Lote", "Quantidade"];
@@ -167,24 +181,9 @@ export default function EstoquePage() {
                     {item.quantidade}
                   </TableCell>
                   <TableCell className="text-right">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={async () => {
-                        try {
-                          if (item.id !== undefined) {
-                            await deletarItemEstoque(item.id);
-                            setEstoque(estoque.filter((e) => e.id !== item.id));
-                            toast.success("Item deletado com sucesso!");
-                          }
-                        } catch (error) {
-                          console.error("Erro ao deletar item", error);
-                          toast.error("Erro ao deletar item. Tente novamente.");
-                        }
-                      }}
-                    >
-                      <Trash2 className="h-4 w-4 text-red-600" />
-                    </Button>
+                    <ConfirmacaoDelecao
+                      onConfirm={() => item.id !== undefined && handleDelete(item.id)}
+                    />
                     <AtualizacaoE
                       estoqueItem={item}
                       itens={itens}

@@ -12,9 +12,9 @@ import { Ordem } from "@/models/ordem.model";
 import { Setor as SetorModel } from "@/models/setor.model";
 import { Tecnico as TecnicoModel } from "@/models/tecnico.model";
 import { formatDateTime } from "@/components/ui/DateTime";
-import { deletarOrdemServico} from '@/services/ordens.service';
-import { Trash2 } from 'lucide-react';
-
+import { deletarOrdemServico } from "@/services/ordens.service";
+import { ConfirmacaoDelecao } from "@/components/ui/confirmacaoDelecao";
+import { toast } from "react-toastify";
 
 interface OrdemDeServicoTableProps {
   loading: boolean;
@@ -31,6 +31,15 @@ export function OrdemDeServicoTable({
   tecnicos,
   onOrdemDeleted,
 }: OrdemDeServicoTableProps) {
+  const handleDelete = async (id: number) => {
+    try {
+      await deletarOrdemServico(id);
+      onOrdemDeleted();
+    } catch (error) {
+      toast.error("Erro ao excluir ordem de serviço.");
+    }
+  };
+
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden">
       <Table>
@@ -55,13 +64,13 @@ export function OrdemDeServicoTable({
         <TableBody>
           {loading ? (
             <TableRow>
-              <TableCell colSpan={12} className="text-center py-4">
+              <TableCell colSpan={13} className="text-center py-4">
                 Carregando...
               </TableCell>
             </TableRow>
           ) : ordens.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={12} className="text-center py-4">
+              <TableCell colSpan={13} className="text-center py-4">
                 Nenhuma ordem encontrada
               </TableCell>
             </TableRow>
@@ -111,23 +120,11 @@ export function OrdemDeServicoTable({
                 </TableCell>
 
                 <TableCell className="text-right">
-                  <button
-                    className="text-red-500 hover:text-red-700 px-4 py-2 rounded-md hover:bg-red-50 transition-colors duration-200"
-                    onClick={async () => {
-                      try {
-                        if (ordem.id != null) {
-                          await deletarOrdemServico(ordem.id);
-                          onOrdemDeleted();
-                        } else {
-                          console.error("ID da ordem é indefinido.");
-                        }
-                      } catch (error) {
-                        console.error("Erro ao deletar ordem de serviço", error);
-                      }
-                    }}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+                  <ConfirmacaoDelecao
+                    onConfirm={() =>
+                      typeof ordem.id === "number" && handleDelete(ordem.id)
+                    }
+                  />
                 </TableCell>
               </TableRow>
             ))

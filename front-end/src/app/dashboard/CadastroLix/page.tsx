@@ -23,10 +23,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import { Trash2 } from "lucide-react";
 import { toast } from "react-toastify";
 import { AtualizacaoL } from "./_components/atualizacaoL";
-import { ConfirmacaoDelecao } from "./_components/confirmacaoDelecao";
+import { ConfirmacaoDelecao } from "@/components/ui/confirmacaoDelecao";
 
 export default function TeamPage() {
   const [lixao, setLixao] = useState<Lixao[]>([]);
