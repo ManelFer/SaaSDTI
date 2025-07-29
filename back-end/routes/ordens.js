@@ -1,6 +1,6 @@
 import express from 'express';
 import db from '../db/db.js';
-import { inserirOrdemServico } from '../db/tables/ordens_servico.js'; 
+import { inserirOrdemServico, atualizarOrdemServico } from '../db/tables/ordens_servico.js'; 
 // import validateToken from '../services/auth.guard.js';
 
 const router = express.Router();
@@ -35,7 +35,7 @@ function toNullableTimestamp(value) {
 }
 
 // POST nova OS
-router.post('/ordens', async (req, res) => {
+router.post('/os', async (req, res) => {
   console.log('HEADERS:', req.headers['content-type']);
   console.log('BODY:', req.body);
   const {
@@ -75,6 +75,18 @@ router.post('/ordens', async (req, res) => {
     res.status(201).json(rows[0]);
   } catch (err) {
     console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// PUT rota para atualizar uma ordem de serviço
+router.put('/os/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const { rows } = await atualizarOrdemServico(id, req.body);
+    res.json(rows[0]);
+  } catch (err) {
+    console.error('Erro ao atualizar ordem de serviço:', err);
     res.status(500).json({ error: err.message });
   }
 });

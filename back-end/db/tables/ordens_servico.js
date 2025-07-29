@@ -22,7 +22,7 @@ export function criarTabelaOrdensServico() {
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
         CONSTRAINT ordens_servico_status_check CHECK (
-          status IN ('Resolvido', 'Não resolvido')
+          status IN ('Resolvido', 'Não resolvido', 'Em andamento')
         ),
         CONSTRAINT fk_setor FOREIGN KEY (setor_id)
             REFERENCES setores(id)
@@ -90,7 +90,7 @@ export async function atualizarOrdemServico(id, data) {
       patrimonio = $5,
       tipo_falha = $6,
       solucao_tecnica = $7,
-      tecnico_responsavel = $8,
+      tecnico_responsavel_id = $8,
       data_recolhimento = $9,
       data_devolucao = $10,
       data_fechamento = $11,
@@ -107,7 +107,7 @@ export async function atualizarOrdemServico(id, data) {
     data.patrimonio,
     data.tipo_falha,
     data.solucao_tecnica,
-    data.tecnico_responsavel,
+    data.tecnico_responsavel_id,
     data.data_recolhimento,
     data.data_devolucao,
     data.data_fechamento,

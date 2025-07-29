@@ -4,7 +4,11 @@ import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Ordem } from "@/models/ordem.model";
 import { Setor as SetorModel } from "@/models/setor.model";
 import { Tecnico as TecnicoModel } from "@/models/tecnico.model";
-import { buscarOrdensServicos, createOrdens } from "@/services/ordens.service";
+import {
+  buscarOrdensServicos,
+  createOrdens,
+  deletarOrdemServico,
+} from "@/services/ordens.service";
 import { buscarSetores } from "@/services/setores.service";
 import { buscarTecnicos } from "@/services/tecnicos.service";
 import { OrdemDeServicoTable } from "./_components/OrdemDeServicoTable";
@@ -12,10 +16,10 @@ import { Header } from "./_components/Header";
 import { CadastroOSDialog } from "./_components/CadastroOSDialog";
 import { toast } from "react-toastify";
 
-
 export default function ProjectsPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [ordens, setOrdens] = useState<Ordem[]>([]);
   const [setores, setSetores] = useState<SetorModel[]>([]);
@@ -52,10 +56,7 @@ export default function ProjectsPage() {
       };
 
       await createOrdens(cleanedForm);
-
-      const ordensData = await buscarOrdensServicos();
-      setOrdens(ordensData);
-
+      setLoading(true); // Trigger refetch
       setIsDialogOpen(false);
       setForm({
         numero_os: "",
@@ -78,6 +79,7 @@ export default function ProjectsPage() {
     }
   };
 
+  // Initial data fetch
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -90,25 +92,39 @@ export default function ProjectsPage() {
         setTecnicos(listaTecnicos);
         setSetores(listaSetores);
         setOrdens(ordensData);
-        setLoading(false);
       } catch (error) {
         console.error("Erro ao carregar dados:", error);
-        setLoading(false);
+      } finally {
+        setInitialLoading(false);
       }
     };
 
     fetchData();
   }, []);
 
-  const handleOrdemDeleted = async () => {
-    try {
-      const ordensData = await buscarOrdensServicos();
-      setOrdens(ordensData);
-      toast.success("Ordem de serviço deletada com sucesso!");
-    } catch (error) {
-      console.error("Erro ao atualizar a lista de ordens de serviço:", error);
-      toast.error("Erro ao atualizar a lista de ordens de serviço.");
+  // Refetch data on update
+  useEffect(() => {
+    if (loading) {
+      const fetchOrdens = async () => {
+        try {
+          const ordensData = await buscarOrdensServicos();
+          setOrdens(ordensData);
+        } catch (error) {
+          toast.error("Erro ao atualizar a lista de ordens de serviço.");
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchOrdens();
     }
+  }, [loading]);
+
+  const handleOrdemDeleted = (id: number) => {
+    setOrdens(ordens.filter((ordem) => ordem.id !== id));
+  };
+
+  const handleOrdemUpdated = () => {
+    setLoading(true);
   };
 
   const ordensFiltradas = ordens.filter((ordem) => {
@@ -118,9 +134,8 @@ export default function ProjectsPage() {
       ordem.solicitante?.toLowerCase().includes(searchLower) ||
       ordem.patrimonio?.toLowerCase().includes(searchLower) ||
       ordem.tipo_falha?.toLowerCase().includes(searchLower) ||
-      (
-        setores.find((a) => a.id == ordem.setor_id)?.nome?.toLowerCase() ?? ""
-      ).includes(searchLower) ||
+      (setores.find((a) => a.id == ordem.setor_id)?.nome?.toLowerCase() ?? "")
+        .includes(searchLower) ||
       tecnicos
         .find((a) => a.id == ordem.tecnico_responsavel_id)
         ?.nome?.toLowerCase()
@@ -144,11 +159,12 @@ export default function ProjectsPage() {
           handleSubmit={handleSubmit}
         />
         <OrdemDeServicoTable
-          loading={loading}
+          loading={initialLoading}
           ordens={ordensFiltradas}
           setores={setores}
           tecnicos={tecnicos}
           onOrdemDeleted={handleOrdemDeleted}
+          onOrdemUpdated={handleOrdemUpdated}
         />
       </div>
     </DashboardLayout>

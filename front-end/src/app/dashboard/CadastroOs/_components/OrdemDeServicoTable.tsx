@@ -15,13 +15,15 @@ import { formatDateTime } from "@/components/ui/DateTime";
 import { deletarOrdemServico } from "@/services/ordens.service";
 import { ConfirmacaoDelecao } from "@/components/ui/confirmacaoDelecao";
 import { toast } from "react-toastify";
+import { AtualizacaoOrdem } from "./atualizacaoOrdem";
 
 interface OrdemDeServicoTableProps {
   loading: boolean;
   ordens: Ordem[];
   setores: SetorModel[];
   tecnicos: TecnicoModel[];
-  onOrdemDeleted: () => void;
+  onOrdemDeleted: (id: number) => void;
+  onOrdemUpdated: () => void;
 }
 
 export function OrdemDeServicoTable({
@@ -30,11 +32,12 @@ export function OrdemDeServicoTable({
   setores,
   tecnicos,
   onOrdemDeleted,
+  onOrdemUpdated,
 }: OrdemDeServicoTableProps) {
   const handleDelete = async (id: number) => {
     try {
       await deletarOrdemServico(id);
-      onOrdemDeleted();
+      onOrdemDeleted(id);
     } catch (error) {
       toast.error("Erro ao excluir ordem de serviço.");
     }
@@ -119,7 +122,8 @@ export function OrdemDeServicoTable({
                   }
                 </TableCell>
 
-                <TableCell className="text-right">
+                <TableCell className="flex items-center justify-end space-x-2">
+                  <AtualizacaoOrdem ordem={ordem} onUpdate={onOrdemUpdated} />
                   <ConfirmacaoDelecao
                     onConfirm={() =>
                       typeof ordem.id === "number" && handleDelete(ordem.id)

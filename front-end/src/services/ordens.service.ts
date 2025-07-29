@@ -43,23 +43,24 @@ export const buscarOrdensServicos = async (): Promise<Ordem[]> => {
     }
 };
 
-// export async function buscarOrdens(): Promise<Ordem[]> {
-//     try {
-//         const res = await fetch(API_URL + API_ROUTES.ORDENS, {
-//             method: "GET",
-//             headers: getHeaders(),
-//         });
+export async function updateOrdem(id: number, ordem: Ordem): Promise<Ordem> {
+    try {
+        const res = await fetch(`${API_URL}/os/${id}`, {
+            method: "PUT",
+            headers: getHeaders(),
+            body: JSON.stringify(ordem)
+        });
         
-//         if (!res.ok) {
-//             throw new Error(`Erro HTTP: ${res.status}`);
-//         }
+        if (!res.ok) {
+            throw new Error(`Erro HTTP: ${res.status}`);
+        }
         
-//         return await res.json();
-//     } catch (error) {
-//         console.error('Erro ao buscar ordens de serviço:', error);
-//         throw error;
-//     }
-// }
+        return await res.json();
+    } catch (error) {
+        console.error('Erro ao atualizar ordem de serviço:', error);
+        throw error;
+    }
+}
 
 //metodo deleta uma ordem de serviço
 export async function deletarOrdemServico(id: number): Promise<void> {
