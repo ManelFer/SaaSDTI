@@ -4,6 +4,7 @@ import DashboardLayout from "@/components/layout/DashboardLayout";
 import useAuth from "@/hooks/useAuth";
 import { MainCard } from "./components/Cards/Maincard";
 import { AcoesRapidasMain } from "./components/AcoesRapidas/AcoesRapidasMain";
+import { MainOrdem } from "./components/OrdensRecentes/MainOrdem";
 
 
 
@@ -31,6 +32,7 @@ export default function DashboardPage() {
         <MainCard />
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
           <AcoesRapidasMain />
+          <MainOrdem />
         </div>
       </div>
     </DashboardLayout>
