@@ -2,6 +2,8 @@
 "use client";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import useAuth from "@/hooks/useAuth";
+import { MainCard } from "./components/Cards/Maincard";
+import { AcoesRapidasMain } from "./components/AcoesRapidas/AcoesRapidasMain";
 
 
 
@@ -26,13 +28,9 @@ export default function DashboardPage() {
         </div>
 
         {/* Card do conteúdo */}
-        <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
-          <h2 className="text-xl  font-semibold text-center text-gray-800 dark:text-white mb-2">
-            Bem-vindo ao sistema {user?.nome} {/* mudar o nome conforme o nome de user adicionado pelo usuario */}
-          </h2>
-          <p className="text-gray-600 dark:text-gray-300 text-center">
-            Aqui você poderá visualizar e gerenciar informações do sistema.
-          </p>
+        <MainCard />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
+          <AcoesRapidasMain />
         </div>
       </div>
     </DashboardLayout>
