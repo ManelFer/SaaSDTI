@@ -15,7 +15,8 @@ export async function buscarTecnico(): Promise<Tecnico> {
 export const buscarTecnicos = async (): Promise<Tecnico[]> => {
   try {
     const response = await axios.get(`${API_URL}${API_ROUTES.TECNICOS}`);
-    return response.data as Tecnico[];
+    const tecnicos = response.data || [];
+    return tecnicos as Tecnico[];
   } catch (error) {
     console.error('Erro ao buscar técnicos:', error);
     throw error;
