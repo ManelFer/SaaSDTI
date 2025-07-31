@@ -13,6 +13,7 @@ export function MainOrdem() {
   const [setores, setSetores] = useState<Setor[]>([]);
   const [tecnicos, setTecnicos] = useState<Tecnico[]>([]);
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchAll() {
@@ -22,13 +23,15 @@ export function MainOrdem() {
           buscarSetores(),
           buscarTecnicos(),
         ]);
-        console.log("Técnico", tecnicosData);
         setOrdens(ordensData);
         setSetores(setoresData);
         setTecnicos(tecnicosData);
-        console.log("Técnicos:", tecnicosData);
+        console.log("Ordens recebidas:", ordensData);
+        console.log("Técnicos recebidos:", tecnicosData);
       } catch (error) {
         console.error("Erro ao buscar dados:", error);
+      } finally {
+        setLoading(false);
       }
     }
 
@@ -41,8 +44,8 @@ export function MainOrdem() {
 
   function getTecnicoNome(id?: number) {
     console.log("Buscando técnico com id:", id);
-    const tecnico = tecnicos.find((t) => t.id === id);
-    console.log("Encontrado técnico:", tecnico);
+    const tecnico = tecnicos.find((t) => t.id == id);
+    console.log("Técnico encontrado:", tecnico);
     return tecnico?.nome || "Técnico desconhecido";
   }
 
@@ -71,39 +74,45 @@ export function MainOrdem() {
         <Clock className="w-5 h-5 text-gray-400" />
       </div>
 
-      <input
-        type="text"
-        placeholder="Buscar por solicitante ou setor..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        className="w-full mb-4 px-4 py-2 text-sm border rounded-md focus:outline-none focus:ring focus:border-blue-400"
-      />
+      {loading ? (
+        <p>Carregando...</p>
+      ) : (
+        <>
+          <input
+            type="text"
+            placeholder="Buscar por solicitante ou setor..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full mb-4 px-4 py-2 text-sm border rounded-md focus:outline-none focus:ring focus:border-blue-400"
+          />
 
-      <div className="space-y-4">
-        {filteredOrdens.slice(0, 3).length > 0 ? (
-          filteredOrdens.slice(0, 3).map((ordem) => (
-            <div
-              key={ordem.id}
-              className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
-            >
-              <div>
-                <h3 className="font-medium text-gray-900">
-                  {getOrdemNome(ordem.id)}
-                </h3>
-                <p className="text-sm text-gray-600">
-                  {ordem.solicitante} • {getSetorNome(ordem.setor_id)}
-                </p>
-                <p className="text-xs text-gray-500">
-                  Técnico: {getTecnicoNome(ordem.tecnico_responsavel_id)} •
-                  Status: {ordem.status}
-                </p>
-              </div>
-            </div>
-          ))
-        ) : (
-          <p className="text-sm text-gray-500">Nenhuma ordem encontrada.</p>
-        )}
-      </div>
+          <div className="space-y-4">
+            {filteredOrdens.slice(0, 3).length > 0 ? (
+              filteredOrdens.slice(0, 3).map((ordem) => (
+                <div
+                  key={ordem.id}
+                  className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
+                >
+                  <div>
+                    <h3 className="font-medium text-gray-900">
+                      {getOrdemNome(ordem.id)}
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      {ordem.solicitante} • {getSetorNome(ordem.setor_id)}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      Técnico: {getTecnicoNome(ordem.tecnico_responsavel_id)} •
+                      Status: {ordem.status}
+                    </p>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p className="text-sm text-gray-500">Nenhuma ordem encontrada.</p>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 }
