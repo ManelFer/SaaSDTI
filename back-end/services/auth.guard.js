@@ -5,7 +5,7 @@ const validateToken = (authHeader) => {
     return false;
   }
 
-  const token = authHeader.split(' ')[8];
+  const token = authHeader.split(' ')[1];
 
   if (!token) {
     return false;
