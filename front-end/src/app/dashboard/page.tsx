@@ -5,12 +5,14 @@ import useAuth from "@/hooks/useAuth";
 import { MainCard } from "./components/Cards/Maincard";
 import { AcoesRapidasMain } from "./components/AcoesRapidas/AcoesRapidasMain";
 import { MainOrdem } from "./components/OrdensRecentes/MainOrdem";
+import  Loading  from "../feed/loading"
 
 
 
 export default function DashboardPage() {
   const { user, loading } = useAuth(true);
-  if (loading) return <div>Carregando...</div>
+  if (loading) return <Loading />;
+  if (!user) return null;
 
 
   return (
