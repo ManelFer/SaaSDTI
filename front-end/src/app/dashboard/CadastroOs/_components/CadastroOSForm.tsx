@@ -26,7 +26,7 @@ interface CadastroOSFormProps {
 
 export function CadastroOSForm({ form, handleChange }: CadastroOSFormProps) {
   return (
-    <div className="grid grid-cols-3 gap-6 py-4">
+    <div className="grid grid-cols-3 gap-6 py-8 w-full">
       {/* Primeira coluna */}
       <div className="space-y-4">
         <div className="space-y-2">
