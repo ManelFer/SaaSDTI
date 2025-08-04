@@ -100,11 +100,6 @@ export function Register({ isEstOpen, setEstOpen }: RegisterProps) {
 
   return (
     <Dialog open={isEstOpen} onOpenChange={setEstOpen}>
-      <DialogTrigger asChild>
-        {/* O trigger deve ser controlado externamente, então aqui pode ficar vazio ou removido */}
-        <></>
-      </DialogTrigger>
-
       <DialogContent className="sm:max-w-[800px]">
         <DialogHeader>
           <DialogTitle>Cadastro de Equipamentos</DialogTitle>
