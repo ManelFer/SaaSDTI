@@ -2,10 +2,10 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { File } from "lucide-react";
-import { Dialog, DialogTrigger, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { CadastroOSForm } from "../../../../CadastroOs/_components/CadastroOSForm";
+import { CadastroOSDialog } from "../../../../CadastroOs/_components/CadastroOSDialog";
 
 export function NovaOrdem() {
+  const [isOpen, setIsOpen] = useState(false);
   const [form, setForm] = useState({
     numero_os: "",
     data_abertura: "",
@@ -25,25 +25,28 @@ export function NovaOrdem() {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
+  const handleSubmit = () => {
+    // Aqui você pode enviar os dados para o backend, exibir toast etc.
+    console.log("Dados da OS:", form);
+    setIsOpen(false); // fecha o dialog após salvar
+  };
+
   return (
     <Card className="p-4 mb-4 bg-blue-50 shadow-md rounded-lg">
       <div className="flex items-center space-x-4">
         <File className="h-6 w-6 text-blue-500" />
-        <Dialog >
-          <DialogTrigger asChild>
-            <button>
-              <h4 className="text-sm font-bold text-blue-800">
-                Cadastrar Nova ordem de serviço
-              </h4>
-            </button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[1000px]">
-            <DialogTitle className="text-xl font-semibold mb-4">
-              Nova Ordem de Serviço
-            </DialogTitle>
-            <CadastroOSForm  form={form} handleChange={handleChange} />
-          </DialogContent>
-        </Dialog>
+        <button onClick={() => setIsOpen(true)}>
+          <h4 className="text-sm font-bold text-blue-800">
+            Cadastrar Nova ordem de serviço
+          </h4>
+        </button>
+        <CadastroOSDialog
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          form={form}
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+        />
       </div>
     </Card>
   );
