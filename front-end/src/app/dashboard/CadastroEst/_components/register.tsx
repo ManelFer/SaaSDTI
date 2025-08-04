@@ -18,8 +18,12 @@ import { buscarItens } from '@/services/itens.service';
 import { buscarMarcas } from '@/services/marcas.service';
 import { toast } from 'react-toastify';
 
-export function Register() {
-  const [isEstOpen, setEstOpen] = useState(false);
+interface RegisterProps {
+  isEstOpen: boolean;
+  setEstOpen: (open: boolean) => void;
+}
+
+export function Register({ isEstOpen, setEstOpen }: RegisterProps) {
   const [, setEstoque] = useState<Estoque[]>([]);
   const [Loading, setLoading] = useState(false);
   const [, setItens] = useState<ItensModel[]>([]);
@@ -34,10 +38,8 @@ export function Register() {
     quantidade: 0,
   });
 
-
   const handleSubmit = async () => {
     try {
-      // Validação dos campos obrigatórios
       if (!form.item_id || !form.marca_id || !form.modelo || form.quantidade <= 0) {
         toast.error("Por favor, preencha todos os campos obrigatórios e certifique-se que a quantidade seja maior que zero.");
         return;
@@ -53,47 +55,43 @@ export function Register() {
       console.log("Enviando dados:", payload);
 
       const data = await createEstoque(payload);
-      
-     console.log("Dados do estoque", data);
-     toast.success("Equipamento cadastrado com sucesso!");
-     setForm({
-       item_id: '',
-       marca_id: '',
-       modelo: '',
-       numero_serie: '',
-       patrimonio: '',
-       lote: '',
-       quantidade: 0,
-     });
 
-  } catch (err) {
-    console.log("Erro de cadastro", err);
-    toast.error("Erro ao cadastrar equipamento. Tente novamente.");
-  }
-  }; // <-- Fechando handleSubmit corretamente
+      console.log("Dados do estoque", data);
+      toast.success("Equipamento cadastrado com sucesso!");
+      setForm({
+        item_id: '',
+        marca_id: '',
+        modelo: '',
+        numero_serie: '',
+        patrimonio: '',
+        lote: '',
+        quantidade: 0,
+      });
+
+      setEstOpen(false); // fecha o dialog após salvar
+    } catch (err) {
+      console.log("Erro de cadastro", err);
+      toast.error("Erro ao cadastrar equipamento. Tente novamente.");
+    }
+  };
 
   useEffect(() => {
     const fetEstoque = async () => {
-      // listar equipamentos e marcas
       const listaItem = await buscarItens();
       const listaMarca = await buscarMarcas();
 
-      //setando itens e marcas
       setItens(listaItem);
       setMarca(listaMarca);
-      console.log("itens", listaItem);
-      console.log("marcas", listaMarca);
       setLoading(true);
     };
     fetEstoque();
   }, []);
 
-  useEffect (() => {
+  useEffect(() => {
     if (Loading) {
       const fetchEstoque = async () => {
         const estoqueData = await buscarEstoque();
         setEstoque(Array.isArray(estoqueData) ? estoqueData : [estoqueData]);
-        console.log("estoque", estoqueData);
         setLoading(false);
       };
       fetchEstoque();
@@ -101,36 +99,30 @@ export function Register() {
   }, [Loading]);
 
   return (
-    <div className='bg-[#257432] text-white px-4 py-2 rounded-md hover:bg-[#066333] hover:scale-105 duration-300'>
-      <Dialog open={isEstOpen} onOpenChange={setEstOpen}>
-        <DialogTrigger asChild>
+    <Dialog open={isEstOpen} onOpenChange={setEstOpen}>
+      <DialogTrigger asChild>
+        {/* O trigger deve ser controlado externamente, então aqui pode ficar vazio ou removido */}
+        <></>
+      </DialogTrigger>
+
+      <DialogContent className="sm:max-w-[800px]">
+        <DialogHeader>
+          <DialogTitle>Cadastro de Equipamentos</DialogTitle>
+          <DialogDescription>Cadastre um novo equipamento</DialogDescription>
+        </DialogHeader>
+
+        <Form form={form} setForm={setForm} />
+
+        <DialogFooter>
           <Button
-            onClick={() => setEstOpen(true)}
+            type="button"
+            onClick={handleSubmit}
             className='bg-[#257432] text-white px-4 py-2 rounded-md hover:bg-[#066333] hover:scale-105 duration-300'
           >
-            Cadastro de Equipamentos
+            Salvar Equipamento
           </Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[800px]">
-          <DialogHeader>
-            <DialogTitle>Cadastro de Equipamentos</DialogTitle>
-            <DialogDescription>Cadastre um novo equipamento</DialogDescription>
-          </DialogHeader>
-
-          {/* Formulário controlado */}
-          <Form form={form} setForm={setForm} />
-
-          <DialogFooter>
-            <Button
-              type="button"
-              onClick={handleSubmit}
-              className='bg-[#257432] text-white px-4 py-2 rounded-md hover:bg-[#066333] hover:scale-105 duration-300'
-            >
-              Salvar Equipamento
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </div>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
