@@ -55,18 +55,6 @@ export default function ProfileMenu({
           </Menu.Item>
           <Menu.Item>
             {({ active }) => (
-              <a
-                href="#"
-                className={`${
-                  active ? "bg-gray-100" : ""
-                } block px-4 py-2 text-sm text-gray-700`}
-              >
-                Configurações
-              </a>
-            )}
-          </Menu.Item>
-          <Menu.Item>
-            {({ active }) => (
               //Route protection
               <button
                 onClick={async () => {

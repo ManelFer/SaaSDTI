@@ -32,7 +32,7 @@ export function NovaOrdem() {
   };
 
   return (
-    <Card className="p-4 mb-4 bg-blue-50 shadow-md rounded-lg">
+    <Card className="p-4 mb-4 bg-blue-50 hover:bg-blue-100 transition shadow-md rounded-lg">
       <div className="flex items-center space-x-4">
         <File className="h-6 w-6 text-blue-500" />
         <button onClick={() => setIsOpen(true)}>
