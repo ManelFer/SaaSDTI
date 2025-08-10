@@ -7,7 +7,6 @@ import { Tecnico as TecnicoModel } from "@/models/tecnico.model";
 import {
   buscarOrdensServicos,
   createOrdens,
-  deletarOrdemServico,
 } from "@/services/ordens.service";
 import { buscarSetores } from "@/services/setores.service";
 import { buscarTecnicos } from "@/services/tecnicos.service";

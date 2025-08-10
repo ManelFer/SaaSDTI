@@ -5,6 +5,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
 import { auth } from "@/lib/firebaseConfig";
 import { signOut } from "firebase/auth";
+import MeuPerfilPage from "@/app/dashboard/MeuPerfil/page";
 
 interface ProfileMenuProps {
   isOpen: boolean;
@@ -44,7 +45,7 @@ export default function ProfileMenu({
           <Menu.Item>
             {({ active }) => (
               <a
-                href="#"
+                href="/dashboard/MeuPerfil"
                 className={`${
                   active ? "bg-gray-100" : ""
                 } block px-4 py-2 text-sm text-gray-700`}
