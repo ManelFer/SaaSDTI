@@ -1,6 +1,5 @@
 "use client";
 import { Retirada } from "./_components/retirada";
-import { Register } from "./_components/register";
 import {
   Table,
   TableBody,
@@ -64,6 +63,7 @@ export default function EstoquePage() {
       setEstoque(estoque.filter((e) => e.id !== id));
       toast.success("Item deletado com sucesso!");
     } catch (error) {
+      console.error("Erro ao deletar item:", error);
       toast.error("Erro ao deletar item. Tente novamente.");
     }
   }
@@ -135,7 +135,6 @@ export default function EstoquePage() {
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-800">Estoque</h1>
           <Retirada />
-          <Register />
           <div className="relative">
             <Input
               type="text"

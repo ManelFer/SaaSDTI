@@ -109,6 +109,7 @@ export default function ProjectsPage() {
           const ordensData = await buscarOrdensServicos();
           setOrdens(ordensData);
         } catch (error) {
+          console.error("Erro ao atualizar lista de ordens de serviço:", error);
           toast.error("Erro ao atualizar a lista de ordens de serviço.");
         } finally {
           setLoading(false);

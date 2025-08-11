@@ -68,6 +68,7 @@ export function AtualizacaoOrdem({ ordem, onUpdate }: AtualizacaoOrdemProps) {
                 onUpdate();
             }
         } catch (error) {
+            console.error("Erro ao atualizar a ordem:", error);
             toast.error("Erro ao atualizar a ordem.");
         }
     };

@@ -66,6 +66,7 @@ export function AtualizacaoL({ lixaoItem, marcas, itens, onUpdate }: Atualizacao
         toast.error("Erro: ID do item do lixão é indefinido.");
       }
     } catch (error) {
+      console.error("Erro ao atualizar item do lixão:", error);
       toast.error("Erro ao atualizar item do lixão.");
     }
   };

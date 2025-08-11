@@ -10,12 +10,12 @@ import {
 } from "@/components/ui/dialog";
 import { FormMarcas } from "./organisms/formMarcas";
 import { useEffect, useState } from "react";
-import { buscarMarcas, createMarcas, deleteMarcas } from "@/services/marcas.service";
+import { buscarMarcas, createMarcas } from "@/services/marcas.service";
 import { Marcas } from "@/models/marcas.model";
 import { toast } from "react-toastify";
 
 export function CadastroMarcas() {
-  const [_, setMarOpen] = useState(false);
+  const [, setMarOpen] = useState(false);
   const [marcas, setMarcas] = useState<Marcas[]>([]);
   const [form, setForm] = useState({
     nome: "",

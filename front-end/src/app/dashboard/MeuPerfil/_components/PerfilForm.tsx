@@ -2,7 +2,7 @@
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Mail, MapPin, Phone, User2 } from "lucide-react";
+import { Mail, User2 } from "lucide-react";
 
 export function MeuPerfilForm() {
   return (

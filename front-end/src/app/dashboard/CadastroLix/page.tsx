@@ -74,6 +74,7 @@ export default function TeamPage() {
       setLixao(lixao.filter((l) => l.id !== id));
       toast.success("Item do lixão deletado com sucesso!");
     } catch (error) {
+      console.error("Erro ao deletar item do lixão:", error);
       toast.error("Erro ao deletar item do lixão.");
     }
   };
