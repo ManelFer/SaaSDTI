@@ -2,6 +2,9 @@
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { useState } from "react";
 import { User2, Lock, Bell, MapPin, Phone, Mail, Briefcase } from "lucide-react";
+import { MeuPerfilForm } from "./_components/PerfilForm";
+import { PerfilAvatar } from "./_components/PerfilAvatar";
+import { PerfilFormSenha } from "./_components/PerfilFormSenha";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -40,53 +43,12 @@ export default function MeuPerfilPage() {
           {activeTab === 'perfil' && (
             <>
               {/* Avatar e informações */}
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-2xl font-bold text-blue-600">
-                  M
-                </div>
-                <div>
-                  <h2 className="text-lg font-semibold">Maria Santos</h2>
-                  <p className="text-gray-500 flex items-center gap-1 text-sm">
-                    <Briefcase size={14} /> Técnico
-                  </p>
-                </div>
-              </div>
+              <PerfilAvatar />
 
               {/* Formulário */}
-              <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label>Nome Completo</Label>
-                  <div className="relative">
-                    <User2 className="absolute left-3 top-3 text-gray-400" size={16} />
-                    <Input className="pl-9" defaultValue="Maria Santos" />
-                  </div>
-                </div>
+              <MeuPerfilForm />
 
-                <div>
-                  <Label>Email</Label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-3 text-gray-400" size={16} />
-                    <Input className="pl-9" type="email" defaultValue="tecnico@tribunal.gov.br" />
-                  </div>
-                </div>
-
-                <div>
-                  <Label>Telefone</Label>
-                  <div className="relative">
-                    <Phone className="absolute left-3 top-3 text-gray-400" size={16} />
-                    <Input className="pl-9" placeholder="(11) 99999-9999" />
-                  </div>
-                </div>
-
-                <div>
-                  <Label>Setor</Label>
-                  <div className="relative">
-                    <MapPin className="absolute left-3 top-3 text-gray-400" size={16} />
-                    <Input className="pl-9" defaultValue="TI - Suporte" />
-                  </div>
-                </div>
-              </form>
-
+              {/* Botão de salvar */}
               <div className="mt-6 flex justify-end">
                 <Button className="bg-blue-600 hover:bg-blue-700 flex items-center gap-2">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -99,11 +61,7 @@ export default function MeuPerfilPage() {
           )}
 
           {activeTab === 'senha' && (
-            <p className="text-gray-600">Aqui virá o formulário de alteração de senha.</p>
-          )}
-
-          {activeTab === 'preferencias' && (
-            <p className="text-gray-600">Aqui virão as configurações de preferências.</p>
+            <PerfilFormSenha />
           )}
         </div>
       </div>
