@@ -28,8 +28,8 @@ export default function MeuPerfilPage() {
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-2 pb-2 transition-all border-b-2 ${
                 activeTab === tab.id
-                  ? 'text-blue-600 border-blue-600 font-medium'
-                  : 'text-gray-500 border-transparent hover:text-blue-500'
+                  ? 'text-[#257432] border-[#257432] font-medium'
+                  : 'text-gray-500 border-transparent hover:text-green-500'
               }`}
             >
               <tab.icon size={18} />
@@ -50,7 +50,7 @@ export default function MeuPerfilPage() {
 
               {/* Botão de salvar */}
               <div className="mt-6 flex justify-end">
-                <Button className="bg-blue-600 hover:bg-blue-700 flex items-center gap-2">
+                <Button className="bg-[#257432] hover:bg-green-600 hover:scale-105 flex items-center gap-2">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16v4H7v-4M12 12v8m-6 0h12" />
                   </svg>
