@@ -28,7 +28,7 @@ export default function CadastroFullPage() {
               Cadastro de Equipamentos
             </h2>
             <p className="text-gray-600 dark:text-gray-300 mb-4">
-              Adicione ou edite os equipamentos do setor.
+              Adicione os equipamentos do setor.
             </p>
             <CadastroEquipamentos />
           </div>
