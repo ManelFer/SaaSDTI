@@ -35,10 +35,11 @@ export const buscarTecnicoPorId = async (id: number): Promise<Tecnico> => {
 };
 
 // update
-export const atualizarTecnico = async (id: number, data: Partial<Tecnico>): Promise<Tecnico> => {
+export const atualizarTecnicoDados = async (id: number, data: Partial<Tecnico>): Promise<Tecnico> => {
   try {
     const response = await axios.put(`${API_URL}${API_ROUTES.TECNICOS}/${id}`, data);
     const tecnico = response.data;
+    console.log(`Técnico com ID ${id} atualizado:`, tecnico);
     return tecnico as Tecnico;
   } catch (error) {
     console.error(`Erro ao atualizar técnico com ID ${id}:`, error);

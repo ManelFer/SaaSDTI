@@ -6,28 +6,27 @@ import { Mail, User2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
   buscarTecnicoPorId,
-  atualizarTecnico,
+  atualizarTecnicoDados,
 } from "@/services/tecnicos.service";
 import { Button } from "@/components/ui/button";
+import { toast } from "react-toastify";
 
 export function MeuPerfilForm() {
   const { user } = useAuth(true);
-  const [tecnicoNome, setTecnicoNome] = useState<string | undefined>(undefined);
-  const [tecnicoEmail, setTecnicoEmail] = useState<string | undefined>(
-    undefined
-  );
+  const [tecnicoNome, setTecnicoNome] = useState("");
+  const [tecnicoEmail, setTecnicoEmail] = useState("");
 
+  // Buscar dados do técnico
   useEffect(() => {
     const fetchTecnicoData = async () => {
       if (user?.id) {
         try {
           const tecnico = await buscarTecnicoPorId(user.id);
-          setTecnicoNome(tecnico.nome);
-          setTecnicoEmail(tecnico.email);
+          setTecnicoNome(tecnico.nome || "");
+          setTecnicoEmail(tecnico.email || "");
         } catch (error) {
           console.error("Erro ao buscar dados do técnico:", error);
-          setTecnicoNome("Nome não encontrado");
-          setTecnicoEmail("Email não encontrado");
+          toast.error("Erro ao carregar dados do perfil.");
         }
       }
     };
@@ -35,21 +34,21 @@ export function MeuPerfilForm() {
     fetchTecnicoData();
   }, [user?.id]);
 
-  useEffect(() => {
-    const atualizarTecnico = async () => {
-      if (user?.id) {
-        try {
-          const tecnico = await buscarTecnicoPorId(user.id);
-          setTecnicoNome(tecnico.nome);
-        } catch (error) {
-          console.error("Erro ao buscar nome do técnico:", error);
-          setTecnicoNome("Nome não encontrado");
-        }
-      }
-    };
+  // Função para atualizar os dados
+  const handleSubmit = async () => {
+    if (!user?.id) return;
 
-    atualizarTecnico();
-  }, [user?.id]);
+    try {
+      await atualizarTecnicoDados(user.id, {
+        nome: tecnicoNome,
+        email: tecnicoEmail,
+      });
+      toast.success("Dados atualizados com sucesso!");
+    } catch (error) {
+      console.error("Erro ao atualizar técnico:", error);
+      toast.error("Erro ao atualizar dados.");
+    }
+  };
 
   return (
     <div>
@@ -58,7 +57,11 @@ export function MeuPerfilForm() {
           <Label className="mb-2">Nome Completo</Label>
           <div className="relative">
             <User2 className="absolute left-3 top-3 text-gray-400" size={16} />
-            <Input className="pl-9" defaultValue={tecnicoNome} />
+            <Input
+              className="pl-9"
+              value={tecnicoNome}
+              onChange={(e) => setTecnicoNome(e.target.value)}
+            />
           </div>
         </div>
 
@@ -66,13 +69,21 @@ export function MeuPerfilForm() {
           <Label className="mb-2">Email</Label>
           <div className="relative">
             <Mail className="absolute left-3 top-3 text-gray-400" size={16} />
-            <Input className="pl-9" type="email" defaultValue={tecnicoEmail} />
+            <Input
+              className="pl-9"
+              type="email"
+              value={tecnicoEmail}
+              onChange={(e) => setTecnicoEmail(e.target.value)}
+            />
           </div>
         </div>
       </form>
 
       <div className="mt-6 flex justify-end">
-        <Button className="bg-[#257432] hover:bg-green-600 hover:scale-105 flex items-center gap-2">
+        <Button
+          onClick={handleSubmit}
+          className="bg-[#257432] hover:bg-green-600 hover:scale-105 flex items-center gap-2"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
