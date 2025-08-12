@@ -6,8 +6,6 @@ import { MeuPerfilForm } from "./_components/PerfilForm";
 import { PerfilAvatar } from "./_components/PerfilAvatar";
 import { PerfilFormSenha } from "./_components/PerfilFormSenha";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 export default function MeuPerfilPage() {
   const tabs = [
@@ -49,14 +47,7 @@ export default function MeuPerfilPage() {
               <MeuPerfilForm />
 
               {/* Botão de salvar */}
-              <div className="mt-6 flex justify-end">
-                <Button className="bg-[#257432] hover:bg-green-600 hover:scale-105 flex items-center gap-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16v4H7v-4M12 12v8m-6 0h12" />
-                  </svg>
-                  Salvar Alterações
-                </Button>
-              </div>
+              
             </>
           )}
 

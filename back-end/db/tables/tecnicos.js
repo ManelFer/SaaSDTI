@@ -13,3 +13,12 @@ export function criarTabelaTecnicos () {
     `;
     return db.query(query);
 }
+
+//update
+export function atualizarTabelaTecnicos() {
+    const query = `
+        ALTER TABLE tecnicos
+        ADD COLUMN telefone VARCHAR(20);
+    `;
+    return db.query(query);
+}
