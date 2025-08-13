@@ -1,12 +1,17 @@
 "use client";
 import { Lock } from "lucide-react";
-
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-
+import { useEffect, useState } from "react";
+import { atualizarTecnicoDados } from "@/services/tecnicos.service";
+import { toast } from "react-toastify";
+import useAuth from "@/hooks/useAuth";
 
 export function PerfilFormSenha() {
+    const {user} = useAuth(true);
+    const [senhaAtual, setSenhaAtual] = useState("");
+    const [novaSenha, setNovaSenha] = useState("");
     return (
         <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
