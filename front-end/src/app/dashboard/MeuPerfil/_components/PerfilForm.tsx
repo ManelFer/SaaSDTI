@@ -44,11 +44,13 @@ export function MeuPerfilForm() {
         email: tecnicoEmail,
       });
       toast.success("Dados atualizados com sucesso!");
+      window.location.reload();
     } catch (error) {
       console.error("Erro ao atualizar técnico:", error);
       toast.error("Erro ao atualizar dados.");
     }
   };
+
 
   return (
     <div>
@@ -82,7 +84,7 @@ export function MeuPerfilForm() {
       <div className="mt-6 flex justify-end">
         <Button
           onClick={handleSubmit}
-          className="bg-[#257432] hover:bg-green-600 hover:scale-105 flex items-center gap-2"
+          className="bg-[#257432] hover:bg-green-600 hover:scale-105 flex items-center gap-2" 
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -66,6 +66,7 @@ export function Register({ isEstOpen, setEstOpen }: RegisterProps) {
         lote: '',
         quantidade: 0,
       });
+      window.location.reload();
 
       setEstOpen(false); // fecha o dialog após salvar
     } catch (err) {

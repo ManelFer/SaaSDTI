@@ -60,7 +60,6 @@ export function CadastroL() {
       console.log("Enviando dados:", payload);
 
       const novoItem = await createLixao(payload);
-      
       if (!novoItem) {
         throw new Error("Não foi possível cadastrar o equipamento");
       }
@@ -69,6 +68,7 @@ export function CadastroL() {
       toast.success("Equipamento cadastrado com sucesso!");
       resetForm();
       setLixOpen(false);
+      window.location.reload();
     } catch (error) {
       console.error("Erro ao cadastrar equipamento", error);
       toast.error("Erro ao cadastrar equipamento. Tente novamente.");
