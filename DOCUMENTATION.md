@@ -1,195 +1,76 @@
-# Documentação Completa do Projeto SaaS DTI
+# Documentação da Funcionalidade: Atualização de Perfil de Técnico
 
-## 1. Visão Geral do Projeto
+## 1. Visão Geral
 
-O projeto SaaS DTI é um sistema completo de gerenciamento de operações de suporte técnico, projetado para otimizar o fluxo de trabalho do setor de TI. Ele é composto por um back-end robusto que fornece APIs RESTful e um front-end moderno e responsivo para interação do usuário.
-
-A aplicação permite o gerenciamento de ordens de serviço, controle de estoque de equipamentos, administração de setores, técnicos e marcas, além de um sistema para descarte e registro de itens danificados (Lixão).
+O objetivo desta tarefa foi implementar e corrigir a funcionalidade que permite a um técnico logado no sistema atualizar suas próprias informações de perfil (nome e e-mail) e alterar sua senha de forma segura. A solução abrange tanto o back-end (a API) quanto o front-end (a interface do usuário).
 
 ---
 
-## 2. Arquitetura e Tecnologias
+## 2. Componentes Envolvidos
 
-O sistema é construído sobre uma arquitetura cliente-servidor desacoplada, o que permite desenvolvimento e escalabilidade independentes para o front-end e o back-end.
+Os seguintes arquivos foram modificados ou tiveram sua lógica central implementada durante a resolução desta tarefa:
 
-### **Front-End**
+-   **Back-end**:
+    -   `back-end/routes/tecnicos.js`: Contém a lógica da API para lidar com as requisições de atualização.
 
-A aplicação do lado do cliente é uma Single Page Application (SPA) construída com as tecnologias mais modernas para garantir uma experiência de usuário rápida e interativa.
-
-- **Framework**: [Next.js 14](https://nextjs.org/docs)
-- **Linguagem**: [TypeScript](https://www.typescriptlang.org/docs/)
-- **Estilização**: [Tailwind CSS](https://tailwindcss.com/docs)
-- **Autenticação**: [Firebase Authentication](https://firebase.google.com/docs/auth)
-- **Componentes UI**: [Shadcn UI](https://ui.shadcn.com/), Radix UI, Headless UI
-- **Gerenciamento de Estado**: React Hooks e Context API
-- **Comunicação com API**: Axios e Fetch API
-
-### **Back-End**
-
-O serviço do back-end é responsável pela lógica de negócios, acesso ao banco de dados e por servir os dados para o front-end através de uma API RESTful.
-
-- **Runtime**: [Node.js](https://nodejs.org/)
-- **Framework**: [Express.js](https://expressjs.com/)
-- **Linguagem**: JavaScript (ESM)
-- **Banco de Dados**: [PostgreSQL](https://www.postgresql.org/docs/)
-- **ORM/Driver**: [Node-Postgres (pg)](https://node-postgres.com/)
+-   **Front-end**:
+    -   `front-end/src/app/dashboard/MeuPerfil/_components/PerfilForm.tsx`: Componente que renderiza o formulário para alterar nome e e-mail.
+    -   `front-end/src/app/dashboard/MeuPerfil/_components/PerfilFormSenha.tsx`: Componente com o formulário para alteração de senha.
+    -   `front-end/src/services/tecnicos.service.ts`: Camada de serviço que faz a comunicação (chamadas `fetch`/`axios`) com a API do back-end.
 
 ---
 
-## 3. Estrutura do Projeto
+## 3. Lógica do Back-end (API)
 
-O projeto é organizado em duas pastas principais: `front-end` e `back-end`.
+A principal alteração ocorreu na rota `PUT /tecnicos/:id`.
 
-```
-SaaSDTI/
-├── back-end/
-│   ├── db/
-│   │   ├── comandos/     # Scripts SQL para popular o banco
-│   │   ├── tables/       # Definições das tabelas do banco
-│   │   └── db.js         # Configuração da conexão com o banco
-│   ├── routes/           # Definições das rotas da API
-│   ├── server.js         # Ponto de entrada principal do servidor
-│   ├── .env              # Arquivo de variáveis de ambiente
-│   └── package.json      # Dependências do back-end
-│
-└── front-end/
-    ├── src/
-    │   ├── app/          # Rotas, páginas e layouts (App Router)
-    │   ├── components/   # Componentes React reutilizáveis
-    │   ├── constants/    # Constantes da aplicação (ex: rotas da API)
-    │   ├── hooks/        # Hooks React customizados
-    │   ├── lib/          # Funções utilitárias e configuração de libs (Firebase)
-    │   ├── models/       # Interfaces e tipos TypeScript para os dados
-    │   └── services/     # Funções para comunicação com a API
-    ├── public/           # Arquivos estáticos
-    ├── next.config.ts    # Configuração do Next.js
-    └── package.json      # Dependências do front-end
-```
+### Funcionamento
+
+A rota foi desenhada para ser flexível e segura, lidando com atualizações parciais. Ela não exige que todos os dados do técnico sejam enviados a cada requisição.
+
+1.  **Busca do Técnico**: Independentemente do que será atualizado, a rota primeiro busca o técnico no banco de dados pelo `id` para garantir que ele exista.
+
+2.  **Atualização de Dados (Nome/Email)**: Se a requisição contém apenas `nome` e/ou `email`, a rota monta uma consulta SQL dinâmica para atualizar somente esses campos.
+
+3.  **Atualização de Senha (Com Segurança)**:
+    -   Para alterar a senha, a requisição **obrigatoriamente** precisa conter dois campos: `senha` (a nova senha) e `senhaAtual` (a senha antiga).
+    -   O back-end primeiro verifica se o campo `senhaAtual` foi enviado. Se não, retorna um erro.
+    -   Em seguida, ele usa a função `bcrypt.compare` para comparar a `senhaAtual` enviada pelo usuário com a senha criptografada (`hash`) que está salva no banco de dados.
+    -   **Se a senha atual não for válida**, a operação é interrompida e um erro `401 (Não Autorizado)` é retornado, protegendo a conta contra alterações indevidas.
+    -   **Se a senha for válida**, a nova senha é criptografada com `bcrypt.hash` e então a consulta de atualização é montada.
+
+4.  **Construção Dinâmica da Query**: A consulta `UPDATE` é montada dinamicamente, incluindo apenas os campos que foram enviados na requisição. Isso torna a rota eficiente e adaptável a diferentes cenários de atualização.
+
+5.  **Tratamento de Erros**: A rota está preparada para retornar status e mensagens de erro claras para diferentes situações:
+    -   `404 Not Found`: Se o técnico com o `id` fornecido não existe.
+    -   `401 Unauthorized`: Se a `senhaAtual` estiver incorreta.
+    -   `409 Conflict`: Se o novo `email` enviado já estiver em uso por outro técnico.
+    -   `500 Internal Server Error`: Para qualquer outra falha inesperada no servidor.
 
 ---
 
-## 4. Guia de Instalação e Execução
+## 4. Lógica do Front-end
 
-Siga os passos abaixo para configurar e executar o ambiente de desenvolvimento completo.
+No front-end, a principal decisão de design foi separar a atualização de dados do perfil da atualização de senha para melhorar a experiência do usuário.
 
-### **Pré-requisitos**
+### Separação de Responsabilidades
 
-- **Node.js**: v18.x ou superior
-- **PostgreSQL**: v12 ou superior
-- **npm** ou **yarn**
+-   **`PerfilForm.tsx`**: Este componente agora é responsável **apenas** por atualizar o nome e o e-mail. Ele tem seu próprio formulário e um botão "Salvar Alterações".
+-   **`PerfilFormSenha.tsx`**: Este componente é focado **apenas** na alteração da senha. Ele possui seu próprio formulário e um botão "Atualizar Senha".
 
-### **4.1. Configuração do Back-End**
+Essa separação evita confusão. O usuário realiza uma ação de cada vez, e os botões têm responsabilidades claras.
 
-1.  **Navegue até a pasta do back-end:**
-    ```bash
-    cd back-end
-    ```
+### Fluxo de Dados
 
-2.  **Crie o arquivo de ambiente `.env`** na raiz da pasta `back-end` e preencha com as credenciais do seu banco de dados PostgreSQL:
-    ```env
-    DB_USER=seu_usuario_db
-    DB_PASSWORD=sua_senha_db
-    DB_HOST=localhost
-    DB_PORT=5432
-    DB_DATABASE=seu_banco_de_dados
-    PORT=3001
-    ```
+1.  **Carregamento da Página**: Ao entrar na tela "Meu Perfil", os dados atuais do técnico (nome e e-mail) são carregados do back-end e exibidos nos campos do formulário.
 
-3.  **Instale as dependências:**
-    ```bash
-    npm install
-    ```
+2.  **Atualizando o Perfil**:
+    -   O usuário altera o nome e/ou e-mail.
+    -   Ao clicar em "Salvar Alterações", a função `atualizarTecnicoDados` do serviço é chamada, enviando um payload para a API contendo apenas os campos `nome` e `email`.
 
-4.  **Inicie o servidor do back-end:**
-    ```bash
-    npm run dev
-    ```
-    O servidor estará disponível em `http://localhost:3001`.
+3.  **Atualizando a Senha**:
+    -   O usuário preenche os campos "Senha Atual", "Nova Senha" e "Confirmar Nova Senha".
+    -   O componente realiza validações iniciais (ex: se a nova senha e a confirmação são iguais).
+    -   Ao clicar em "Atualizar Senha", a função `atualizarTecnicoDados` é chamada, mas desta vez com um payload contendo os campos `senha` e `senhaAtual`.
 
-### **4.2. Configuração do Front-End**
-
-1.  **Abra um novo terminal e navegue até a pasta do front-end:**
-    ```bash
-    cd front-end
-    ```
-
-2.  **Instale as dependências:**
-    ```bash
-    npm install
-    ```
-
-3.  **Inicie o servidor de desenvolvimento do front-end:**
-    ```bash
-    npm run dev
-    ```
-    A aplicação estará disponível em `http://localhost:3000`.
-
----
-
-## 5. Endpoints da API (Back-End)
-
-O back-end expõe os seguintes endpoints para gerenciamento dos recursos:
-
-#### **Ordens de Serviço (`/ordens`, `/os`)**
-- `GET /os`: Lista todas as ordens de serviço.
-- `POST /ordens`: Cria uma nova ordem de serviço.
-
-#### **Setores (`/setores`)**
-- `GET /setores`: Lista todos os setores.
-
-#### **Estoque (`/estoque`)**
-- `GET /estoque`: Lista todos os itens em estoque.
-- `POST /estoque`: Adiciona um novo item ao estoque.
-
-#### **Retirada de Estoque (`/retirada-estoque`)**
-- `POST /retirada-estoque`: Realiza a retirada de um item do estoque e o move para a tabela de retiradas.
-- `GET /retirada-estoque`: Lista todos os itens retirados.
-
-#### **Técnicos (`/tecnicos`)**
-- `GET /tecnicos`: Lista todos os técnicos.
-
-#### **Marcas (`/marcas`)**
-- `GET /marcas`: Lista todas as marcas.
-- `POST /marcas`: Adiciona uma nova marca.
-- `GET /marcas/:id`: Obtém uma marca por ID.
-
-#### **Equipamentos (`/equipamentos`)**
-- `GET /equipamentos`: Lista todos os tipos de equipamentos.
-- `POST /equipamentos`: Adiciona um novo tipo de equipamento.
-- `GET /equipamentos/:id`: Obtém um equipamento por ID.
-
-#### **Lixão (`/lixao`)**
-- `GET /lixao`: Lista todos os itens no lixão.
-- `POST /lixao`: Adiciona um item ao lixão.
-- `PUT /lixao/:id`: Atualiza um item no lixão.
-- `DELETE /lixao/:id`: Remove um item do lixão.
-
----
-
-## 6. Banco de Dados
-
-O sistema utiliza PostgreSQL como banco de dados. As tabelas são criadas automaticamente quando o servidor back-end é iniciado.
-
-- **Tabelas Principais**:
-  - `ordens_servico`: Armazena as ordens de serviço.
-  - `estoque`: Gerencia os itens disponíveis.
-  - `retirada_estoque`: Registra os itens retirados do estoque.
-  - `lixao`: Registra itens danificados ou para descarte.
-  - `setores`: Lista de setores da defensoria.
-  - `tecnicos`: Lista de técnicos responsáveis.
-  - `marcas`: Marcas dos equipamentos.
-  - `equipamentos`: Tipos de equipamentos (ex: Notebook, Monitor).
-  - `servidores`, `defensores`, `estagiarios`: Tabelas para gerenciamento de pessoal.
-
-- **Scripts de Inserção**:
-  - A pasta `back-end/db/comandos/` contém scripts SQL para popular as tabelas com dados iniciais (setores, equipamentos, etc.), facilitando a configuração inicial do ambiente.
-
----
-
-## 7. Diretrizes de Desenvolvimento
-
-- **Estilo de Código**: Siga as convenções padrão para JavaScript/TypeScript e React/Node.js.
-- **Commits**: Escreva mensagens de commit claras e significativas.
-- **Error Handling**: A API utiliza códigos de status HTTP padrão. O front-end deve tratar as respostas de erro adequadamente, exibindo mensagens amigáveis ao usuário.
-- **Segurança**: As credenciais e chaves de API são gerenciadas por meio de variáveis de ambiente (`.env`). As queries ao banco de dados são parametrizadas para prevenir SQL Injection.
-
+Ambas as ações utilizam a mesma rota `PUT /tecnicos/:id` no back-end, que, como explicado acima, é inteligente o suficiente para lidar com os dois tipos de requisição.
