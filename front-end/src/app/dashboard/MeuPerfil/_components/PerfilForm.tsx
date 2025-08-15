@@ -89,7 +89,7 @@ export function MeuPerfilForm() {
       </form>
 
       <div className="mt-6">
-        <h3 className="text-lg font-medium">Alterar Senha</h3>
+        <h3 className="text-lg font-medium mb-2">Alterar Senha</h3>
         <PerfilFormSenha />
       </div>
     </div>

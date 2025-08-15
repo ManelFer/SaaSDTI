@@ -96,8 +96,8 @@ export function PerfilFormSenha() {
           />
         </div>
       </div>
-      <div className="col-span-2">
-        <Button type="submit" className="w-full">
+      <div className="md:col-span-2 flex justify-end">
+        <Button type="submit" className="bg-[#257432] hover:bg-green-600 hover:scale-105 flex items-center gap-2">
           Atualizar Senha
         </Button>
       </div>
