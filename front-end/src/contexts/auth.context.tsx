@@ -36,7 +36,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         const decodedUser = jwtDecode<User>(token);
         setUser(decodedUser);
       } catch (error) {
-        console.error('Invalid token');
+        
+        console.error('Invalid token', error);
         localStorage.removeItem('token');
       }
     }

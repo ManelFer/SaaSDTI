@@ -39,6 +39,7 @@ export function OrdemDeServicoTable({
       await deletarOrdemServico(id);
       onOrdemDeleted(id);
     } catch (error) {
+      console.error("Erro ao excluir ordem de serviço:", error);
       toast.error("Erro ao excluir ordem de serviço.");
     }
   };

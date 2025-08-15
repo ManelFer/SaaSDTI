@@ -27,27 +27,27 @@ import { SquarePen } from "lucide-react";
 import { updateOrdem } from "@/services/ordens.service";
 
 interface AtualizacaoOrdemProps {
-  ordem: any;
+  ordem: any | undefined;
   onUpdate: () => void;
 }
 
 export function AtualizacaoOrdem({ ordem, onUpdate }: AtualizacaoOrdemProps) {
-    const [setor, setSetor] = useState(ordem.setor_id || "");
-    const [tecnico, setTecnico] = useState(ordem.tecnico_responsavel_id || "");
-    const [numero_os, setNumeroOs] = useState(ordem.numero_os || "");
-    const [data_abertura, setDataAbertura] = useState(ordem.data_abertura || "");
-    const [solicitante, setSolicitante] = useState(ordem.solicitante || "");
-    const [patrimonio, setPatrimonio] = useState(ordem.patrimonio || "");
-    const [tipo_falha, setTipoFalha] = useState(ordem.tipo_falha || "");
-    const [solucao_tecnica, setSolucaoTecnica] = useState(ordem.solucao_tecnica || "");
-    const [data_recolhimento, setDataRecolhimento] = useState(ordem.data_recolhimento || "");
-    const [data_devolucao, setDataDevolucao] = useState(ordem.data_devolucao || "");
-    const [data_fechamento, setDataFechamento] = useState(ordem.data_fechamento || "");
-    const [status, setStatus] = useState(ordem.status || "");
+    const [setor, setSetor] = useState(ordem?.setor_id || "");
+    const [tecnico, setTecnico] = useState(ordem?.tecnico_responsavel_id || "");
+    const [numero_os, setNumeroOs] = useState(ordem?.numero_os || "");
+    const [data_abertura, setDataAbertura] = useState(ordem?.data_abertura || "");
+    const [solicitante, setSolicitante] = useState(ordem?.solicitante || "");
+    const [patrimonio, setPatrimonio] = useState(ordem?.patrimonio || "");
+    const [tipo_falha, setTipoFalha] = useState(ordem?.tipo_falha || "");
+    const [solucao_tecnica, setSolucaoTecnica] = useState(ordem?.solucao_tecnica || "");
+    const [data_recolhimento, setDataRecolhimento] = useState(ordem?.data_recolhimento || "");
+    const [data_devolucao, setDataDevolucao] = useState(ordem?.data_devolucao || "");
+    const [data_fechamento, setDataFechamento] = useState(ordem?.data_fechamento || "");
+    const [status, setStatus] = useState(ordem?.status || "");
 
     const handleSubmit = async () => {
         try {
-            if (ordem.id !== undefined) {
+            if (ordem?.id !== undefined) {
                 const updatedOrdem = {
                     setor_id: Number(setor),
                     tecnico_responsavel_id: Number(tecnico),

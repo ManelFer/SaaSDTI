@@ -5,7 +5,6 @@ import { Menu, Transition } from "@headlessui/react";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
 import { auth } from "@/lib/firebaseConfig";
 import { signOut } from "firebase/auth";
-import MeuPerfilPage from "@/app/dashboard/MeuPerfil/page";
 
 interface ProfileMenuProps {
   isOpen: boolean;

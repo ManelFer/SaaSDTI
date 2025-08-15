@@ -23,7 +23,7 @@ export default function Header() {
               className="rounded-full mt-2"
             />
             <h1 className="text-2xl font-bold text-[#066333] mt-2">
-              (CoTI)
+              CoTI
             </h1>
           </div>
         </div>
