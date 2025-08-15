@@ -1,16 +1,14 @@
 'use client';
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { useState } from "react";
-import { User2, Lock } from "lucide-react";
+import { User2} from "lucide-react";
 import { MeuPerfilForm } from "./_components/PerfilForm";
 import { PerfilAvatar } from "./_components/PerfilAvatar";
-import { PerfilFormSenha } from "./_components/PerfilFormSenha";
 
 
 export default function MeuPerfilPage() {
   const tabs = [
     { id: 'perfil', name: 'Perfil', icon: User2 },
-    { id: 'senha', name: 'Senha', icon: Lock },
   ];
 
   const [activeTab, setActiveTab] = useState('perfil');
@@ -46,14 +44,7 @@ export default function MeuPerfilPage() {
 
               {/* Formulário */}
               <MeuPerfilForm />
-
-              {/* Botão de salvar */}
-              
             </>
-          )}
-
-          {activeTab === 'senha' && (
-            <PerfilFormSenha />
           )}
         </div>
       </div>

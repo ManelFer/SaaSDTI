@@ -10,13 +10,13 @@ import {
 } from "@/services/tecnicos.service";
 import { Button } from "@/components/ui/button";
 import { toast } from "react-toastify";
+import { PerfilFormSenha } from "./PerfilFormSenha";
 
 export function MeuPerfilForm() {
   const { user } = useAuth(true);
   const [tecnicoNome, setTecnicoNome] = useState("");
   const [tecnicoEmail, setTecnicoEmail] = useState("");
 
-  // Buscar dados do técnico
   useEffect(() => {
     const fetchTecnicoData = async () => {
       if (user?.id) {
@@ -34,8 +34,8 @@ export function MeuPerfilForm() {
     fetchTecnicoData();
   }, [user?.id]);
 
-  // Função para atualizar os dados
-  const handleSubmit = async () => {
+  const handleProfileSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (!user?.id) return;
 
     try {
@@ -51,10 +51,9 @@ export function MeuPerfilForm() {
     }
   };
 
-
   return (
     <div>
-      <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <form onSubmit={handleProfileSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4 border-b pb-6">
         <div>
           <Label className="mb-2">Nome Completo</Label>
           <div className="relative">
@@ -79,30 +78,19 @@ export function MeuPerfilForm() {
             />
           </div>
         </div>
+        <div className="md:col-span-2 flex justify-end">
+            <Button
+            type="submit"
+            className="bg-[#257432] hover:bg-green-600 hover:scale-105 flex items-center gap-2"
+            >          
+            Salvar Alterações
+            </Button>
+        </div>
       </form>
 
-      <div className="mt-6 flex justify-end">
-        <Button
-          onClick={handleSubmit}
-          className="bg-[#257432] hover:bg-green-600 hover:scale-105 flex items-center gap-2" 
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M17 16v4H7v-4M12 12v8m-6 0h12"
-            />
-          </svg>
-          Salvar Alterações
-        </Button>
+      <div className="mt-6">
+        <h3 className="text-lg font-medium">Alterar Senha</h3>
+        <PerfilFormSenha />
       </div>
     </div>
   );

@@ -32,7 +32,7 @@ router.post('/tecnicos', async (req, res) => {
   const { nome, email, senha } = req.body;
 
   if (!nome || !email || !senha) {
-    return res.status(400).json({ error: 'Nome, email and senha are required' });
+    return res.status(400).json({ error: 'Nome, email e senha são obrigatórios' });
   }
 
   try {
@@ -40,48 +40,78 @@ router.post('/tecnicos', async (req, res) => {
     const hashedPassword = await bcrypt.hash(senha, salt);
 
     const result = await db.query(
-      'INSERT INTO tecnicos (nome, email, senha) VALUES ($1, $2, $3) RETURNING *',
+      'INSERT INTO tecnicos (nome, email, senha) VALUES ($1, $2, $3) RETURNING id, nome, email, created_at, updated_at',
       [nome, email, hashedPassword]
     );
 
     res.status(201).json(result.rows[0]);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    if (err.code === '23505') {
+        return res.status(409).json({ error: 'O e-mail fornecido já está em uso.' });
+    }
+    res.status(500).json({ error: 'Erro interno do servidor ao criar o técnico.' });
   }
 });
 
 router.put('/tecnicos/:id', async (req, res) => {
   const { id } = req.params;
-  const { nome, email, senha } = req.body;
-
-  if (!nome || !email) {
-    return res.status(400).json({ error: 'Nome e email são obrigatórios' });
-  }
+  const { nome, email, senha, senhaAtual } = req.body;
 
   try {
-    let result;
-    if (senha) {
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(senha, salt);
-      result = await db.query(
-        'UPDATE tecnicos SET nome = $1, email = $2, senha = $3 WHERE id = $4 RETURNING *',
-        [nome, email, hashedPassword, id]
-      );
-    } else {
-      result = await db.query(
-        'UPDATE tecnicos SET nome = $1, email = $2 WHERE id = $3 RETURNING *',
-        [nome, email, id]
-      );
-    }
-
-    if (result.rows.length === 0) {
+    const userResult = await db.query('SELECT * FROM tecnicos WHERE id = $1', [id]);
+    if (userResult.rows.length === 0) {
       return res.status(404).json({ error: 'Técnico não encontrado' });
     }
+    const user = userResult.rows[0];
 
-    res.json(result.rows[0]);
+    const fieldsToUpdate = {};
+    if (nome) fieldsToUpdate.nome = nome;
+    if (email) fieldsToUpdate.email = email;
+
+    if (senha) {
+      if (!senhaAtual) {
+        return res.status(400).json({ error: 'A senha atual é necessária para definir uma nova senha.' });
+      }
+      const isMatch = await bcrypt.compare(senhaAtual, user.senha);
+      if (!isMatch) {
+        return res.status(401).json({ error: 'A senha atual está incorreta.' });
+      }
+      const salt = await bcrypt.genSalt(10);
+      fieldsToUpdate.senha = await bcrypt.hash(senha, salt);
+    }
+
+    const queryParts = [];
+    const queryValues = [];
+    let queryIndex = 1;
+
+    for (const [key, value] of Object.entries(fieldsToUpdate)) {
+        queryParts.push(`${key} = $${queryIndex++}`);
+        queryValues.push(value);
+    }
+
+    if (queryParts.length === 0) {
+        if (senhaAtual && !senha) {
+            return res.status(200).json({ message: "Senha atual verificada." });
+        }
+        return res.status(400).json({ error: 'Nenhum dado para atualizar.' });
+    }
+
+    queryValues.push(id);
+    const updateQuery = `UPDATE tecnicos SET ${queryParts.join(', ')} WHERE id = $${queryIndex} RETURNING *`;
+
+    const result = await db.query(updateQuery, queryValues);
+    
+    const { senha: _, ...tecnicoAtualizado } = result.rows[0];
+    return res.json(tecnicoAtualizado);
+
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    if (err.code === '23505') { // unique_violation
+        return res.status(409).json({ error: 'O e-mail fornecido já está em uso.' });
+    }
+    console.error(err);
+    return res.status(500).json({ error: 'Erro interno do servidor ao atualizar o técnico.' });
   }
 });
+
 
 export default router;

@@ -2,6 +2,10 @@ import { API_URL, API_ROUTES } from "@/constants/constante";
 import { Tecnico } from "@/models/tecnico.model";
 import axios from 'axios';
 
+type AtualizarTecnicoPayload = Partial<Tecnico> & {
+  senhaAtual?: string;
+}
+
 export async function buscarTecnico(): Promise<Tecnico> {
     const res = await fetch(API_URL + API_ROUTES.TECNICOS, {
         method: "GET",
@@ -35,7 +39,7 @@ export const buscarTecnicoPorId = async (id: number): Promise<Tecnico> => {
 };
 
 // update
-export const atualizarTecnicoDados = async (id: number, data: Partial<Tecnico>): Promise<Tecnico> => {
+export const atualizarTecnicoDados = async (id: number, data: AtualizarTecnicoPayload): Promise<Tecnico> => {
   try {
     const response = await axios.put(`${API_URL}${API_ROUTES.TECNICOS}/${id}`, data);
     const tecnico = response.data;
@@ -46,3 +50,5 @@ export const atualizarTecnicoDados = async (id: number, data: Partial<Tecnico>):
     throw error;
   }
 };
+
+
