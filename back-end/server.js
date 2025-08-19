@@ -10,6 +10,9 @@ import liRouter from './routes/lixao.route.js'; // importa suas rotas lixao
 import eqRouter from './routes/equipamento.route.js'; // importa suas rotas equipamentos
 import loRouter from './routes/login.route.js'; // importa suas rotas login
 import reRouter from './routes/retiradaEstoque.route.js';
+import deRouter from './routes/defensores.route.js';
+import etRouter from './routes/estagiarios.route.js';
+import svRouter from './routes/servidor.route.js';
 import { criarTabelas  }from './db/db.js'; // importa a função de criação de tabelas
 
 dotenv.config();
@@ -32,6 +35,9 @@ app.use('/', liRouter);
 app.use('/', eqRouter);
 app.use('/', loRouter);
 app.use('/', reRouter);
+app.use('/', deRouter);
+app.use('/', etRouter);
+app.use('/', svRouter);
 
 // Teste de conexão com o banco
 app.get('/ping', async (req, res) => {

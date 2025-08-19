@@ -29,10 +29,15 @@ router.get('/tecnicos/:id', async (req, res) => {
 });
 
 router.post('/tecnicos', async (req, res) => {
-  const { nome, email, senha } = req.body;
+  const { nome, email, senha, role } = req.body;
 
-  if (!nome || !email || !senha) {
-    return res.status(400).json({ error: 'Nome, email e senha são obrigatórios' });
+  if (!nome || !email || !senha || !role) {
+    return res.status(400).json({ error: 'Nome, email, senha e role são obrigatórios' });
+  }
+
+  const roleValue = role;
+  if (!['tecnico', 'admin'].includes(roleValue)) {
+    return res.status(400).json({ error: 'Role inválido. Deve ser "tecnico" ou "admin".' });
   }
 
   try {
@@ -40,8 +45,8 @@ router.post('/tecnicos', async (req, res) => {
     const hashedPassword = await bcrypt.hash(senha, salt);
 
     const result = await db.query(
-      'INSERT INTO tecnicos (nome, email, senha) VALUES ($1, $2, $3) RETURNING id, nome, email, created_at, updated_at',
-      [nome, email, hashedPassword]
+      'INSERT INTO tecnicos (nome, email, senha, role) VALUES ($1, $2, $3, $4) RETURNING id, nome, email, created_at, updated_at',
+      [nome, email, hashedPassword, roleValue]
     );
 
     res.status(201).json(result.rows[0]);
