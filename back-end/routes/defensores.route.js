@@ -1,6 +1,7 @@
 import express from 'express';
 import db from '../db/db.js';
 import validateToken from '../services/auth.guard.js';
+import { atualizarDefensor } from '../db/tables/defensor.js';
 
 const router = express.Router();
 
@@ -26,6 +27,18 @@ router.post('/defensores', async (req, res) => {
             [nome]
         );
         res.status(201).json(rows[0]);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+//put- atualizar um defensor
+router.put('/defensores/:id', async (req, res) => {
+    const { id } = req.params;
+    const { nome } = req.body;
+    try {
+        const updateDefensor = await atualizarDefensor(id, { nome });
+        res.json(updateDefensor);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

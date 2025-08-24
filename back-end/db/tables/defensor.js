@@ -37,7 +37,7 @@ export async function obterTodosDefensores() {
 }
 
 // UPDATE - Atualizar um defensor público
-export async function atualizarDefensor(id, nome) {
+export async function atualizarDefensor(id, { nome }) {
     const query = `
         UPDATE defensores
         SET nome = $1, updated_at = CURRENT_TIMESTAMP
