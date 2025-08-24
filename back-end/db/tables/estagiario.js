@@ -59,7 +59,7 @@ export function excluirEstagiario(id) {
 }
 
 // função para atualizar um estagiario
-export function atualizarEstagiario(id, nome) {
+export function atualizarEstagiario(id, { nome }) {
   const query = `
     UPDATE estagiarios
     SET nome = $1, updated_at = CURRENT_TIMESTAMP

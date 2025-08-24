@@ -1,6 +1,7 @@
 import express from 'express';
 import db from '../db/db.js';
 import validateToken from '../services/auth.guard.js';
+import { atualizarEstagiario } from '../db/tables/estagiario.js';
 
 const router = express.Router();
 
@@ -24,6 +25,18 @@ router.get('/estagiarios', async (req, res) => {
     try {
         const { rows } = await db.query('SELECT * FROM estagiarios ORDER BY id DESC');
         res.json(rows);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// put - metodo para atualizar estagiarios
+router.put('/estagiarios/:id', async (req, res) => {
+    const { id } = req.params;
+    const { nome } = req.body;
+    try {
+        const updateEstagiario = await atualizarEstagiario(id, { nome });
+        res.json(updateEstagiario);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
