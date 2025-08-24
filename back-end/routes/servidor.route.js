@@ -1,6 +1,7 @@
 import express from 'express';
 import db from '../db/db.js';
 import validateToken from '../services/auth.guard.js';
+import { atualizarServidor } from '../db/tables/servidor.js';
 
 const router = express.Router();
 
@@ -24,6 +25,18 @@ router.get('/servidores', async (req, res) => {
     try {
         const { rows } = await db.query('SELECT * FROM servidores ORDER BY id DESC');
         res.json(rows);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// update - atualizar servidores
+router.put('/servidores/:id', async (req, res) => {
+    const { id } = req.params;
+    const { nome } = req.body;
+    try {
+        const updateServidor = await atualizarServidor(id, { nome });
+        res.json(updateServidor);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

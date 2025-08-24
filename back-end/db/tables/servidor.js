@@ -50,7 +50,7 @@ export async function deletarServidorPorId(id) {
 
 
 // função para atualizar um servidor
-export async function atualizarServidor(id, nome) {
+export async function atualizarServidor(id, { nome }) {
     const query = `
         UPDATE servidores
         SET nome = $1, updated_at = CURRENT_TIMESTAMP
