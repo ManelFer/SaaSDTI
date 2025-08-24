@@ -4,6 +4,7 @@ import { CadastroMarcas } from "./_components/cadastroMarcas";
 import { CadastroEquipamentos } from "./_components/cadastroEquipamentos";
 import { TableMarcas } from "./_components/tableMarcas";
 import { TableEquipamentos } from "./_components/tableEquipamentos";
+import { CadastroUsuario } from "./_components/cadastroUsuario";
 
 
 export default function CadastroFullPage() {
@@ -32,24 +33,35 @@ export default function CadastroFullPage() {
             </p>
             <CadastroEquipamentos />
           </div>
+
+          {/* card 3 */}
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+              Cadastro de Usuários
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300 mb-4">
+              Adicione os usuários do sistema.
+            </p>
+            <CadastroUsuario />
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
           {/* table 1 */}
-          <div>
+          {/* <div>
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
               Lista de Marcas
             </h2>
             <TableMarcas />
-          </div>
+          </div> */}
 
           {/* table 2 */}
           <div >
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            {/* <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
               Lista de Equipamentos
-            </h2>
+            </h2> */}
             {/* Aqui você pode adicionar a tabela de equipamentos */}
-            <TableEquipamentos />
+            {/* <TableEquipamentos /> */}
           </div>
         </div>
       </div>
