@@ -1,76 +1,77 @@
-# Documentação da Funcionalidade: Atualização de Perfil de Técnico
+# Documentação Detalhada das Tarefas
 
-## 1. Visão Geral
-
-O objetivo desta tarefa foi implementar e corrigir a funcionalidade que permite a um técnico logado no sistema atualizar suas próprias informações de perfil (nome e e-mail) e alterar sua senha de forma segura. A solução abrange tanto o back-end (a API) quanto o front-end (a interface do usuário).
+Este documento detalha as alterações e implementações realizadas no sistema, abrangendo correções de segurança, melhorias em rotas de API e a criação de um novo fluxo de cadastro de usuários.
 
 ---
 
-## 2. Componentes Envolvidos
+## 1. Correção de Segurança na Rota de Atualização (`PUT /usuarios/:id`)
 
-Os seguintes arquivos foram modificados ou tiveram sua lógica central implementada durante a resolução desta tarefa:
+- **Problema Identificado:** A rota `PUT /usuarios/:id`, responsável por atualizar os dados de um usuário, não possuía nenhuma verificação de autenticação. Isso permitia que qualquer pessoa, mesmo sem fazer login, pudesse alterar informações de usuários no sistema, representando uma falha de segurança crítica.
 
--   **Back-end**:
-    -   `back-end/routes/tecnicos.js`: Contém a lógica da API para lidar com as requisições de atualização.
-
--   **Front-end**:
-    -   `front-end/src/app/dashboard/MeuPerfil/_components/PerfilForm.tsx`: Componente que renderiza o formulário para alterar nome e e-mail.
-    -   `front-end/src/app/dashboard/MeuPerfil/_components/PerfilFormSenha.tsx`: Componente com o formulário para alteração de senha.
-    -   `front-end/src/services/tecnicos.service.ts`: Camada de serviço que faz a comunicação (chamadas `fetch`/`axios`) com a API do back-end.
+- **Solução Aplicada:** Foi adicionada à rota a função de verificação `validateToken`, que já era utilizada em outras rotas do sistema. Agora, apenas requisições com um token de autenticação válido no cabeçalho `Authorization` podem atualizar um usuário.
 
 ---
 
-## 3. Lógica do Back-end (API)
+## 2. Melhoria na Rota de Listagem de Usuários (`GET /usuarios`)
 
-A principal alteração ocorreu na rota `PUT /tecnicos/:id`.
+- **Requisito:** A rota `GET /usuarios` deveria retornar não apenas o nome e o cargo, mas todos os dados do perfil do usuário, que estão armazenados em tabelas separadas (`defensores`, `servidores`, `estagiarios`).
 
-### Funcionamento
+- **Solução Aplicada:** A consulta SQL na função `obterTodosUsuarios` foi reestruturada.
+    - Utilizando `LEFT JOIN`, a tabela `usuarios` foi conectada às tabelas `defensores`, `servidores` e `estagiarios`.
+    - Com o comando `json_build_object` do PostgreSQL, foi criado um campo aninhado chamado `details` na resposta da API.
+    - Este objeto `details` contém todos os campos (`id`, `nome`, `created_at`, `updated_at`) do perfil correspondente ao cargo do usuário, resultando em uma resposta JSON mais rica e organizada.
 
-A rota foi desenhada para ser flexível e segura, lidando com atualizações parciais. Ela não exige que todos os dados do técnico sejam enviados a cada requisição.
-
-1.  **Busca do Técnico**: Independentemente do que será atualizado, a rota primeiro busca o técnico no banco de dados pelo `id` para garantir que ele exista.
-
-2.  **Atualização de Dados (Nome/Email)**: Se a requisição contém apenas `nome` e/ou `email`, a rota monta uma consulta SQL dinâmica para atualizar somente esses campos.
-
-3.  **Atualização de Senha (Com Segurança)**:
-    -   Para alterar a senha, a requisição **obrigatoriamente** precisa conter dois campos: `senha` (a nova senha) e `senhaAtual` (a senha antiga).
-    -   O back-end primeiro verifica se o campo `senhaAtual` foi enviado. Se não, retorna um erro.
-    -   Em seguida, ele usa a função `bcrypt.compare` para comparar a `senhaAtual` enviada pelo usuário com a senha criptografada (`hash`) que está salva no banco de dados.
-    -   **Se a senha atual não for válida**, a operação é interrompida e um erro `401 (Não Autorizado)` é retornado, protegendo a conta contra alterações indevidas.
-    -   **Se a senha for válida**, a nova senha é criptografada com `bcrypt.hash` e então a consulta de atualização é montada.
-
-4.  **Construção Dinâmica da Query**: A consulta `UPDATE` é montada dinamicamente, incluindo apenas os campos que foram enviados na requisição. Isso torna a rota eficiente e adaptável a diferentes cenários de atualização.
-
-5.  **Tratamento de Erros**: A rota está preparada para retornar status e mensagens de erro claras para diferentes situações:
-    -   `404 Not Found`: Se o técnico com o `id` fornecido não existe.
-    -   `401 Unauthorized`: Se a `senhaAtual` estiver incorreta.
-    -   `409 Conflict`: Se o novo `email` enviado já estiver em uso por outro técnico.
-    -   `500 Internal Server Error`: Para qualquer outra falha inesperada no servidor.
+**Exemplo da Nova Resposta da API:**
+```json
+[
+  {
+    "id": 1,
+    "cargo": "defensor",
+    "created_at": "...",
+    "updated_at": "...",
+    "details": {
+      "id": 101,
+      "nome": "Nome do Defensor",
+      "created_at": "...",
+      "updated_at": "..."
+    }
+  }
+]
+```
 
 ---
 
-## 4. Lógica do Front-end
+## 3. Implementação do Fluxo de Cadastro de Usuário
 
-No front-end, a principal decisão de design foi separar a atualização de dados do perfil da atualização de senha para melhorar a experiência do usuário.
+O cadastro de usuário foi implementado em duas fases, sendo a segunda a versão final.
 
-### Separação de Responsabilidades
+### Fase 1: Associar Pessoa Existente (Lógica Descontinuada)
 
--   **`PerfilForm.tsx`**: Este componente agora é responsável **apenas** por atualizar o nome e o e-mail. Ele tem seu próprio formulário e um botão "Salvar Alterações".
--   **`PerfilFormSenha.tsx`**: Este componente é focado **apenas** na alteração da senha. Ele possui seu próprio formulário e um botão "Atualizar Senha".
+Inicialmente, o formulário foi construído para associar uma pessoa já existente no banco de dados (um defensor, servidor ou estagiário) a uma nova conta de usuário. O formulário continha dois campos de seleção: um para o cargo e outro para o nome da pessoa.
 
-Essa separação evita confusão. O usuário realiza uma ação de cada vez, e os botões têm responsabilidades claras.
+### Fase 2: Criar Nova Pessoa e Usuário (Lógica Atual)
 
-### Fluxo de Dados
+O requisito foi alterado para permitir a criação de um novo usuário digitando o nome manualmente.
 
-1.  **Carregamento da Página**: Ao entrar na tela "Meu Perfil", os dados atuais do técnico (nome e e-mail) são carregados do back-end e exibidos nos campos do formulário.
+#### **Alterações no Back-end:**
 
-2.  **Atualizando o Perfil**:
-    -   O usuário altera o nome e/ou e-mail.
-    -   Ao clicar em "Salvar Alterações", a função `atualizarTecnicoDados` do serviço é chamada, enviando um payload para a API contendo apenas os campos `nome` e `email`.
+- **Nova Rota:** Foi criada a rota `POST /usuarios/novo`.
+- **Lógica:**
+    1. A rota recebe um `cargo` (ex: "servidor") e um `nome` (ex: "João da Silva").
+    2. Com base no `cargo`, ela primeiro insere o `nome` na tabela correspondente (ex: `servidores`), criando um novo registro de pessoa.
+    3. Em seguida, ela utiliza o `id` dessa pessoa recém-criada para inserir o registro na tabela `usuarios`, efetivando a criação do usuário no sistema.
 
-3.  **Atualizando a Senha**:
-    -   O usuário preenche os campos "Senha Atual", "Nova Senha" e "Confirmar Nova Senha".
-    -   O componente realiza validações iniciais (ex: se a nova senha e a confirmação são iguais).
-    -   Ao clicar em "Atualizar Senha", a função `atualizarTecnicoDados` é chamada, mas desta vez com um payload contendo os campos `senha` e `senhaAtual`.
+#### **Alterações no Front-end (`cadastroUsuario.tsx`):**
 
-Ambas as ações utilizam a mesma rota `PUT /tecnicos/:id` no back-end, que, como explicado acima, é inteligente o suficiente para lidar com os dois tipos de requisição.
+- **Componente Simplificado:** A lógica para buscar as listas de nomes foi removida.
+- **Formulário Atualizado:** O formulário agora contém:
+    1. Um campo de seleção para o **Cargo**.
+    2. Um campo de texto (`<input type="text">`) para digitar o **Nome** manualmente.
+- **Chamada à API:** A função de submissão foi ajustada para enviar os dados (`cargo` e `nome`) para a nova rota `POST /usuarios/novo`.
+- **Autenticação:** A lógica de autenticação foi corrigida para ler o token diretamente do `localStorage` e construir o cabeçalho `Authorization` para as chamadas `axios`.
+
+---
+
+## Resumo do Fluxo Final
+
+O sistema agora permite a criação de novos usuários de forma centralizada e segura, com um fluxo de trabalho claro e uma API robusta para dar suporte às operações do front-end.

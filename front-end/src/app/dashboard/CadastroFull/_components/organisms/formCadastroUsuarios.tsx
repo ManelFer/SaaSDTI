@@ -9,11 +9,9 @@ interface Setor {
 
 
 interface FormUsuarioProps {
-  form : {nome: string; email: string; setor: string; posicao: string;}
-  setForm: React.Dispatch<React.SetStateAction<{
+  form : {nome: string; posicao: string;}
+  setForm: React.Dispatch<React.SetStateAction<{    
     nome: string;
-    email: string;
-    setor: string;
     posicao: string;
   }>>;
 }
@@ -47,31 +45,6 @@ export function FormUsuario({ form, setForm }: FormUsuarioProps) {
                     value={form.nome}
                     onChange={(e) => setForm({ ...form, nome: e.target.value })}
                 />
-            </div>
-            <div>
-
-                <Input
-                    id="email"
-                    placeholder="Email do usuário"
-                    className="border border-gray-300 rounded-md mb-2 w-full"
-                    value={form.email}
-                    onChange={(e) => setForm({ ...form, email: e.target.value })}
-                />
-            </div>
-            <div>
-                <select
-                    id="setor"
-                    className="border border-gray-300 rounded-md mb-2 w-full"
-                    value={form.setor}
-                    onChange={(e) => setForm({ ...form, setor: e.target.value })}
-                >
-                    <option value="" >Selecione um setor</option>
-                    {setores.map((setor) => (
-                        <option key={setor.id} value={setor.id}>
-                            {setor.nome}
-                        </option>
-                    ))}
-                </select>
             </div>
             <div>
                 <Input
