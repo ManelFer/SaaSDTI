@@ -87,10 +87,10 @@ export default function EstoquePage() {
     if (Loading) {
       const fetchEstoque = async () => {
         const estoqueData = await buscarEstoque();
-        console.log("estoqueData", estoqueData);
+        
         
         setEstoque(Array.isArray(estoqueData) ? estoqueData : [estoqueData]);
-        console.log("estoque", estoqueData);
+        
         setLoading(false);
       };
       fetchEstoque();

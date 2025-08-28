@@ -57,7 +57,7 @@ export function CadastroL() {
         id: 0,
       };
 
-      console.log("Enviando dados:", payload);
+      
 
       const novoItem = await createLixao(payload);
       if (!novoItem) {

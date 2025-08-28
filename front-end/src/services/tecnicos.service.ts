@@ -43,7 +43,7 @@ export const atualizarTecnicoDados = async (id: number, data: AtualizarTecnicoPa
   try {
     const response = await axios.put(`${API_URL}${API_ROUTES.TECNICOS}/${id}`, data);
     const tecnico = response.data;
-    console.log(`Técnico com ID ${id} atualizado:`, tecnico);
+    
     return tecnico as Tecnico;
   } catch (error) {
     console.error(`Erro ao atualizar técnico com ID ${id}:`, error);

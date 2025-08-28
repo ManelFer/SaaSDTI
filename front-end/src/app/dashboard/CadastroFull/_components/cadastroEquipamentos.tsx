@@ -38,7 +38,7 @@ export function CadastroEquipamentos() {
         } catch (error) {
             toast.error("Erro ao cadastrar equipamento");
             console.error("Erro ao cadastrar equipamento", error);
-            console.log("Dados do formulário", form);
+            
         }
     };
     useEffect(() => {

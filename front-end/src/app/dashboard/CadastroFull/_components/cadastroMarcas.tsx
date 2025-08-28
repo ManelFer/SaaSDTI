@@ -28,9 +28,9 @@ export function CadastroMarcas() {
       const cleanedForm = {
         ...form,
       };
-      console.log("Dados do formulário", cleanedForm);
+      
       const data = await createMarcas(cleanedForm);
-      console.log("Dados do estoque", data);
+      
       toast.success("Marca cadastrada com sucesso!");
       setMarcas([...marcas, data]);
       setForm({
@@ -39,7 +39,7 @@ export function CadastroMarcas() {
       setMarOpen(false); // Fecha o diálogo após salvar
     } catch (error) {
       console.error("Erro ao cadastrar marca", error);
-      console.log("Dados do formulário", form);
+      
       toast.error("Erro ao cadastrar marca. Tente novamente.");
     }
   };

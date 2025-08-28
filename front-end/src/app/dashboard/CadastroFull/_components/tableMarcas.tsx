@@ -33,7 +33,7 @@ export function TableMarcas() {
       const fetchMarcas = async() => {
         const marcasData = await buscarMarcas();
         setMarca(marcasData);
-        console.log("marcas", marcasData);
+        
       };
       fetchMarcas();
     }

@@ -27,7 +27,7 @@ export function NovaOrdem() {
 
   const handleSubmit = () => {
     // Aqui você pode enviar os dados para o backend, exibir toast etc.
-    console.log("Dados da OS:", form);
+    
     setIsOpen(false); // fecha o dialog após salvar
   };
 

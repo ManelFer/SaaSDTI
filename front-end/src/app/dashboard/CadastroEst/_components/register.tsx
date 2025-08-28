@@ -51,11 +51,11 @@ export function Register({ isEstOpen, setEstOpen }: RegisterProps) {
         quantidade: Number(form.quantidade),
       };
 
-      console.log("Enviando dados:", payload);
+      
 
       const data = await createEstoque(payload);
 
-      console.log("Dados do estoque", data);
+      
       toast.success("Equipamento cadastrado com sucesso!");
       setForm({
         item_id: '',
@@ -70,7 +70,7 @@ export function Register({ isEstOpen, setEstOpen }: RegisterProps) {
 
       setEstOpen(false); // fecha o dialog após salvar
     } catch (err) {
-      console.log("Erro de cadastro", err);
+      
       toast.error("Erro ao cadastrar equipamento. Tente novamente.");
     }
   };

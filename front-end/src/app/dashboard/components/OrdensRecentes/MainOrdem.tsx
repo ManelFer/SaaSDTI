@@ -26,8 +26,7 @@ export function MainOrdem() {
         setOrdens(ordensData);
         setSetores(setoresData);
         setTecnicos(tecnicosData);
-        console.log("Ordens recebidas:", ordensData);
-        console.log("Técnicos recebidos:", tecnicosData);
+        
       } catch (error) {
         console.error("Erro ao buscar dados:", error);
       } finally {
@@ -43,9 +42,9 @@ export function MainOrdem() {
   }
 
   function getTecnicoNome(id?: number) {
-    console.log("Buscando técnico com id:", id);
+    
     const tecnico = tecnicos.find((t) => t.id == id);
-    console.log("Técnico encontrado:", tecnico);
+    
     return tecnico?.nome || "Técnico desconhecido";
   }
 
