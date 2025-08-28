@@ -2,8 +2,6 @@
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { CadastroMarcas } from "./_components/cadastroMarcas";
 import { CadastroEquipamentos } from "./_components/cadastroEquipamentos";
-import { TableMarcas } from "./_components/tableMarcas";
-import { TableEquipamentos } from "./_components/tableEquipamentos";
 import { CadastroUsuario } from "./_components/cadastroUsuario";
 
 

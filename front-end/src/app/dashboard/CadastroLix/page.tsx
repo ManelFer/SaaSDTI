@@ -116,7 +116,7 @@ export default function TeamPage() {
     <DashboardLayout>
       <div className="space-y-6 rounded-lg p-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-800 ">Lixão</h1>
+          <h1 className="text-2xl font-bold text-gray-800 ">Leilão</h1>
           <Coleta />
           <CadastroL />
           <div className="relative">
@@ -143,7 +143,7 @@ export default function TeamPage() {
                 <TableHead>Lote</TableHead>
                 <TableHead>Descrição</TableHead>
                 <TableHead className="text-right">Quantidade</TableHead>
-                <TableHead className="text-right">Ações</TableHead>
+                <TableHead className="text-right">Atualização</TableHead>
               </TableRow>
             </TableHeader>
 

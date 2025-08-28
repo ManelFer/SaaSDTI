@@ -1,12 +1,4 @@
 import { Input } from "@/components/ui/input";
-import { buscarSetores} from "@/services/setores.service";
-import { useEffect, useState } from "react";
-
-interface Setor {
-  id: string;
-  nome: string;
-}
-
 
 interface FormUsuarioProps {
   form : {nome: string; posicao: string;}
@@ -17,24 +9,6 @@ interface FormUsuarioProps {
 }
 
 export function FormUsuario({ form, setForm }: FormUsuarioProps) {
-    const [setores, setSetores] = useState<Setor[]>([]);
-    
-    useEffect (() => {
-        async function fetchSetores() {
-            try {
-                const data = await buscarSetores();
-                setSetores(
-                    data.map((setor: any) => ({
-                        id: String(setor.id ?? ""),
-                        nome: setor.nome ?? ""
-                    }))
-                );
-            } catch (error) {
-                console.error("Erro ao buscar setores:", error);
-            }
-        }
-        fetchSetores();
-    }, []);
     return (
         <form>
             <div>

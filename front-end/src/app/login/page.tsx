@@ -19,7 +19,7 @@ export default function LoginPage() {
     setLoading(true); // Inicia o estado de carregamento
 
     try {
-      const response = await fetch('http://localhost:3001/login', {
+      const response = await fetch('http://10.0.1.164:3001/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

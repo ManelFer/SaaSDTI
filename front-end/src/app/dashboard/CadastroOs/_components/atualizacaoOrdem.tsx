@@ -25,15 +25,16 @@ import { Tecnicos } from "./tecnicos";
 import { useState } from "react";
 import { SquarePen } from "lucide-react";
 import { updateOrdem } from "@/services/ordens.service";
+import { Ordem } from "@/models/ordem.model";
 
 interface AtualizacaoOrdemProps {
-  ordem: any | undefined;
+  ordem: Ordem | undefined;
   onUpdate: () => void;
 }
 
 export function AtualizacaoOrdem({ ordem, onUpdate }: AtualizacaoOrdemProps) {
-    const [setor, setSetor] = useState(ordem?.setor_id || "");
-    const [tecnico, setTecnico] = useState(ordem?.tecnico_responsavel_id || "");
+    const [setor, setSetor] = useState(ordem?.setor_id?.toString() || "");
+    const [tecnico, setTecnico] = useState(ordem?.tecnico_responsavel_id?.toString() || "");
     const [numero_os, setNumeroOs] = useState(ordem?.numero_os || "");
     const [data_abertura, setDataAbertura] = useState(ordem?.data_abertura || "");
     const [solicitante, setSolicitante] = useState(ordem?.solicitante || "");
@@ -47,7 +48,7 @@ export function AtualizacaoOrdem({ ordem, onUpdate }: AtualizacaoOrdemProps) {
 
     const handleSubmit = async () => {
         try {
-            if (ordem?.id !== undefined) {
+            if (ordem && ordem.id) {
                 const updatedOrdem = {
                     setor_id: Number(setor),
                     tecnico_responsavel_id: Number(tecnico),

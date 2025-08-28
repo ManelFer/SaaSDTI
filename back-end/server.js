@@ -22,7 +22,7 @@ await criarTabelas();
 
 const app = express();
 app.use(cors({
-  origin: 'http://localhost:3000', // URL do front-end
+  origin: 'http://10.0.1.164:3000', // URL do front-end
 }));
 app.use(express.json());
 
@@ -53,5 +53,5 @@ app.get('/ping', async (req, res) => {
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
+  console.log(`Servidor rodando em http://10.0.1.164:${PORT}`);
 });

@@ -14,6 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { API_URL } from "@/constants/constante";
 import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -47,7 +48,7 @@ export function CadastroUsuario() {
 
     try {
       await axios.post(
-        "http://localhost:3001/usuarios/novo",
+        `${API_URL}/usuarios/novo`,
         { cargo, nome },
         { headers }
       );
@@ -56,8 +57,9 @@ export function CadastroUsuario() {
       setCargo("");
       setNome("");
       setIsOpen(false);
-    } catch (error: any) {
-      const errorMessage = error.response?.data?.error || "Erro desconhecido";
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { error?: string } } };
+      const errorMessage = err.response?.data?.error || "Erro desconhecido";
       toast.error(`Falha ao cadastrar usuário: ${errorMessage}`);
       console.error("Erro ao cadastrar usuário:", error);
     }
