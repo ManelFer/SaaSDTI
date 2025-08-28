@@ -44,6 +44,31 @@ export default function ProjectsPage() {
   };
 
   const handleSubmit = async () => {
+    
+    const numeroOsRegex = /^\d{4}\/\d{4}$/;
+    if (!numeroOsRegex.test(form.numero_os)) {
+      toast.error("O campo 'Número da OS' deve estar no formato 0000/2000. númeroOs/AnoDaAbertura");
+      return;
+    }
+
+   
+    if (form.data_devolucao && form.data_recolhimento && new Date(form.data_devolucao) < new Date(form.data_recolhimento)) {
+      toast.error("A data de devolução não pode ser anterior à data de recolhimento.");
+      return;
+    }
+
+   
+    if (form.data_fechamento) {
+      if (new Date(form.data_fechamento) < new Date(form.data_abertura)) {
+        toast.error("A data de fechamento não pode ser anterior à data de abertura.");
+        return;
+      }
+      if (form.data_recolhimento && new Date(form.data_fechamento) < new Date(form.data_recolhimento)) {
+        toast.error("A data de fechamento não pode ser anterior à data de recolhimento.");
+        return;
+      }
+    }
+
     try {
       const cleanedForm = {
         ...form,
@@ -78,7 +103,7 @@ export default function ProjectsPage() {
     }
   };
 
-  // Initial data fetch
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -101,7 +126,7 @@ export default function ProjectsPage() {
     fetchData();
   }, []);
 
-  // Refetch data on update
+  
   useEffect(() => {
     if (loading) {
       const fetchOrdens = async () => {

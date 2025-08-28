@@ -47,6 +47,31 @@ export function AtualizacaoOrdem({ ordem, onUpdate }: AtualizacaoOrdemProps) {
     const [status, setStatus] = useState(ordem?.status || "");
 
     const handleSubmit = async () => {
+        
+        const numeroOsRegex = /^\d{4}\/\d{4}$/;
+        if (!numeroOsRegex.test(numero_os)) {
+            toast.error("O campo 'Número da OS' deve estar no formato 0000/2000. númeroOs/AnoDaAbertura" );
+            return;
+        }
+
+        
+        if (data_devolucao && data_recolhimento && new Date(data_devolucao) < new Date(data_recolhimento)) {
+            toast.error("A data de devolução não pode ser anterior à data de recolhimento.");
+            return;
+        }
+
+        
+        if (data_fechamento) {
+            if (new Date(data_fechamento) < new Date(data_abertura)) {
+                toast.error("A data de fechamento não pode ser anterior à data de abertura.");
+                return;
+            }
+            if (data_recolhimento && new Date(data_fechamento) < new Date(data_recolhimento)) {
+                toast.error("A data de fechamento não pode ser anterior à data de recolhimento.");
+                return;
+            }
+        }
+
         try {
             if (ordem && ordem.id) {
                 const updatedOrdem = {
