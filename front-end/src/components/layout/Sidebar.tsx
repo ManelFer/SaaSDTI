@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, FileText, Box, Trash2, ChevronRight, Settings } from "lucide-react";
+import { Home, FileText, Box, Trash2, ChevronRight, Settings, ArrowLeftRight } from "lucide-react";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: Home },
@@ -10,7 +10,7 @@ const navigation = [
   { name: "Estoque", href: "/dashboard/CadastroEst", icon: Box },
   { name: "Leilão", href: "/dashboard/CadastroLix", icon: Trash2 },
   { name: "cadastros", href: "/dashboard/CadastroFull", icon: FileText },
-  { name: "Alocação", href: "/dashboard/CadastroAloc", icon: FileText }
+  { name: "Alocação", href: "/dashboard/CadastroAloc", icon: ArrowLeftRight }
 ];
 
 export default function Sidebar() {

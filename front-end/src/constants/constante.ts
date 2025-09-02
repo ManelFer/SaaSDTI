@@ -1,7 +1,7 @@
 /**
  * Endereço da API.
  */
-export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://10.0.1.164:3001';
+export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://192.168.56.1:3001';
 
 /**
  * Rotas do backend.

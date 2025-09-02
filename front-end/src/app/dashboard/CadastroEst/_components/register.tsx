@@ -57,6 +57,7 @@ export function Register({ isEstOpen, setEstOpen }: RegisterProps) {
 
       
       toast.success("Equipamento cadastrado com sucesso!");
+      console.log("Dados do equipamento cadastrado:", data);
       setForm({
         item_id: '',
         marca_id: '',
@@ -70,7 +71,7 @@ export function Register({ isEstOpen, setEstOpen }: RegisterProps) {
 
       setEstOpen(false); // fecha o dialog após salvar
     } catch (err) {
-      
+      console.error("Erro ao cadastrar equipamento", err);
       toast.error("Erro ao cadastrar equipamento. Tente novamente.");
     }
   };

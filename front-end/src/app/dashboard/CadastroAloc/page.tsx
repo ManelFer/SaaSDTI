@@ -1,30 +1,57 @@
 "use client";
 import DashboardLayout from "@/components/layout/DashboardLayout";
+import Header from "./components/Header";
+import SearchBar from "./components/SearchBar";
+import MovimentacaoCard from "./components/MovimentacaoCard";
 
-export default function CadastroAloc() {
+export default function MovimentacoesPage() {
+  const movimentacoes = [
+    {
+      id: 1,
+      setor: "DTI",
+      Equipamento: "Notebook",
+      Marca: "Daten",
+      Modelo: "DCM4A4",
+      responsavel: "Manoel",
+      tipo: "Alocado" as const,
+      patrimonio: 12345
+    },
+    {
+      id: 2,
+      setor: "DTI",
+      Equipamento: "Monitor",
+      Marca: "AOC",
+      Modelo: "24B1XHS",
+      responsavel: "Manoel",
+      tipo: "Leilão" as const,
+      patrimonio: 12345
+    },
+    {
+      id: 3,
+      setor: "DTI",
+      Equipamento: "Desktop",
+      Marca: "Ilhaway",
+      Modelo: "X123",
+      responsavel: "Manoel",
+      tipo: "Estoque" as const,
+      patrimonio: 12345
+    },
+  ];
+
   return (
     <DashboardLayout>
       <div className="rounded-xl p-6">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h2 className="text-xl font-bold text-gray-900">
-              Alocação de equipamentos
-            </h2>
-            <p className="text-sm text-gray-500">
-              Gerencie aqui as alocações já feitas e adicione novas.
-            </p>
-          </div>
-          <button className="px-4 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition">
-            + Nova alocação
-          </button>
-        </div>
-      </div>
+        {/* Cabeçalho */}
+        <Header />
 
-      {/* Tabela de Alocações */}
-      <div className="space-y-4">
-        <div>
-            <h3 className="font-medium text-gray-900">DTI</h3>
-            <p className="text-sm ">Descrição da alocação DTI</p>
+        {/* Barra de busca */}
+        <SearchBar />
+
+        {/* Lista de movimentações */}
+        <div className="space-y-4">
+          {movimentacoes.map((mov) => (
+            <MovimentacaoCard key={mov.id} {...mov} />
+          ))}
         </div>
       </div>
     </DashboardLayout>
