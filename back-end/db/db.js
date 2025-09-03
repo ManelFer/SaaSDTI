@@ -12,6 +12,7 @@ import { criarTabelaServidores } from './tables/servidor.js';
 import { criarTabelaDefensores } from './tables/defensor.js';
 import { criarTabelaRetiradaEstoque } from './tables/retirada_estoque.js';
 import { criarTabelaUsuarios } from './tables/usuarios.js';
+import { criarTabelaAlocacao } from './tables/alocacao.js'
 
 async function popularTabelas() {
     try {
@@ -71,5 +72,6 @@ export async function criarTabelas() {
   await criarTabelaRetiradaEstoque();
   await criarTabelaOrdensServico();
   await criarTabelaUsuarios();
+  await criarTabelaAlocacao();
   await popularTabelas();
 }

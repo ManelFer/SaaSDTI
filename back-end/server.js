@@ -14,6 +14,7 @@ import deRouter from './routes/defensores.route.js';
 import etRouter from './routes/estagiarios.route.js';
 import svRouter from './routes/servidor.route.js';
 import usRouter from './routes/usuarios.route.js';
+import alRouter from './routes/alocacao.route.js';
 import { criarTabelas  }from './db/db.js'; // importa a função de criação de tabelas
 
 dotenv.config();
@@ -40,6 +41,7 @@ app.use('/', deRouter);
 app.use('/', etRouter);
 app.use('/', svRouter);
 app.use('/', usRouter);
+app.use('/', alRouter);
 
 // Teste de conexão com o banco
 app.get('/ping', async (req, res) => {

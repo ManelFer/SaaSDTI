@@ -1,3 +1,5 @@
+import { FormNovaAlocacao} from "./FormNovaAlocacao"
+
 export default function Header() {
   return (
     <div className="flex items-center justify-between mb-4">
@@ -7,9 +9,7 @@ export default function Header() {
           Controle de alocação dos equipamentos
         </p>
       </div>
-      <button className="px-4 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition">
-        + Nova Alocação
-      </button>
+      <FormNovaAlocacao  />
     </div>
   );
 }

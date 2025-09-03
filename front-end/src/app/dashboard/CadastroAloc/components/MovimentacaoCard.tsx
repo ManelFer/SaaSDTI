@@ -32,7 +32,7 @@ export default function MovimentacaoCard({
           <h3 className="font-semibold text-gray-900">
             {setor} <span className="mx-2">↔</span> {Equipamento}
           </h3>
-          <p className="text-sm text-gray-600">{Equipamento} {Marca} modelo {Modelo}</p>
+          <p className="text-sm text-gray-600">{Equipamento} {Marca} {Modelo}</p>
         </div>
         <span
           className={`px-3 py-1 rounded-full text-xs font-medium ${
