@@ -23,11 +23,9 @@ interface FormNovaAlocacaoProps {
     Setor: string;
   };
   handleChange: (key: string, value: string) => void;
-}
-
-interface FormNovaAlocacaoProps {
   openDialog: () => void;
 }
+
 export function FormNovaAlocacao({
   form,
   handleChange,
@@ -58,49 +56,30 @@ export function FormNovaAlocacao({
                 value={form.Equipamento}
                 onChange={(value) => handleChange("Equipamento", value)}
               />
-              {/* <div>
-                <Label htmlFor="equipamento" className="mb-2">
-                  Equipamento
-                </Label>
-                <Input id="equipamento" placeholder="Nome do equipamento" />
-              </div> */}
-
               <Marcas
                 value={form.Marcas}
                 onChange={(value) => handleChange("Marcas", value)}
               />
-              {/* <div>
-                <Label htmlFor="modelo" className="mb-2">
-                  Marcas
-                </Label>
-                <Input id="modelo" placeholder="Nome do modelo" />
-              </div> */}
-
               <div>
-                <Label htmlFor="serial" className="mb-2">
+                <Label htmlFor="patrimonio" className="mb-2">
                   Patrimonio
                 </Label>
-                <Input id="serial" placeholder="Número de Patrimonio" />
+                <Input
+                  id="patrimonio"
+                  placeholder="Número de Patrimonio"
+                  value={form.Patrimonio}
+                  onChange={(e) => handleChange("Patrimonio", e.target.value)}
+                />
               </div>
-
               <Setor
                 value={form.Setor}
-                onChange={(value) => handleChange("Setors", value)}
+                onChange={(value) => handleChange("Setor", value)}
               />
-
-              {/* <div>
-                <Label htmlFor="localizacao" className="mb-2">
-                  Setor
-                </Label>
-                <Setor
-                  value={form.Setor}
-                  onChange={(value) => handleChange("Setor", value)}
-                />
-              </div> */}
             </div>
           </div>
           <DialogFooter>
             <Button
+              type="button"
               onClick={openDialog}
               className="hover:scale-105 bg-[#257432] text-white hover:bg-green-700 hover:text-white"
             >
