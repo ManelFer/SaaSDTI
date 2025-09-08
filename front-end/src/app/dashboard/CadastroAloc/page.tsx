@@ -1,59 +1,79 @@
 "use client";
+import { useState, useEffect } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import MovimentacaoCard from "./components/MovimentacaoCard";
+import { toast, Toaster } from "sonner";
+
+const API_URL = "http://192.168.56.1:3001";
+
+// Definindo o tipo para os dados de alocação que vêm da API
+type Alocacao = {
+  id: number;
+  setor_nome: string;
+  equipamento_nome: string;
+  marca_nome: string;
+  patrimonio: string;
+  created_at: string;
+};
 
 export default function MovimentacoesPage() {
-  const movimentacoes = [
-    {
-      id: 1,
-      setor: "DTI",
-      Equipamento: "Notebook",
-      Marca: "Daten",
-      Modelo: "DCM4A4",
-      responsavel: "Manoel",
-      tipo: "Alocado" as const,
-      patrimonio: 12345
-    },
-    {
-      id: 2,
-      setor: "DTI",
-      Equipamento: "Monitor",
-      Marca: "AOC",
-      Modelo: "24B1XHS",
-      responsavel: "Manoel",
-      tipo: "Leilão" as const,
-      patrimonio: 12345
-    },
-    {
-      id: 3,
-      setor: "DTI",
-      Equipamento: "Desktop",
-      Marca: "Ilhaway",
-      Modelo: "X123",
-      responsavel: "Manoel",
-      tipo: "Estoque" as const,
-      patrimonio: 12345
-    },
-  ];
+  const [alocacoes, setAlocacoes] = useState<Alocacao[]>([]);
+  const [token, setToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!token) return; // Não faz a requisição se não houver token
+
+    const fetchAlocacoes = async () => {
+      try {
+        const response = await fetch(`${API_URL}/alocacao`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Falha ao buscar alocações");
+        }
+
+        const data = await response.json();
+        setAlocacoes(data);
+      } catch (error) {
+        if (error instanceof Error) {
+          toast.error(`Erro: ${error.message}`);
+        } else {
+          toast.error("Ocorreu um erro desconhecido ao buscar alocações.");
+        }
+      }
+    };
+
+    fetchAlocacoes();
+  }, [token]); // A requisição é refeita se o token mudar
 
   return (
     <DashboardLayout>
       <div className="rounded-xl p-6">
-        {/* Cabeçalho */}
         <Header />
-
-        {/* Barra de busca */}
         <SearchBar />
-
-        {/* Lista de movimentações */}
-        <div className="space-y-4">
-          {movimentacoes.map((mov) => (
-            <MovimentacaoCard key={mov.id} {...mov} />
-          ))}
+        <div className="space-y-4 mt-4">
+          {alocacoes.length > 0 ? (
+            alocacoes.map((alocacao) => (
+              <MovimentacaoCard key={alocacao.id} {...alocacao} />
+            ))
+          ) : (
+            <p className="text-center text-gray-500">Nenhuma alocação encontrada.</p>
+          )}
         </div>
       </div>
+      <Toaster richColors />
     </DashboardLayout>
   );
 }
