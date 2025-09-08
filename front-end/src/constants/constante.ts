@@ -18,4 +18,6 @@ export const API_ROUTES = {
   ESTAGIARIO: "/estagiario",
   DEFENSOR: "/defensor",
   SERVIDOR: "/servidor",
+  USUARIOS: "/usuarios",
+  ALOCACAO: "/alocacao",
   }

@@ -1,6 +1,22 @@
+"use client"
+import { useState } from "react";
 import { FormNovaAlocacao} from "./FormNovaAlocacao"
 
 export default function Header() {
+  const [form, setForm] = useState({
+    equipamento: "",
+    marcas: "",
+    Patrimonio: "",
+    Setor: "",
+  });
+
+  const handleChange = (key: string, value: string) => {
+    setForm((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
   return (
     <div className="flex items-center justify-between mb-4">
       <div>
@@ -9,7 +25,7 @@ export default function Header() {
           Controle de alocação dos equipamentos
         </p>
       </div>
-      <FormNovaAlocacao  />
+      <FormNovaAlocacao form={form} handleChange={handleChange} />
     </div>
   );
 }
