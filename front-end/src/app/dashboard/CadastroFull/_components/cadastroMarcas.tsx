@@ -1,4 +1,3 @@
-// Cadastro de marcas, tipo samsung, apple, aoc e etc...
 
 import { Button } from "@/components/ui/button";
 import {

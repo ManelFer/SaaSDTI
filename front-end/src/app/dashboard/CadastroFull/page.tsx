@@ -3,6 +3,7 @@ import DashboardLayout from "@/components/layout/DashboardLayout";
 import { CadastroMarcas } from "./_components/cadastroMarcas";
 import { CadastroEquipamentos } from "./_components/cadastroEquipamentos";
 import { CadastroUsuario } from "./_components/cadastroUsuario";
+import { CadastroSetor } from "./_components/cadastroSetor";
 
 
 export default function CadastroFullPage() {
@@ -42,6 +43,19 @@ export default function CadastroFullPage() {
             </p>
             <CadastroUsuario />
           </div>
+
+          {/* card 4 */}
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+              Cadastro de Setores
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300 mb-4">
+              Adicione os setores ao sistema.
+            </p>
+            <p className="opacity-50">em construção</p>
+            <CadastroSetor />
+          </div>
+
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">

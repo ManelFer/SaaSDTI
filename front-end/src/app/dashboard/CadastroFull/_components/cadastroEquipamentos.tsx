@@ -1,4 +1,3 @@
-// Cadastro de equipamentos, tipo notebooks, tablets, scanners e etc...
 
 import { Button } from "@/components/ui/button";
 import {
