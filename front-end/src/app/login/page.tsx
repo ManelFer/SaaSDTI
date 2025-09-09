@@ -16,7 +16,7 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    setLoading(true); // Inicia o estado de carregamento
+    setLoading(true);
 
     try {
       const response = await fetch('http://192.168.56.1:3001/login', {
@@ -34,11 +34,11 @@ export default function LoginPage() {
 
       const { token } = await response.json();
       login(token);
-      router.push('/dashboard'); // Altere para a rota desejada
+      router.push('/dashboard'); 
     } catch (error) {
       setError((error as Error).message);
     } finally {
-      setLoading(false); // Finaliza o estado de carregamento
+      setLoading(false);
     }
   };
 
@@ -48,7 +48,7 @@ export default function LoginPage() {
         <div>
             <div className="flex justify-center mb-4">
               <Image
-                src="/logodpe.png" // Substitua pelo caminho correto da sua imagem
+                src="/logodpe.png" 
                 alt="Logo"
                 width={200}
                 height={200}
@@ -76,7 +76,7 @@ export default function LoginPage() {
               onChange={(e) => setEmail(e.target.value)}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#066333] focus:border-[#066333]"
               placeholder="seu@email.com"
-              required // Adiciona a validação de campo obrigatório
+              required 
             />
           </div>
 
@@ -91,14 +91,14 @@ export default function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#066333] focus:border-[#066333]"
               placeholder="••••••••"
-              required // Adiciona a validação de campo obrigatório
+              required 
             />
           </div>
 
           <button
             type="submit"
             className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${loading ? 'bg-gray-400' : 'bg-[#066333] hover:bg-[#257432]'} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#257432] hover:shadow-lg transition-colors hover:scale-105 duration-300`}
-            disabled={loading} // Desabilita o botão durante o carregamento
+            disabled={loading} 
           >
             {loading ? 'Entrando...' : 'Entrar'}
           </button>

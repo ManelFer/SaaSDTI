@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { toast } from "react-toastify";
 import { PerfilFormSenha } from "./PerfilFormSenha";
+import { time } from "console";
 
 export function MeuPerfilForm() {
   const { user } = useAuth(true);
@@ -43,8 +44,14 @@ export function MeuPerfilForm() {
         nome: tecnicoNome,
         email: tecnicoEmail,
       });
-      toast.success("Dados atualizados com sucesso!");
-      window.location.reload();
+      toast.success("Dados atualizados com sucesso! Sai do sistema e entre novamente.");
+      if (user) {
+        localStorage.removeItem("authToken");
+        window.setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+        window.location.href = "/login";
+      }
     } catch (error) {
       console.error("Erro ao atualizar técnico:", error);
       toast.error("Erro ao atualizar dados.");

@@ -69,7 +69,7 @@ export function Register({ isEstOpen, setEstOpen }: RegisterProps) {
       });
       window.location.reload();
 
-      setEstOpen(false); // fecha o dialog após salvar
+      setEstOpen(false); 
     } catch (err) {
       console.error("Erro ao cadastrar equipamento", err);
       toast.error("Erro ao cadastrar equipamento. Tente novamente.");

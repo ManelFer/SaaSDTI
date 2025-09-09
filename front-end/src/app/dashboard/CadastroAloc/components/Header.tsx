@@ -1,9 +1,11 @@
 "use client";
 import { useState, useEffect } from "react";
 import { FormNovaAlocacao } from "./FormNovaAlocacao";
+import { API_URL } from "@/constants/constante";
 import { toast, Toaster } from "sonner";
 
-const API_URL = "http://192.168.56.1:3001";
+
+
 
 export default function Header() {
   const [form, setForm] = useState({
@@ -13,7 +15,7 @@ export default function Header() {
     Setor: "",
   });
   const [token, setToken] = useState<string | null>(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [, setDialogOpen] = useState(false);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -35,7 +37,7 @@ export default function Header() {
       return;
     }
 
-    // Validação simples
+    // Validação 
     if (!form.Equipamento || !form.Marcas || !form.Patrimonio || !form.Setor) {
       toast.error("Todos os campos são obrigatórios.");
       return;
@@ -62,15 +64,15 @@ export default function Header() {
       }
 
       toast.success("Alocação criada com sucesso!");
-      setDialogOpen(false); // Fecha o diálogo
-      // Limpa o formulário
+      setDialogOpen(false); 
       setForm({
         Equipamento: "",
         Marcas: "",
         Patrimonio: "",
         Setor: "",
       });
-      // Você pode querer recarregar a lista de alocações aqui
+      window.location.reload();
+
     } catch (error) {
       if (error instanceof Error) {
         toast.error(`Erro: ${error.message}`);

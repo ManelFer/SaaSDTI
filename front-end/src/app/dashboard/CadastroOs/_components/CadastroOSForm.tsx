@@ -161,9 +161,6 @@ export function CadastroOSForm({ form, handleChange }: CadastroOSFormProps) {
                 <SelectItem value="Não resolvido">
                   Não resolvido
                 </SelectItem>
-                <SelectItem value="Em andamento">
-                  Em andamento
-                </SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>

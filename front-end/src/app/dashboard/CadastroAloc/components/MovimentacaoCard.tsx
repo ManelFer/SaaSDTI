@@ -1,12 +1,12 @@
-import { User, Package, Calendar } from "lucide-react";
+import { Package, Calendar } from "lucide-react";
 
-// Tipo atualizado para refletir os dados da API de alocação
+
 type MovimentacaoProps = {
   id: number;
   setor_nome: string;
   equipamento_nome: string;
   marca_nome: string;
-  patrimonio: string; // Patrimonio é uma string no backend
+  patrimonio: string; 
   created_at: string;
 };
 
@@ -17,12 +17,12 @@ export default function MovimentacaoCard({
   patrimonio,
   created_at,
 }: MovimentacaoProps) {
-  const tipo = "Alocado"; // Hardcoded, pois todos os itens desta lista são alocados
+  const tipo = "Alocado"; 
 
   const badgeColors = {
     Alocado: "bg-blue-100 text-blue-700",
-    Leilão: "bg-orange-100 text-orange-700", // Mantido para consistência de design
-    Estoque: "bg-green-100 text-green-700", // Mantido para consistência de design
+    Leilão: "bg-orange-100 text-orange-700", 
+    Estoque: "bg-green-100 text-green-700", 
   };
 
   const formattedDate = new Date(created_at).toLocaleDateString("pt-BR", {
@@ -57,7 +57,7 @@ export default function MovimentacaoCard({
             <Package className="h-4 w-4" /> Patrimonio: {patrimonio}
           </span>
           <span className="flex items-center gap-1">
-            <Calendar className="h-4 w-4" /> {formattedDate}
+            <Calendar className="h-4 w-4" /> {formattedDate} - <p className="mx-2 opacity-50">Data de cadastro</p>
           </span>
         </div>
       </div>
