@@ -21,6 +21,7 @@ type Alocacao = {
 export default function MovimentacoesPage() {
   const [alocacoes, setAlocacoes] = useState<Alocacao[]>([]);
   const [token, setToken] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -58,14 +59,28 @@ export default function MovimentacoesPage() {
     fetchAlocacoes();
   }, [token]); // A requisição é refeita se o token mudar
 
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+  };
+
+  const filteredAlocacoes = alocacoes.filter((alocacao) => {
+    const query = searchQuery.toLowerCase();
+    return (
+      (alocacao.patrimonio || "").toLowerCase().includes(query) ||
+      (alocacao.equipamento_nome || "").toLowerCase().includes(query) ||
+      (alocacao.marca_nome || "").toLowerCase().includes(query) ||
+      (alocacao.setor_nome || "").toLowerCase().includes(query)
+    );
+  });
+
   return (
     <DashboardLayout>
       <div className="rounded-xl p-6">
         <Header />
-        <SearchBar />
+        <SearchBar onSearch={handleSearch} />
         <div className="space-y-4 mt-4">
-          {alocacoes.length > 0 ? (
-            alocacoes.map((alocacao) => (
+          {filteredAlocacoes.length > 0 ? (
+            filteredAlocacoes.map((alocacao) => (
               <MovimentacaoCard key={alocacao.id} {...alocacao} />
             ))
           ) : (

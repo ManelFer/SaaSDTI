@@ -16,7 +16,7 @@ export async function createAlocacao(form: Alocacao):Promise<Alocacao> {
     return data;
 }
 
-export async function buscarAlocacao(): Promise<Alocacao> {
+export async function buscarAlocacao(): Promise<Alocacao[]> {
     const res = await fetch(API_URL + API_ROUTES.ALOCACAO, {
         method: "GET",
         headers: getHeaders(),
