@@ -33,7 +33,6 @@ async function popularTabelas() {
         if (estagiarioResult.rows.length > 0) {
             await pool.query("INSERT INTO usuarios (cargo, estagiario_id) VALUES ('estagiario', $1) ON CONFLICT DO NOTHING;", [estagiarioResult.rows[0].id]);
         }
-        console.log('Tabelas populadas com dados de teste.');
     } catch (error) {
         console.error('Erro ao popular tabelas:', error);
     }

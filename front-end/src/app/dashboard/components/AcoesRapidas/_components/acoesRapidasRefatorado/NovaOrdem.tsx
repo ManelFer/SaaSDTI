@@ -26,9 +26,8 @@ export function NovaOrdem() {
   };
 
   const handleSubmit = () => {
-    // Aqui você pode enviar os dados para o backend, exibir toast etc.
     
-    setIsOpen(false); // fecha o dialog após salvar
+    setIsOpen(false); 
   };
 
   return (

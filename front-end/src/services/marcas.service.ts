@@ -12,9 +12,6 @@ export async function buscarMarcas(): Promise<Marcas[]> {
     return data;
 }
 
-// Accept Partial<Marcas> so only required fields for creation are needed
-
-
 export async function createMarcas(form: Partial<Marcas>): Promise<Marcas> {
   const res = await fetch(API_URL + API_ROUTES.MARCAS, {
     method: "POST",

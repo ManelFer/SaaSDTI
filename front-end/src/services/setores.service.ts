@@ -27,7 +27,7 @@ export async function buscarSetores(): Promise<Setor[]> {
   }
 }
 
-export async function createSetor(form: Setor): Promise<Setor> {
+export async function createSetor(form: Partial<Setor>): Promise<Setor> {
   const res = await fetch(API_URL + API_ROUTES.SETORES, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

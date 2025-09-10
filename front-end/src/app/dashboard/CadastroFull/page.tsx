@@ -52,7 +52,6 @@ export default function CadastroFullPage() {
             <p className="text-gray-600 dark:text-gray-300 mb-4">
               Adicione os setores ao sistema.
             </p>
-            <p className="opacity-50">em construção</p>
             <CadastroSetor />
           </div>
 
