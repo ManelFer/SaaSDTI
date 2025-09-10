@@ -14,6 +14,7 @@ export function criarTabelaOrdensServico() {
         tipo_falha TEXT,
         solucao_tecnica TEXT,
         tecnico_responsavel_id VARCHAR(100),
+        arquivo BYTEA,
         data_recolhimento TIMESTAMP,
         data_devolucao TIMESTAMP,
         data_fechamento TIMESTAMP,

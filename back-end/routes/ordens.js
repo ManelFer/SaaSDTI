@@ -41,7 +41,7 @@ router.post('/os', async (req, res) => {
   const {
     numero_os, data_abertura, solicitante, setor_id, patrimonio,
     tipo_falha, solucao_tecnica, tecnico_responsavel_id,
-    data_recolhimento, data_devolucao, data_fechamento, status
+    data_recolhimento, data_devolucao, data_fechamento, status, arquivo
   } = req.body;
 
 
@@ -65,7 +65,7 @@ router.post('/os', async (req, res) => {
     const values = [
       numero_os, data_abertura, solicitante, setor_id, patrimonio,
       tipo_falha, solucao_tecnica, tecnico_responsavel_id,
-      data_recolhimento, data_devolucao, data_fechamento, status
+      data_recolhimento, data_devolucao, data_fechamento, status, arquivo
     ];
     // console.log('Query:', query);
     console.log("Recebido no back-end:", req.body);

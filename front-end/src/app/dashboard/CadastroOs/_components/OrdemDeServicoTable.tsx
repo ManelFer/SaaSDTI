@@ -61,7 +61,7 @@ export function OrdemDeServicoTable({
             <TableHead>Devolução</TableHead>
             <TableHead>Fechamento</TableHead>
             <TableHead>Status</TableHead>
-            <TableHead className="text-right">Técnico</TableHead>
+            <TableHead>Técnico</TableHead>
             <TableHead className="text-right">Atualização</TableHead>
           </TableRow>
         </TableHeader>
