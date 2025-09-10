@@ -4,7 +4,8 @@ import { CadastroMarcas } from "./_components/cadastroMarcas";
 import { CadastroEquipamentos } from "./_components/cadastroEquipamentos";
 import { CadastroUsuario } from "./_components/cadastroUsuario";
 import { CadastroSetor } from "./_components/cadastroSetor";
-
+import { Trash } from "lucide-react";
+import { SquarePen } from "lucide-react";
 
 export default function CadastroFullPage() {
   return (
@@ -19,7 +20,19 @@ export default function CadastroFullPage() {
             <p className="text-gray-600 dark:text-gray-300 mb-4">
               Gerencie as marcas dos equipamentos.
             </p>
-            <CadastroMarcas />
+            <div className="flex justify-between mb-4">
+              <CadastroMarcas />
+              <div className="flex items-center">
+                <Trash
+                  className="ml-3 cursor-pointer text-red-600 hover:scale-110 duration-300 hover:text-red-700"
+                  size={20}
+                />
+                <SquarePen
+                  className="ml-3 cursor-pointer text-blue-600 hover:scale-110 duration-300 hover:text-blue-700"
+                  size={20}
+                />
+              </div>
+            </div>
           </div>
 
           {/* Card 2 */}
@@ -30,7 +43,19 @@ export default function CadastroFullPage() {
             <p className="text-gray-600 dark:text-gray-300 mb-4">
               Adicione os equipamentos do setor.
             </p>
-            <CadastroEquipamentos />
+            <div className="flex justify-between mb-4">
+              <CadastroEquipamentos />
+              <div className="flex items-center">
+                <Trash
+                  className="ml-3 cursor-pointer text-red-600 hover:scale-110 duration-300 hover:text-red-700"
+                  size={20}
+                />
+                <SquarePen
+                  className="ml-3 cursor-pointer text-blue-600 hover:scale-110 duration-300 hover:text-blue-700"
+                  size={20}
+                />
+              </div>
+            </div>
           </div>
 
           {/* card 3 */}
@@ -41,7 +66,19 @@ export default function CadastroFullPage() {
             <p className="text-gray-600 dark:text-gray-300 mb-4">
               Adicione os usuários do sistema.
             </p>
-            <CadastroUsuario />
+            <div className="flex justify-between mb-4">
+              <CadastroUsuario />
+              <div className="flex items-center">
+                <Trash
+                  className="ml-3 cursor-pointer text-red-600 hover:scale-110 duration-300 hover:text-red-700"
+                  size={20}
+                />
+                <SquarePen
+                  className="ml-3 cursor-pointer text-blue-600 hover:scale-110 duration-300 hover:text-blue-700"
+                  size={20}
+                />
+              </div>
+            </div>
           </div>
 
           {/* card 4 */}
@@ -52,9 +89,20 @@ export default function CadastroFullPage() {
             <p className="text-gray-600 dark:text-gray-300 mb-4">
               Adicione os setores ao sistema.
             </p>
-            <CadastroSetor />
+            <div className="flex justify-between mb-4">
+              <CadastroSetor />
+              <div className="flex items-center">
+                <Trash
+                  className="ml-3 cursor-pointer text-red-600 hover:scale-110 duration-300 hover:text-red-700"
+                  size={20}
+                />
+                <SquarePen
+                  className="ml-3 cursor-pointer text-blue-600 hover:scale-110 duration-300 hover:text-blue-700"
+                  size={20}
+                />
+              </div>
+            </div>
           </div>
-
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
@@ -67,7 +115,7 @@ export default function CadastroFullPage() {
           </div> */}
 
           {/* table 2 */}
-          <div >
+          <div>
             {/* <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
               Lista de Equipamentos
             </h2> */}
