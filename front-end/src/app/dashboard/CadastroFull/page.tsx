@@ -23,10 +23,6 @@ export default function CadastroFullPage() {
             <div className="flex justify-between mb-4">
               <CadastroMarcas />
               <div className="flex items-center">
-                <Trash
-                  className="ml-3 cursor-pointer text-red-600 hover:scale-110 duration-300 hover:text-red-700"
-                  size={20}
-                />
                 <SquarePen
                   className="ml-3 cursor-pointer text-blue-600 hover:scale-110 duration-300 hover:text-blue-700"
                   size={20}
@@ -46,10 +42,6 @@ export default function CadastroFullPage() {
             <div className="flex justify-between mb-4">
               <CadastroEquipamentos />
               <div className="flex items-center">
-                <Trash
-                  className="ml-3 cursor-pointer text-red-600 hover:scale-110 duration-300 hover:text-red-700"
-                  size={20}
-                />
                 <SquarePen
                   className="ml-3 cursor-pointer text-blue-600 hover:scale-110 duration-300 hover:text-blue-700"
                   size={20}
@@ -69,10 +61,6 @@ export default function CadastroFullPage() {
             <div className="flex justify-between mb-4">
               <CadastroUsuario />
               <div className="flex items-center">
-                <Trash
-                  className="ml-3 cursor-pointer text-red-600 hover:scale-110 duration-300 hover:text-red-700"
-                  size={20}
-                />
                 <SquarePen
                   className="ml-3 cursor-pointer text-blue-600 hover:scale-110 duration-300 hover:text-blue-700"
                   size={20}
@@ -92,10 +80,6 @@ export default function CadastroFullPage() {
             <div className="flex justify-between mb-4">
               <CadastroSetor />
               <div className="flex items-center">
-                <Trash
-                  className="ml-3 cursor-pointer text-red-600 hover:scale-110 duration-300 hover:text-red-700"
-                  size={20}
-                />
                 <SquarePen
                   className="ml-3 cursor-pointer text-blue-600 hover:scale-110 duration-300 hover:text-blue-700"
                   size={20}

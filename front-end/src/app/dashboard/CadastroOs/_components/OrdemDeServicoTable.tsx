@@ -123,6 +123,7 @@ export function OrdemDeServicoTable({
                   }
                 </TableCell>
 
+                
                 <TableCell className="flex items-center justify-end space-x-2">
                   <AtualizacaoOrdem ordem={ordem} onUpdate={onOrdemUpdated} />
                   <ConfirmacaoDelecao

@@ -11,5 +11,6 @@ export class Ordem {
     data_devolucao: string | null | undefined
     data_fechamento: string | undefined
     status: string | undefined
+    arquivo: Buffer | null | undefined
     id?: number | null | undefined
 }

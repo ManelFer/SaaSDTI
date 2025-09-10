@@ -13,7 +13,7 @@ export async function createOrdens(ordem: Ordem): Promise<Ordem> {
         const res = await fetch(API_URL + API_ROUTES.ORDENS, {
             method: "POST",
             headers: getHeaders(),
-            body: JSON.stringify(ordem) // Adiciona os dados no corpo da requisição
+            body: JSON.stringify(ordem) 
         });
         
         if (!res.ok) {
