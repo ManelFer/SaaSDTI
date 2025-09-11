@@ -19,6 +19,7 @@ export function criarTabelaOrdensServico() {
         data_devolucao TIMESTAMP,
         data_fechamento TIMESTAMP,
         status VARCHAR(20) DEFAULT 'Não resolvido',
+        arquivo BYTEA,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
@@ -40,9 +41,9 @@ export async function inserirOrdemServico(values) {
     INSERT INTO ordens_servico (
       numero_os, data_abertura, solicitante, setor_id, patrimonio,
       tipo_falha, solucao_tecnica, tecnico_responsavel_id,
-      data_recolhimento, data_devolucao, data_fechamento, status
+      data_recolhimento, data_devolucao, data_fechamento, status, arquivo
     )
-    VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
+    VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)
     RETURNING *;
   `;
   const result = await db.query(insertQuery, values);
@@ -96,8 +97,9 @@ export async function atualizarOrdemServico(id, data) {
       data_devolucao = $10,
       data_fechamento = $11,
       status = $12,
+      arquivo = $13,
       updated_at = CURRENT_TIMESTAMP
-    WHERE id = $13
+    WHERE id = $14
     RETURNING *;
   `;
   const values = [
@@ -113,6 +115,7 @@ export async function atualizarOrdemServico(id, data) {
     data.data_devolucao,
     data.data_fechamento,
     data.status,
+    data.arquivo,
     id
   ];
   const result = await db.query(query, values);

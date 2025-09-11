@@ -62,6 +62,7 @@ export function OrdemDeServicoTable({
             <TableHead>Fechamento</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Técnico</TableHead>
+            <TableHead>PDF OS</TableHead>
             <TableHead className="text-right">Atualização</TableHead>
           </TableRow>
         </TableHeader>
@@ -121,6 +122,20 @@ export function OrdemDeServicoTable({
                     tecnicos.find((a) => a.id == ordem.tecnico_responsavel_id)
                       ?.nome
                   }
+                </TableCell>
+
+                <TableCell className="text-center">
+                  {ordem.arquivo ? (
+                    <a
+                      href={`data:application/pdf;base64,${Buffer.from(
+                        ordem.arquivo
+                      ).toString("base64")}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >OS</a>
+                  ) : (
+                    "N/A"
+                  )}
                 </TableCell>
 
                 

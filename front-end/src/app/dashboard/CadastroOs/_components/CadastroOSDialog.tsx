@@ -16,6 +16,7 @@ interface CadastroOSFormProps {
   data_devolucao: string;
   data_fechamento: string;
   status: string;
+  arquivo?: File | null;
 }
 
 interface CadastroOSDialogProps {

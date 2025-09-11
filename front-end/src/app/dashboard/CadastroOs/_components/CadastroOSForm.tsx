@@ -20,8 +20,9 @@ interface CadastroOSFormProps {
     data_devolucao: string;
     data_fechamento: string;
     status: string;
+    arquivo?: File | null;
   };
-  handleChange: (key: string, value: string) => void;
+  handleChange: (key: string, value: string | File | null) => void;
 }
 
 export function CadastroOSForm({ form, handleChange }: CadastroOSFormProps) {
@@ -142,6 +143,16 @@ export function CadastroOSForm({ form, handleChange }: CadastroOSFormProps) {
             type="datetime-local"
             value={form.data_fechamento}
             onChange={(e) => handleChange("data_fechamento", e.target.value)}
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="arquivo">Anexar arquivo (PDF):</Label>
+          <Input
+            id="arquivo"
+            type="file"
+            accept=".pdf"
+            onChange={(e) => handleChange("arquivo", e.target.files![0])}
           />
         </div>
 

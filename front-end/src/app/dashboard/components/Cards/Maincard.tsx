@@ -1,6 +1,5 @@
 "use client";
 
-
 import { CardLixao } from "./_components/CardLixao";
 import { CardEstoque } from "./_components/Estoque";
 import { CardOsResolvido } from "./_components/OsResolvido";
