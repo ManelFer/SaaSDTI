@@ -1,33 +1,24 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
-import { CadastroOSForm } from "./CadastroOSForm";
-
-interface CadastroOSFormProps {
-  numero_os: string;
-  data_abertura: string;
-  solicitante: string;
-  setor: string;
-  patrimonio: string;
-  tipo_falha: string;
-  solucao_tecnica: string;
-  tecnico_responsavel: string;
-  data_recolhimento: string;
-  data_devolucao: string;
-  data_fechamento: string;
-  status: string;
-  arquivo?: File | null;
-}
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { FormState, OrdemServicoForm } from "./OrdemServicoForm";
 
 interface CadastroOSDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  form: CadastroOSFormProps;
-  handleChange: (key: string, value: string) => void;
-  handleSubmit: () => void;
+  handleSubmit: (data: FormState) => Promise<void>;
 }
 
-export function CadastroOSDialog({ isOpen, onClose, form, handleChange, handleSubmit }: CadastroOSDialogProps) {
+export function CadastroOSDialog({
+  isOpen,
+  onClose,
+  handleSubmit,
+}: CadastroOSDialogProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[1000px]">
@@ -37,19 +28,7 @@ export function CadastroOSDialog({ isOpen, onClose, form, handleChange, handleSu
             Cadastre uma nova ordem de serviço
           </DialogDescription>
         </DialogHeader>
-        <CadastroOSForm
-          form={form}
-          handleChange={handleChange}
-        />
-        <DialogFooter>
-          <Button
-            type="submit"
-            onClick={handleSubmit}
-            className="bg-[#257432] text-white px-4 py-2 rounded-md hover:bg-[#066333] hover:scale-105 duration-300"
-          >
-            Salvar OS
-          </Button>
-        </DialogFooter>
+        <OrdemServicoForm onSubmit={handleSubmit} onClose={onClose} />
       </DialogContent>
     </Dialog>
   );

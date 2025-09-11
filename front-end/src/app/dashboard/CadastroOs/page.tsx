@@ -14,6 +14,7 @@ import { OrdemDeServicoTable } from "./_components/OrdemDeServicoTable";
 import { Header } from "./_components/Header";
 import { CadastroOSDialog } from "./_components/CadastroOSDialog";
 import { toast } from "react-toastify";
+import { FormState } from "./_components/OrdemServicoForm";
 
 export default function ProjectsPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -24,89 +25,61 @@ export default function ProjectsPage() {
   const [setores, setSetores] = useState<SetorModel[]>([]);
   const [tecnicos, setTecnicos] = useState<TecnicoModel[]>([]);
 
-  const [form, setForm] = useState({
-    numero_os: "",
-    data_abertura: "",
-    solicitante: "",
-    setor: "",
-    patrimonio: "",
-    tipo_falha: "",
-    solucao_tecnica: "",
-    tecnico_responsavel: "",
-    data_recolhimento: "",
-    data_devolucao: "",
-    data_fechamento: "",
-    status: "",
-  });
-
-  const handleChange = (key: string, value: string) => {
-    setForm((prev) => ({ ...prev, [key]: value }));
+  const fetchOrdens = async () => {
+    try {
+      const ordensData = await buscarOrdensServicos();
+      setOrdens(ordensData);
+    } catch (error) {
+      console.error("Erro ao buscar ordens de serviço:", error);
+      toast.error("Erro ao carregar a lista de ordens de serviço.");
+    }
   };
 
-  const handleSubmit = async () => {
-    
-    const numeroOsRegex = /^\d{4}\/\d{4}$/;
-    if (!numeroOsRegex.test(form.numero_os)) {
-      toast.error("O campo 'Número da OS' deve estar no formato 0000/2000. númeroOs/AnoDaAbertura");
-      return;
-    }
-
-   
-    if (form.data_devolucao && form.data_recolhimento && new Date(form.data_devolucao) < new Date(form.data_recolhimento)) {
-      toast.error("A data de devolução não pode ser anterior à data de recolhimento.");
-      return;
-    }
-
-   
-    if (form.data_fechamento) {
-      if (new Date(form.data_fechamento) < new Date(form.data_abertura)) {
-        toast.error("A data de fechamento não pode ser anterior à data de abertura.");
-        return;
-      }
-      if (form.data_recolhimento && new Date(form.data_fechamento) < new Date(form.data_recolhimento)) {
-        toast.error("A data de fechamento não pode ser anterior à data de recolhimento.");
-        return;
-      }
-    }
-
+  const handleSubmit = async (data: FormState) => {
     try {
-      const cleanedForm = {
-        ...form,
-        setor_id: Number(form.setor),
-        tecnico_responsavel_id: Number(form.tecnico_responsavel),
-        data_recolhimento: form.data_recolhimento || undefined,
-        data_devolucao: form.data_devolucao || undefined,
-        data_fechamento: form.data_fechamento || undefined,
-      };
+      // Se houver um arquivo, use FormData. Caso contrário, JSON.
+      let payload: any;
+      let headers: any = { "Content-Type": "application/json" };
 
-      await createOrdens(cleanedForm);
-      setLoading(true); // Trigger refetch
-      setIsDialogOpen(false);
-      setForm({
-        numero_os: "",
-        data_abertura: "",
-        solicitante: "",
-        setor: "",
-        patrimonio: "",
-        tipo_falha: "",
-        solucao_tecnica: "",
-        tecnico_responsavel: "",
-        data_recolhimento: "",
-        data_devolucao: "",
-        data_fechamento: "",
-        status: "",
-      });
+      const cleanedData = {
+        ...data,
+        setor_id: Number(data.setor),
+        tecnico_responsavel_id: Number(data.tecnico_responsavel),
+        data_recolhimento: data.data_recolhimento || undefined,
+        data_devolucao: data.data_devolucao || undefined,
+        data_fechamento: data.data_fechamento || undefined,
+      };
+      delete cleanedData.arquivo; // Remova o arquivo do objeto principal
+
+      if (data.arquivo) {
+        const formData = new FormData();
+        Object.keys(cleanedData).forEach((key) => {
+          const value = (cleanedData as any)[key];
+          if (value !== undefined && value !== null) {
+            formData.append(key, value);
+          }
+        });
+        formData.append("arquivo", data.arquivo);
+        payload = formData;
+        delete headers["Content-Type"]; // O navegador definirá o cabeçalho correto para FormData
+      } else {
+        payload = JSON.stringify(cleanedData);
+      }
+
+      await createOrdens(payload, headers);
       toast.success("Ordem de serviço cadastrada com sucesso!");
+      handleOrdemUpdated(); // Recarrega a lista
     } catch (err) {
       console.error("Erro ao cadastrar ordem de serviço:", err);
       toast.error("Erro ao cadastrar ordem de serviço. Tente novamente.");
+      throw err; // Lança o erro para o formulário saber que a submissão falhou
     }
   };
 
-  
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setInitialLoading(true);
         const [listaTecnicos, listaSetores, ordensData] = await Promise.all([
           buscarTecnicos(),
           buscarSetores(),
@@ -117,7 +90,8 @@ export default function ProjectsPage() {
         setSetores(listaSetores);
         setOrdens(ordensData);
       } catch (error) {
-        console.error("Erro ao carregar dados:", error);
+        console.error("Erro ao carregar dados iniciais:", error);
+        toast.error("Falha ao carregar dados do servidor.");
       } finally {
         setInitialLoading(false);
       }
@@ -126,21 +100,9 @@ export default function ProjectsPage() {
     fetchData();
   }, []);
 
-  
   useEffect(() => {
     if (loading) {
-      const fetchOrdens = async () => {
-        try {
-          const ordensData = await buscarOrdensServicos();
-          setOrdens(ordensData);
-        } catch (error) {
-          console.error("Erro ao atualizar lista de ordens de serviço:", error);
-          toast.error("Erro ao atualizar a lista de ordens de serviço.");
-        } finally {
-          setLoading(false);
-        }
-      };
-      fetchOrdens();
+      fetchOrdens().finally(() => setLoading(false));
     }
   }, [loading]);
 
@@ -179,8 +141,6 @@ export default function ProjectsPage() {
         <CadastroOSDialog
           isOpen={isDialogOpen}
           onClose={() => setIsDialogOpen(false)}
-          form={form}
-          handleChange={handleChange}
           handleSubmit={handleSubmit}
         />
         <OrdemDeServicoTable

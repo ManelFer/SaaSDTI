@@ -125,14 +125,17 @@ export function OrdemDeServicoTable({
                 </TableCell>
 
                 <TableCell className="text-center">
-                  {ordem.arquivo ? (
+                  {ordem.arquivo && ordem.arquivo.data ? (
                     <a
-                      href={`data:application/pdf;base64,${Buffer.from(
-                        ordem.arquivo
-                      ).toString("base64")}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >OS</a>
+                      href={URL.createObjectURL(
+                        new Blob([new Uint8Array(ordem.arquivo.data)], {
+                          type: "application/pdf",
+                        })
+                      )}
+                      download={`OS_${ordem.numero_os.replace('/', '_')}.pdf`}
+                    >
+                      OS
+                    </a>
                   ) : (
                     "N/A"
                   )}

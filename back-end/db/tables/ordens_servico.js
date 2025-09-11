@@ -19,7 +19,6 @@ export function criarTabelaOrdensServico() {
         data_devolucao TIMESTAMP,
         data_fechamento TIMESTAMP,
         status VARCHAR(20) DEFAULT 'Não resolvido',
-        arquivo BYTEA,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 

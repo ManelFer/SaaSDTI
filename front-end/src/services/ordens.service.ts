@@ -8,16 +8,25 @@ import axios from 'axios';
  * @param {Ordem} ordem - Dados da ordem de serviço a ser criada
  * @returns {Promise<any>} - Resposta do backend
  */
-export async function createOrdens(ordem: Ordem): Promise<Ordem> {
+export async function createOrdens(payload: any, customHeaders?: any): Promise<Ordem> {
     try {
+        const baseHeaders = getHeaders();
+        const headers = { ...baseHeaders, ...customHeaders };
+
+        // Se estivermos enviando FormData, não definimos o Content-Type manualmente
+        if (payload instanceof FormData) {
+            delete headers['Content-Type'];
+        }
+
         const res = await fetch(API_URL + API_ROUTES.ORDENS, {
             method: "POST",
-            headers: getHeaders(),
-            body: JSON.stringify(ordem) 
+            headers: headers,
+            body: payload
         });
         
         if (!res.ok) {
-            throw new Error(`Erro HTTP: ${res.status}`);
+            const errorBody = await res.text();
+            throw new Error(`Erro HTTP: ${res.status} - ${errorBody}`);
         }
         
         return await res.json();
