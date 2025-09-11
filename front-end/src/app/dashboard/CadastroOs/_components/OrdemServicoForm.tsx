@@ -293,7 +293,6 @@ export function OrdemServicoForm({
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Status</SelectLabel>
-                  <SelectItem value="Em andamento">Em andamento</SelectItem>
                   <SelectItem value="Resolvido">Resolvido</SelectItem>
                   <SelectItem value="Não resolvido">Não resolvido</SelectItem>
                 </SelectGroup>
