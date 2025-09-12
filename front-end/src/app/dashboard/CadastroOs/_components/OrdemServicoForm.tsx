@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/select";
 import { Setor } from "./setor";
 import { Tecnicos } from "./tecnicos";
-import { Ordem } from "@/models/ordem.model";
+import { Ordem } from "@/models/ordem.model"; 
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 

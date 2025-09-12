@@ -68,7 +68,7 @@ export default function EstoquePage() {
     }
   }
 
-  //filter
+  //filtro
   const estoqueFiltradas = estoque.filter((estoque) => {
     const searchLower = search.toLowerCase();
     return (

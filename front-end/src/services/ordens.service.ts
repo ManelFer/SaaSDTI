@@ -43,7 +43,7 @@ export async function createOrdens(payload: any, customHeaders?: any): Promise<O
 export const buscarOrdensServicos = async (): Promise<Ordem[]> => {
     try {
         const response = await axios.get(`${API_URL}/os` , {
-            headers: getHeaders()
+            headers: getHeaders( )
         });
         return response.data as Ordem[];
     } catch (error) {

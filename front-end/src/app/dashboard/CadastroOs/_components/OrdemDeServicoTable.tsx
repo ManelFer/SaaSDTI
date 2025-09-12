@@ -132,7 +132,7 @@ export function OrdemDeServicoTable({
                           type: "application/pdf",
                         })
                       )}
-                      download={`OS_${ordem.numero_os.replace('/', '_')}.pdf`}
+                      download={`OS_${(ordem.numero_os ?? '').replace('/', '_')}.pdf`}
                     >
                       OS
                     </a>

@@ -8,7 +8,7 @@ import { toast, Toaster } from "sonner";
 
 const API_URL = "http://192.168.56.1:3001";
 
-// Definindo o tipo para os dados de alocação que vêm da API
+
 type Alocacao = {
   id: number;
   setor_nome: string;
