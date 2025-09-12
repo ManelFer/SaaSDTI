@@ -7,6 +7,7 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 interface HeaderProps {
   search: string;
   setSearch: (value: string) => void;
+  onAlocacaoCreated: () => Promise<void>;
   openDialog: () => void;
 }
 
