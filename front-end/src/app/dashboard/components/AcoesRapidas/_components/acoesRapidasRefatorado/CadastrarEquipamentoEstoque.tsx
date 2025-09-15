@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Folder } from "lucide-react";
-import { Register } from "../../../../CadastroEst/_components/register";
+
 
 export function CadastrarEquipamentoEstoque() {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,8 +20,6 @@ export function CadastrarEquipamentoEstoque() {
           </h4>
         </div>
       </Card>
-
-      <Register isEstOpen={isOpen} setEstOpen={setIsOpen} />
     </>
   );
 }

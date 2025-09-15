@@ -13,6 +13,7 @@ export default function Header({ onAlocacaoCreated }: HeaderProps) {
     Equipamento: '',
     Marcas: '',
     Patrimonio: '',
+    Modelo: '',
     Setor: '',
   });
 
@@ -24,7 +25,7 @@ export default function Header({ onAlocacaoCreated }: HeaderProps) {
   };
 
   const handleAlocacaoSubmit = async () => {
-    if (!form.Equipamento || !form.Marcas || !form.Patrimonio || !form.Setor) {
+    if (!form.Equipamento || !form.Marcas || !form.Patrimonio || !form.Modelo || !form.Setor) {
       toast.error('Todos os campos são obrigatórios.');
       return;
     }
@@ -35,6 +36,7 @@ export default function Header({ onAlocacaoCreated }: HeaderProps) {
         marca_id: Number(form.Marcas),
         setor_id: Number(form.Setor),
         patrimonio: form.Patrimonio,
+        modelo: form.Modelo,
       });
 
       toast.success('Alocação criada com sucesso!');
@@ -42,6 +44,7 @@ export default function Header({ onAlocacaoCreated }: HeaderProps) {
         Equipamento: '',
         Marcas: '',
         Patrimonio: '',
+        Modelo: '',
         Setor: '',
       });
       onAlocacaoCreated();

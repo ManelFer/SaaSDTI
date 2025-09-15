@@ -8,8 +8,8 @@ const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: Home },
   { name: "Ordens de Serviço", href: "/dashboard/CadastroOs", icon: FileText },
   { name: "Estoque", href: "/dashboard/CadastroEst", icon: Box },
-  { name: "Leilão", href: "/dashboard/CadastroLix", icon: Trash2 },
-  { name: "cadastros", href: "/dashboard/CadastroFull", icon: FileText },
+  { name: "Descarte", href: "/dashboard/CadastroLix", icon: Trash2 },
+  { name: "Cadastros", href: "/dashboard/CadastroFull", icon: FileText },
   { name: "Alocação", href: "/dashboard/CadastroAloc", icon: ArrowLeftRight }
 ];
 

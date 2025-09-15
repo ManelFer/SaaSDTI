@@ -45,7 +45,7 @@ export function CadastroSetor() {
         <Button
           className="bg-[#257432] text-white px-4 py-2 rounded-md hover:bg-[#066333] hover:scale-105 duration-300"
         >
-          Cadastro de Equipamentos
+          Cadastro de Setores
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

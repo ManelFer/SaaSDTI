@@ -1,5 +1,5 @@
 'use client';
-
+import { API_URL } from '@/constants/constante';
 import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -19,7 +19,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const response = await fetch('http://192.168.56.1:3001/login', {
+      const response = await fetch(`${API_URL}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

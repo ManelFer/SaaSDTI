@@ -21,6 +21,7 @@ interface FormNovaAlocacaoProps {
     Marcas: string;
     Patrimonio: string;
     Setor: string;
+    Modelo: string;
   };
   handleChange: (key: string, value: string) => void;
   openDialog: () => void;
@@ -69,6 +70,17 @@ export function FormNovaAlocacao({
                   placeholder="Número de Patrimonio"
                   value={form.Patrimonio}
                   onChange={(e) => handleChange("Patrimonio", e.target.value)}
+                />
+              </div>
+              <div>
+                <Label htmlFor="modelo" className="mb-2">
+                  Modelo
+                </Label>
+                <Input
+                  id="modelo"
+                  placeholder="Modelo do Equipamento"
+                  value={form.Modelo}
+                  onChange={(e) => handleChange("Modelo", e.target.value)}
                 />
               </div>
               <Setor

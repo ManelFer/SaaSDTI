@@ -26,7 +26,7 @@ export function CardLixao() {
       <div className="flex items-center space-x-4">
         <Trash className="h-6 w-6 text-blue-600" />
         <div>
-          <h3 className="text-lg font-semibold text-blue-800">Leilão</h3>
+          <h3 className="text-lg font-semibold text-blue-800">Descarte</h3>
         </div>
       </div>
       <span className="text-xl font-bold text-blue-800">{quantidadeLixao}</span>

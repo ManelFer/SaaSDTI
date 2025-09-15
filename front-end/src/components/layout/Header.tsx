@@ -23,7 +23,7 @@ export default function Header() {
               height={50}
               className="rounded-full mt-2"
             />
-            <h1 className="text-2xl font-bold text-[#066333] mt-2">CoTI</h1>
+            <h1 className="text-2xl font-bold text-[#257432]">DTI</h1>
           </div>
         </div>
 

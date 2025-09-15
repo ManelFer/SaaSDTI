@@ -24,7 +24,7 @@ export function CardOsResolvido() {
       <div className="flex items-center space-x-4">
         <CheckCircle className="h-6 w-6 text-green-600" />
         <div>
-          <h3 className="text-lg font-semibold text-green-800">OS Públicadas</h3>
+          <h3 className="text-lg font-semibold text-green-800">O.S. Públicadas</h3>
         </div>
       </div>
       <span className="text-xl font-bold text-green-800">{quantidadeTotal}</span>

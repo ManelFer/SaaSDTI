@@ -139,7 +139,7 @@ export function AtualizacaoL({ lixaoItem, marcas, itens, onUpdate }: Atualizacao
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="numero_serie" className="text-right">
-              N/S
+              Nº Série
             </Label>
             <Input
               id="numero_serie"

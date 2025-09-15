@@ -1,6 +1,7 @@
 export interface Alocacao {
   id: number;
   patrimonio: string;
+  modelo: string;
   created_at: string;
 
   equipamento_id: number;

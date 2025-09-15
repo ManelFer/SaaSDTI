@@ -43,6 +43,7 @@ export default function MovimentacoesPage() {
       alocacao.patrimonio?.toLowerCase().includes(query) ||
       alocacao.equipamento_nome?.toLowerCase().includes(query) ||
       alocacao.marca_nome?.toLowerCase().includes(query) ||
+      alocacao.modelo?.toLowerCase().includes(query) ||
       alocacao.setor_nome?.toLowerCase().includes(query)
     );
   });

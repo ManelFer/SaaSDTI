@@ -26,11 +26,12 @@ import autoTable from "jspdf-autotable";
 import { toast } from "react-toastify";
 import { AtualizacaoE } from "./_components/atualizacaoE";
 import { ConfirmacaoDelecao } from "@/components/ui/confirmacaoDelecao";
-import { Register } from "./_components/register"
+import { Register } from "./_components/register";
 
 export default function EstoquePage() {
   const [estoque, setEstoque] = useState<Estoque[]>([]);
   const [Loading, setLoading] = useState(false);
+  const [ isEstOpen, setEstOpen ] = useState(false);
   const [search, setSearch] = useState("");
   const [marcas, setMarca] = useState<Marcas[]>([]);
   const [itens, setItens] = useState<Itens[]>([]);
@@ -45,7 +46,7 @@ export default function EstoquePage() {
       // setando marcas, itens e estoque data
       setMarca(marcasData);
       setEstoque(Array.isArray(estoqueData) ? estoqueData : [estoqueData]);
-      
+
       setItens(itensData);
       setEstoque(Array.isArray(estoqueData) ? estoqueData : [estoqueData]);
     };
@@ -53,7 +54,7 @@ export default function EstoquePage() {
   }, []);
 
   //update
- const handleUpdate = () => {
+  const handleUpdate = () => {
     setLoading(true);
   };
 
@@ -67,7 +68,7 @@ export default function EstoquePage() {
       console.error("Erro ao deletar item:", error);
       toast.error("Erro ao deletar item. Tente novamente.");
     }
-  }
+  };
 
   //filtro
   const estoqueFiltradas = estoque.filter((estoque) => {
@@ -88,10 +89,9 @@ export default function EstoquePage() {
     if (Loading) {
       const fetchEstoque = async () => {
         const estoqueData = await buscarEstoque();
-        
-        
+
         setEstoque(Array.isArray(estoqueData) ? estoqueData : [estoqueData]);
-        
+
         setLoading(false);
       };
       fetchEstoque();
@@ -101,20 +101,29 @@ export default function EstoquePage() {
   // Gerar PDF
   const generatePdf = () => {
     const doc = new jsPDF();
-    const tableColumn = ["Equipamento", "Marca", "Modelo", "Número de Série", "Patrimônio", "Lote", "Quantidade"];
+    const tableColumn = [
+      "Equipamento",
+      "Marca",
+      "Modelo",
+      "Número de Série",
+      "Patrimônio",
+      "Lote",
+      "Quantidade",
+    ];
     const tableRows: (string | number)[][] = [];
 
-    estoqueFiltradas.forEach(item => {
-      const itemData = [
-        itens.find((a) => a.id == item.item_id)?.nome || '',
-        marcas.find((a) => a.id == item.marca_id)?.nome || ' ',
-        item.modelo || '',
-        item.numero_serie || '',
-        item.patrimonio || '',
-        item.lote || '',
-        item.quantidade || 0
-      ];
+    estoqueFiltradas.forEach((item) => {
       
+
+      const itemData = [
+        itens.find((a) => a.id == item.item_id)?.nome || "",
+        marcas.find((a) => a.id == item.marca_id)?.nome || " ",
+        item.modelo || "",
+        item.numero_serie || " sem número de série ",
+        item.patrimonio || " sem patrimônio ",
+        item.lote || "",
+        item.quantidade || 0,
+      ];
       tableRows.push(itemData);
     });
 
@@ -122,20 +131,19 @@ export default function EstoquePage() {
       head: [tableColumn],
       body: tableRows,
       startY: 20,
-      theme: 'grid',
+      theme: "grid",
       headStyles: { fillColor: [22, 160, 133] },
     });
     doc.text("Relatório de Estoque", 14, 15);
     doc.save("relatorio_estoque.pdf");
   };
 
-
   return (
     <DashboardLayout>
       <div className="space-y-6 p-6">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-800">Estoque</h1>
-          <Register />
+          <Register isEstOpen={isEstOpen} setEstOpen={setEstOpen} />
           <Retirada />
           <div className="relative">
             <Input
@@ -183,7 +191,9 @@ export default function EstoquePage() {
                   </TableCell>
                   <TableCell className="text-right">
                     <ConfirmacaoDelecao
-                      onConfirm={() => item.id !== undefined && handleDelete(item.id)}
+                      onConfirm={() =>
+                        item.id !== undefined && handleDelete(item.id)
+                      }
                     />
                     <AtualizacaoE
                       estoqueItem={item}

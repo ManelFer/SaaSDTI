@@ -85,6 +85,7 @@ export default function TeamPage() {
       "Equipamento",
       "Marca",
       "Patrimônio",
+      "Número de Série",
       "Lote",
       "Descrição",
     ];
@@ -95,6 +96,7 @@ export default function TeamPage() {
         itens.find((a) => a.id == item.item_id)?.nome || "",
         marcas.find((a) => a.id == item.marca_id)?.nome || "",
         item.patrimonio || "",
+        item.numero_serie || "",
         item.lote || "",
         item.descricao || "",
         item.quantidade || 0,

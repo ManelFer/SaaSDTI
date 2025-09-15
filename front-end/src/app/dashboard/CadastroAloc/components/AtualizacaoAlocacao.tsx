@@ -15,7 +15,7 @@ import { Alocacao } from "@/models/alocacao.model";
 import { atualizarAlocacao } from "@/services/alocacao.service";
 import { SquarePen } from "lucide-react";
 import { useState } from "react";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { Equipamentos } from "@/components/layout/Equipamentos";
 import { Marcas } from "@/components/layout/marcas";
 import { Setor } from "../../CadastroOs/_components/setor";
@@ -33,10 +33,11 @@ export function AtualizacaoAloc({
     String(alocacaoItem.equipamento_id)
   );
   const [setor_id, setSetorId] = useState(String(alocacaoItem.setor_id));
-  const [marcas_id, setMarcaId] = useState(String(alocacaoItem.marcas_id));
+  const [marca_id, setMarcaId] = useState(String(alocacaoItem.marca_id));
   const [patrimonio, setPatrimonio] = useState(
     alocacaoItem.patrimonio || " sem patrimonio "
   );
+  const [modelo, setModelo] = useState(alocacaoItem.modelo || "");
   const [open, setOpen] = useState(false);
 
   const handleSubmit = async () => {
@@ -45,8 +46,9 @@ export function AtualizacaoAloc({
         await atualizarAlocacao(alocacaoItem.id, {
           equipamento_id: Number(equipamento_id),
           setor_id: Number(setor_id),
-          marcas_id: Number(marcas_id),
+          marca_id: Number(marca_id),
           patrimonio: patrimonio,
+          modelo: modelo,
         });
         toast.success("Alocação atualizada com sucesso!");
         setOpen(false);
@@ -81,7 +83,7 @@ export function AtualizacaoAloc({
               onChange={(value) => setEquipamentoId(value)}
             />
             <Marcas
-              value={marcas_id}
+              value={marca_id}
               onChange={(value) => setMarcaId(value)}
             />
             <Setor value={setor_id} onChange={(value) => setSetorId(value)} />
@@ -94,6 +96,17 @@ export function AtualizacaoAloc({
                 value={patrimonio}
                 onChange={(e) => setPatrimonio(e.target.value)}
                 placeholder="Número de Patrimonio"
+              />
+            </div>
+            <div>
+              <Label htmlFor="modelo" className="mb-2">
+                Modelo
+              </Label>
+              <Input
+                id="modelo"
+                value={modelo}
+                onChange={(e) => setModelo(e.target.value)}
+                placeholder="Modelo do equipamento"
               />
             </div>
           </div>

@@ -61,7 +61,7 @@ export default function MovimentacaoCard({ alocacao, onUpdate }: MovimentacaoCar
             {alocacao.setor_nome} <span className="mx-2">↔</span> {alocacao.equipamento_nome}
           </h3>
           <p className="text-sm text-gray-600">
-            {alocacao.equipamento_nome} {alocacao.marca_nome}
+            {alocacao.equipamento_nome} {alocacao.marca_nome} {alocacao.modelo}
           </p>
         </div>
         <div className="flex items-center gap-2">

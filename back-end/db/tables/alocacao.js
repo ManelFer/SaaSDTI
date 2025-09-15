@@ -9,6 +9,7 @@ export function criarTabelaAlocacao() {
             marca_id INTEGER REFERENCES marcas(id) ON DELETE SET NULL,
             setor_id INTEGER REFERENCES setores(id) ON DELETE SET NULL,
             patrimonio VARCHAR(255) UNIQUE NOT NULL,
+            modelo VARCHAR(255),
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
@@ -17,13 +18,13 @@ export function criarTabelaAlocacao() {
 }
 
 // CREATE - Adicionar uma nova alocação
-export async function adicionarAlocacao({ equipamento_id, marca_id, setor_id, patrimonio }) {
+export async function adicionarAlocacao({ equipamento_id, marca_id, setor_id, patrimonio, modelo }) {
     const query = `
-        INSERT INTO alocacao (equipamento_id, marca_id, setor_id, patrimonio)
-        VALUES ($1, $2, $3, $4)
+        INSERT INTO alocacao (equipamento_id, marca_id, setor_id, patrimonio, modelo)
+        VALUES ($1, $2, $3, $4, $5)
         RETURNING *;
     `;
-    const values = [equipamento_id, marca_id, setor_id, patrimonio];
+    const values = [equipamento_id, marca_id, setor_id, patrimonio, modelo];
     const result = await db.query(query, values);
     return result.rows[0];
 }
@@ -34,6 +35,7 @@ export async function obterTodasAlocacoes() {
         SELECT 
             a.id,
             a.patrimonio,
+            a.modelo,
             e.nome AS equipamento_nome,
             m.nome AS marca_nome,
             s.nome AS setor_nome,
@@ -55,6 +57,7 @@ export async function obterAlocacaoPorId(id) {
         SELECT 
             a.id,
             a.patrimonio,
+            a.modelo,
             e.nome AS equipamento_nome,
             m.nome AS marca_nome,
             s.nome AS setor_nome,
@@ -72,7 +75,7 @@ export async function obterAlocacaoPorId(id) {
 }
 
 // UPDATE - Atualizar uma alocação
-export async function atualizarAlocacao(id, { equipamento_id, marca_id, setor_id, patrimonio }) {
+export async function atualizarAlocacao(id, { equipamento_id, marca_id, setor_id, patrimonio, modelo }) {
     const query = `
         UPDATE alocacao
         SET 
@@ -80,11 +83,12 @@ export async function atualizarAlocacao(id, { equipamento_id, marca_id, setor_id
             marca_id = $2,
             setor_id = $3,
             patrimonio = $4,
+            modelo = $5,
             updated_at = CURRENT_TIMESTAMP
-        WHERE id = $5
+        WHERE id = $6
         RETURNING *;
     `;
-    const values = [equipamento_id, marca_id, setor_id, patrimonio, id];
+    const values = [equipamento_id, marca_id, setor_id, patrimonio, modelo, id];
     const result = await db.query(query, values);
     return result.rows[0];
 }
