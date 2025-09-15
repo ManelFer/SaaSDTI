@@ -25,18 +25,18 @@ export function TabelaCadastroUsuarios() {
     const [Loading, ] = useState(false);
     const [search, ] = useState("");
     useEffect(() => {
-        const fetchMarcas = async () => {
+        const fetchUsuarios = async () => {
             const usuariosData = await buscarUsuarios()
-            setUsuarios(Array.isArray(usuariosData) ? usuariosData : [usuariosData]);
+            setUsuarios(usuariosData)
         }
-        fetchMarcas();
+        fetchUsuarios();
     }, [])
 
     useEffect(() => {
         if (Loading) {
             const fetchUsuarios = async () => {
                 const usuariosData = await buscarUsuarios()
-                setUsuarios(Array.isArray(usuariosData) ? usuariosData : [usuariosData]);
+                setUsuarios(usuariosData)
             }
             fetchUsuarios();
         }
@@ -67,7 +67,7 @@ export function TabelaCadastroUsuarios() {
                             try {
                                 if (usuario.id !== undefined) {
                                     await deletarItemUsuarios(usuario.id);
-                                    setUsuarios(usuarios.filter((u) => u.id !== usuario.id))
+                                    setUsuarios (usuarios.filter((u) => u.id !== usuario.id))
                                     toast.success("Usuário deletado com sucesso!");
                                 }
                             } catch (error) {

@@ -14,7 +14,7 @@ export async function createUsuarios(form: Usuarios):Promise<Usuarios> {
     return data;
 }
 
-export async function buscarUsuarios(): Promise<Usuarios> {
+export async function buscarUsuarios(): Promise<Usuarios[]> {
     const res = await fetch(API_URL + API_ROUTES.USUARIOS, {
         method: "GET",
         headers: getHeaders(),

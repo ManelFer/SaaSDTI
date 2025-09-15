@@ -47,7 +47,7 @@ export default function CadastroFullPage() {
           </div>
 
           {/* card 3 */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6">
+          {/* <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6">
             <h2 className="text-xl font-bold text-gray-900 dark:text-white">
               Cadastro de Usuários
             </h2>
@@ -60,7 +60,7 @@ export default function CadastroFullPage() {
                 <TabelaCadastroUsuarios />
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* card 4 */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6">
