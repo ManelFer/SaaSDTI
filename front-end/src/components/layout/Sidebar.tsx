@@ -63,7 +63,7 @@ export default function Sidebar() {
       <div className="px-4 py-3 border-t border-gray-100 text-xs text-gray-500">
         <p>Versão 1.0.0</p>
         <p className="mt-1">
-          © {new Date().getFullYear()} Sistema Cronos | DTI Coordenação
+          © {new Date().getFullYear()} Defensoria Pública | DTI Coordenação
         </p>
       </div>
     </aside>
