@@ -26,6 +26,7 @@ import autoTable from "jspdf-autotable";
 import { toast } from "react-toastify";
 import { AtualizacaoE } from "./_components/atualizacaoE";
 import { ConfirmacaoDelecao } from "@/components/ui/confirmacaoDelecao";
+import { Register } from "./_components/register"
 
 export default function EstoquePage() {
   const [estoque, setEstoque] = useState<Estoque[]>([]);
@@ -134,6 +135,7 @@ export default function EstoquePage() {
       <div className="space-y-6 p-6">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-800">Estoque</h1>
+          <Register />
           <Retirada />
           <div className="relative">
             <Input

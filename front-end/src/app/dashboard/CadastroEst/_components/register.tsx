@@ -6,7 +6,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
-  DialogFooter
+  DialogFooter,
+  DialogTrigger
 } from "@/components/ui/dialog";
 import { Estoque } from '@/models/estoque.model';
 import { useEffect, useState } from 'react';
@@ -101,6 +102,11 @@ export function Register({ isEstOpen, setEstOpen }: RegisterProps) {
 
   return (
     <Dialog open={isEstOpen} onOpenChange={setEstOpen}>
+      <DialogTrigger asChild>
+        <Button className='bg-[#257432] text-white px-4 py-2 rounded-md hover:bg-[#066333] hover:scale-105 duration-300'>
+          Cadastrar Equipamento
+        </Button>
+      </DialogTrigger>
       <DialogContent className="sm:max-w-[800px]">
         <DialogHeader>
           <DialogTitle>Cadastro de Equipamentos</DialogTitle>
