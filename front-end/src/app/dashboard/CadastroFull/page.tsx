@@ -4,8 +4,10 @@ import { CadastroMarcas } from "./_components/cadastroMarcas";
 import { CadastroEquipamentos } from "./_components/cadastroEquipamentos";
 import { CadastroUsuario } from "./_components/cadastroUsuario";
 import { CadastroSetor } from "./_components/cadastroSetor";
-import { Trash } from "lucide-react";
-import { SquarePen } from "lucide-react";
+import { TabelaCadastroSetor } from "./_components/organisms/tabelaCadastroSetor";
+import { TabelaCadastroUsuarios } from "./_components/organisms/tabelaCadastroUsuarios";
+import { TabelaCadastroEquipamentos } from "./_components/organisms/tabelaCadastroEquipamentos";
+import { TabelaCadastroMarcas } from "./_components/organisms/tabelaCadastroMarcas";
 
 export default function CadastroFullPage() {
   return (
@@ -22,11 +24,8 @@ export default function CadastroFullPage() {
             </p>
             <div className="flex justify-between mb-4">
               <CadastroMarcas />
-              <div className="flex items-center">
-                <SquarePen
-                  className="ml-3 cursor-pointer text-blue-600 hover:scale-110 duration-300 hover:text-blue-700"
-                  size={20}
-                />
+              <div className="w-1/2 flex justify-end">
+                <TabelaCadastroMarcas />
               </div>
             </div>
           </div>
@@ -41,11 +40,8 @@ export default function CadastroFullPage() {
             </p>
             <div className="flex justify-between mb-4">
               <CadastroEquipamentos />
-              <div className="flex items-center">
-                <SquarePen
-                  className="ml-3 cursor-pointer text-blue-600 hover:scale-110 duration-300 hover:text-blue-700"
-                  size={20}
-                />
+              <div className="w-1/2 flex justify-end">
+                <TabelaCadastroEquipamentos />
               </div>
             </div>
           </div>
@@ -60,11 +56,8 @@ export default function CadastroFullPage() {
             </p>
             <div className="flex justify-between mb-4">
               <CadastroUsuario />
-              <div className="flex items-center">
-                <SquarePen
-                  className="ml-3 cursor-pointer text-blue-600 hover:scale-110 duration-300 hover:text-blue-700"
-                  size={20}
-                />
+              <div className="w-1/2 flex justify-end">
+                <TabelaCadastroUsuarios />
               </div>
             </div>
           </div>
@@ -79,11 +72,8 @@ export default function CadastroFullPage() {
             </p>
             <div className="flex justify-between mb-4">
               <CadastroSetor />
-              <div className="flex items-center">
-                <SquarePen
-                  className="ml-3 cursor-pointer text-blue-600 hover:scale-110 duration-300 hover:text-blue-700"
-                  size={20}
-                />
+              <div className="w-1/2 flex justify-end">
+                <TabelaCadastroSetor />
               </div>
             </div>
           </div>

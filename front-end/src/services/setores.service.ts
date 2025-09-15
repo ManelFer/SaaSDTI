@@ -36,3 +36,16 @@ export async function createSetor(form: Partial<Setor>): Promise<Setor> {
   const data = await res.json();
   return data;
 }
+
+//metodo deleta um setor
+export async function deleteSetores(id: number): Promise<void> {
+  try {
+    const res = await fetch(`${API_URL}/setores/${id}`, {
+      method: "DELETE",
+      headers: getHeaders(),
+    });
+  } catch (error) {
+    console.error("Erro ao deletar setor:", error);
+    throw error;
+  }
+}

@@ -22,3 +22,15 @@ export async function adicionarSetor(nome) {
     const result = await db.query(query, values);
     return result.rows[0];
 }
+
+//DELETE - Remover um setor
+export async function deletarSetor(id) {
+    const query = `
+        DELETE FROM setores
+        WHERE id = $1
+        RETURNING *;
+    `;
+    const values = [id];
+    const result = await db.query(query, values);
+    return result.rows[0];
+}
