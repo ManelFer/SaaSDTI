@@ -32,7 +32,7 @@ export default function Header({ onAlocacaoCreated }: HeaderProps) {
     try {
       await createAlocacao({
         equipamento_id: Number(form.Equipamento),
-        marcas_id: Number(form.Marcas),
+        marca_id: Number(form.Marcas),
         setor_id: Number(form.Setor),
         patrimonio: form.Patrimonio,
       });
