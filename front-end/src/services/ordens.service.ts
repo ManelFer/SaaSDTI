@@ -1,7 +1,7 @@
 import { API_URL, API_ROUTES } from "@/constants/constante";
 import { getHeaders } from "@/lib/getHeaders";
 import { Ordem } from "@/models/ordem.model";
-import axios, { get } from 'axios';
+import axios from 'axios';
 
 /**
  * Função que cria uma nova Ordem de Serviço no backend
@@ -19,7 +19,7 @@ export async function createOrdens(payload: FormData | string, customHeaders?: R
 
         const res = await fetch(API_URL + API_ROUTES.ORDENS, {
             method: "POST",
-            headers: getHeaders(),
+            headers: headers,
             body: payload
         });
         
