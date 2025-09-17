@@ -69,11 +69,11 @@ export function CadastrarEquipamentoEstoque() {
           <Form form={form} setForm={setForm} />
           <DialogFooter>
             <DialogClose asChild>
-              <Button type="button" variant="secondary">
+              <Button type="button" variant="secondary" className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 hover:scale-105 duration-300">
                 Cancelar
               </Button>
             </DialogClose>
-            <Button type="button" onClick={handleSubmit}>
+            <Button type="button" onClick={handleSubmit} className="bg-[#257432] text-white px-4 py-2 rounded-md hover:bg-[#066333] hover:scale-105 duration-300">
               Salvar
             </Button>
           </DialogFooter>
