@@ -1,5 +1,4 @@
 "use client";
-import { Retirada } from "./_components/retirada";
 import {
   Table,
   TableBody,
@@ -144,7 +143,6 @@ export default function EstoquePage() {
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-800">Estoque</h1>
           <Register isEstOpen={isEstOpen} setEstOpen={setEstOpen} />
-          <Retirada />
           <div className="relative">
             <Input
               type="text"

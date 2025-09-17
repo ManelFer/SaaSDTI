@@ -1,5 +1,4 @@
 "use client";
-import { Coleta } from "./_components/coleta";
 import { CadastroL } from "./_components/cadastroL";
 import { Marcas as MarcasModel } from "@/models/marcas.model";
 import { Itens } from "@/models/itens.model";
@@ -95,9 +94,9 @@ export default function TeamPage() {
       const itemData = [
         itens.find((a) => a.id == item.item_id)?.nome || "",
         marcas.find((a) => a.id == item.marca_id)?.nome || "",
-        item.patrimonio || "",
-        item.numero_serie || "",
-        item.lote || "",
+        item.patrimonio || " sem patrimônio ",
+        item.numero_serie || " sem número de série ",
+        item.lote || " sem lote ",
         item.descricao || "",
         item.quantidade || 0,
       ];
@@ -119,7 +118,6 @@ export default function TeamPage() {
       <div className="space-y-6 rounded-lg p-6">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-800 ">Descarte</h1>
-          <Coleta />
           <CadastroL />
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -144,7 +142,7 @@ export default function TeamPage() {
                 <TableHead>Patrimônio</TableHead>
                 <TableHead>Lote</TableHead>
                 <TableHead>Descrição</TableHead>
-                <TableHead className="text-right">Quantidade</TableHead>
+                <TableHead>Quantidade</TableHead>
                 <TableHead className="text-right">Atualização</TableHead>
               </TableRow>
             </TableHeader>
@@ -163,7 +161,7 @@ export default function TeamPage() {
                   <TableCell>{item.patrimonio}</TableCell>
                   <TableCell>{item.lote || "null"}</TableCell>
                   <TableCell>{item.descricao}</TableCell>
-                  <TableCell className="text-right">
+                  <TableCell>
                     {item.quantidade}
                   </TableCell>
                   <TableCell className="text-right">

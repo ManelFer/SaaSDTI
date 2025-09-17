@@ -104,7 +104,7 @@ export function Register({ isEstOpen, setEstOpen }: RegisterProps) {
     <Dialog open={isEstOpen} onOpenChange={setEstOpen}>
       <DialogTrigger asChild>
         <Button className='bg-[#257432] text-white px-4 py-2 rounded-md hover:bg-[#066333] hover:scale-105 duration-300'>
-          Cadastrar Equipamento teste
+          Cadastrar Equipamento
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[800px]">

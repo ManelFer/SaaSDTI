@@ -1,26 +1,25 @@
 import { API_URL, API_ROUTES } from "@/constants/constante";
 import { getHeaders } from "@/lib/getHeaders";
 import { Ordem } from "@/models/ordem.model";
-import axios from 'axios';
+import axios, { get } from 'axios';
 
 /**
  * Função que cria uma nova Ordem de Serviço no backend
  * @param {Ordem} ordem - Dados da ordem de serviço a ser criada
- * @returns {Promise<any>} - Resposta do backend
+ * @returns {Promise<any>} 
  */
 export async function createOrdens(payload: FormData | string, customHeaders?: Record<string, string>): Promise<Ordem> {
     try {
         const baseHeaders = getHeaders();
         const headers: Record<string, string > = { ...baseHeaders, ...customHeaders };
 
-        // Se estivermos enviando FormData, não definimos o Content-Type manualmente
         if (payload instanceof FormData) {
             delete headers['Content-Type'];
         }
 
         const res = await fetch(API_URL + API_ROUTES.ORDENS, {
             method: "POST",
-            headers: headers,
+            headers: getHeaders(),
             body: payload
         });
         
