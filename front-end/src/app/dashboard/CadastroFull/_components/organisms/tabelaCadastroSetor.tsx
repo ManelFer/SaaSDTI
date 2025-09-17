@@ -2,7 +2,6 @@
 import { Button } from "@/components/ui/button";
 import {
     AlertDialog,
-    AlertDialogAction,
     AlertDialogCancel,
     AlertDialogContent,
     AlertDialogDescription,
@@ -27,8 +26,8 @@ import { NotepadText } from "lucide-react";
 
 export function TabelaCadastroSetor() {
     const [setores, setSetores] = useState<Setor[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [search, setSearch] = useState("");
+    const [loading, ] = useState(false);
+    const [search, ] = useState("");
 
     useEffect(() => {
         const fetchSetores = async () => {
@@ -50,16 +49,7 @@ export function TabelaCadastroSetor() {
 
     const setoresFiltrados = setores.filter((setor) => setor.nome?.toLowerCase().includes(search.toLowerCase()));
 
-    const handleDelete = async (setorId: number) => {
-        try {
-            await deleteSetores(setorId);
-            toast.success("Setor deletado com sucesso!");
-            setLoading(true);
-        } catch (error) {
-            toast.error("Erro ao deletar setor. Tente novamente.");
-            console.error("Erro ao deletar setor:", error);
-        }
-    };
+    
 
     return (
         <AlertDialog>

@@ -21,19 +21,14 @@ import { NotepadText } from "lucide-react";
 
 export function TabelaCadastroEquipamentos() {
   const [itens, setItens] = useState<Itens[]>([]);
-  const [Loading, setLoading] = useState(false);
-  const [search, setSearch] = useState("");
 
   const fetchItens = useCallback(async () => {
-    setLoading(true);
     try {
       const itensData = await buscarItens();
       setItens(itensData);
     } catch (error) {
       toast.error("Falha ao buscar equipamentos.");
       console.error("Erro ao buscar itens:", error);
-    } finally {
-      setLoading(false);
     }
   }, []);
   useEffect(() => {
@@ -50,7 +45,7 @@ export function TabelaCadastroEquipamentos() {
       console.error("Erro ao deletar item:", error);
     }
   };
-  const itensFiltrados = itens.filter((item) => item.nome?.toLocaleLowerCase().includes(search.toLowerCase()));
+  const itensFiltrados = itens;
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>

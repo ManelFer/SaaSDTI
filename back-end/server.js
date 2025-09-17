@@ -25,10 +25,9 @@ const app = express();
 app.use(cors({
   origin: 'http://192.168.56.1:3000', // URL do front-end
 }));
-app.use(express.json());
-
-// Usa as rotas
 app.use('/', osRouter);
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use('/', seRouter);
 app.use('/', esRouter);
 app.use('/', teRouter);

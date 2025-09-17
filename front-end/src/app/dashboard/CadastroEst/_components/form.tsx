@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Marcas } from "../../../../components/layout/marcas";
 import { Equipamentos } from "@/components/layout/Equipamentos";
 
-interface EquipamentoForm {
+export interface EquipamentoForm {
   item_id: string;
   marca_id: string;
   modelo: string;

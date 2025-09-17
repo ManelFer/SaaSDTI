@@ -2,10 +2,10 @@
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { CadastroMarcas } from "./_components/cadastroMarcas";
 import { CadastroEquipamentos } from "./_components/cadastroEquipamentos";
-import { CadastroUsuario } from "./_components/cadastroUsuario";
+
 import { CadastroSetor } from "./_components/cadastroSetor";
 import { TabelaCadastroSetor } from "./_components/organisms/tabelaCadastroSetor";
-import { TabelaCadastroUsuarios } from "./_components/organisms/tabelaCadastroUsuarios";
+
 import { TabelaCadastroEquipamentos } from "./_components/organisms/tabelaCadastroEquipamentos";
 import { TabelaCadastroMarcas } from "./_components/organisms/tabelaCadastroMarcas";
 

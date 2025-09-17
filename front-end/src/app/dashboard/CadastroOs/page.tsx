@@ -37,9 +37,8 @@ export default function ProjectsPage() {
 
   const handleSubmit = async (data: FormState) => {
     try {
-      // Se houver um arquivo, use FormData. Caso contrário, JSON.
-      let payload: any;
-      let headers: any = { "Content-Type": "application/json" };
+      let payload: FormData | string;
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
 
       const cleanedData = {
         ...data,
@@ -49,30 +48,30 @@ export default function ProjectsPage() {
         data_devolucao: data.data_devolucao || undefined,
         data_fechamento: data.data_fechamento || undefined,
       };
-      delete cleanedData.arquivo; // Remova o arquivo do objeto principal
+      delete cleanedData.arquivo; 
 
       if (data.arquivo) {
         const formData = new FormData();
-        Object.keys(cleanedData).forEach((key) => {
-          const value = (cleanedData as any)[key];
+        Object.entries(cleanedData).forEach(([key, value]) => {
+          // const value = (cleanedData as any)[key];
           if (value !== undefined && value !== null) {
-            formData.append(key, value);
+            formData.append(key, String(value));
           }
         });
         formData.append("arquivo", data.arquivo);
         payload = formData;
-        delete headers["Content-Type"]; // O navegador definirá o cabeçalho correto para FormData
+        delete headers["Content-Type"]; 
       } else {
         payload = JSON.stringify(cleanedData);
       }
 
       await createOrdens(payload, headers);
       toast.success("Ordem de serviço cadastrada com sucesso!");
-      handleOrdemUpdated(); // Recarrega a lista
+      handleOrdemUpdated(); 
     } catch (err) {
       console.error("Erro ao cadastrar ordem de serviço:", err);
       toast.error("Erro ao cadastrar ordem de serviço. Tente novamente.");
-      throw err; // Lança o erro para o formulário saber que a submissão falhou
+      throw err; 
     }
   };
 
@@ -136,8 +135,9 @@ export default function ProjectsPage() {
         <Header
           search={search}
           setSearch={setSearch}
-          openDialog={() => setIsDialogOpen(true)}
-        />
+          openDialog={() => setIsDialogOpen(true)} onAlocacaoCreated={function (): Promise<void> {
+            throw new Error("Function not implemented.");
+          } }        />
         <CadastroOSDialog
           isOpen={isDialogOpen}
           onClose={() => setIsDialogOpen(false)}

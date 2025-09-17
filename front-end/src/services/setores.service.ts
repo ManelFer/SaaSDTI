@@ -40,7 +40,7 @@ export async function createSetor(form: Partial<Setor>): Promise<Setor> {
 //metodo deleta um setor
 export async function deleteSetores(id: number): Promise<void> {
   try {
-    const res = await fetch(`${API_URL}/setores/${id}`, {
+    await fetch(`${API_URL}/setores/${id}`, {
       method: "DELETE",
       headers: getHeaders(),
     });

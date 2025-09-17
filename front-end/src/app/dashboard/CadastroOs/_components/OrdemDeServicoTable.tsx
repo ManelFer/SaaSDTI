@@ -125,14 +125,21 @@ export function OrdemDeServicoTable({
                 </TableCell>
 
                 <TableCell className="text-center">
-                  {ordem.arquivo && ordem.arquivo.data ? (
+                  {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                  {ordem.arquivo && (ordem.arquivo as any).data ? (
                     <a
                       href={URL.createObjectURL(
-                        new Blob([new Uint8Array(ordem.arquivo.data)], {
+                        new Blob([
+                          /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+                          new Uint8Array((ordem.arquivo as any).data),
+                        ], {
                           type: "application/pdf",
                         })
                       )}
-                      download={`OS_${(ordem.numero_os ?? '').replace('/', '_')}.pdf`}
+                      download={`OS_${(ordem.numero_os ?? "").replace(
+                        "/",
+                        "_"
+                      )}.pdf`}
                     >
                       OS
                     </a>
@@ -141,13 +148,14 @@ export function OrdemDeServicoTable({
                   )}
                 </TableCell>
 
-                
                 <TableCell className="flex items-center justify-end space-x-2">
                   <AtualizacaoOrdem ordem={ordem} onUpdate={onOrdemUpdated} />
                   <ConfirmacaoDelecao
-                    onConfirm={() =>
-                      typeof ordem.id === "number" && handleDelete(ordem.id)
-                    }
+                    onConfirm={() => {
+                      if (typeof ordem.id === "number") {
+                        handleDelete(ordem.id);
+                      }
+                    }}
                   />
                 </TableCell>
               </TableRow>

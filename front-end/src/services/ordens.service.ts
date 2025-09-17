@@ -8,10 +8,10 @@ import axios from 'axios';
  * @param {Ordem} ordem - Dados da ordem de serviço a ser criada
  * @returns {Promise<any>} - Resposta do backend
  */
-export async function createOrdens(payload: any, customHeaders?: any): Promise<Ordem> {
+export async function createOrdens(payload: FormData | string, customHeaders?: Record<string, string>): Promise<Ordem> {
     try {
         const baseHeaders = getHeaders();
-        const headers = { ...baseHeaders, ...customHeaders };
+        const headers: Record<string, string > = { ...baseHeaders, ...customHeaders };
 
         // Se estivermos enviando FormData, não definimos o Content-Type manualmente
         if (payload instanceof FormData) {

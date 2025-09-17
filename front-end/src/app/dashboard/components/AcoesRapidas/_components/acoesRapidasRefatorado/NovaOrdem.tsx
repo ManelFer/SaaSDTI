@@ -3,31 +3,49 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { File } from "lucide-react";
 import { CadastroOSDialog } from "../../../../CadastroOs/_components/CadastroOSDialog";
+import { FormState } from "../../../../CadastroOs/_components/OrdemServicoForm";
+import { createOrdens } from "@/services/ordens.service";
+import { toast } from "react-toastify";
 
 export function NovaOrdem() {
   const [isOpen, setIsOpen] = useState(false);
-  const [form, setForm] = useState({
-    numero_os: "",
-    data_abertura: "",
-    solicitante: "",
-    setor: "",
-    patrimonio: "",
-    tipo_falha: "",
-    solucao_tecnica: "",
-    tecnico_responsavel: "",
-    data_recolhimento: "",
-    data_devolucao: "",
-    data_fechamento: "",
-    status: "",
-  });
 
-  const handleChange = (key: string, value: string) => {
-    setForm((prev) => ({ ...prev, [key]: value }));
-  };
+  const handleSubmit = async (data: FormState) => {
+    try {
+      const headers: Record<string, string> = {};
 
-  const handleSubmit = () => {
-    
-    setIsOpen(false); 
+      
+      const { arquivo, ...rest } = data;
+
+      const cleanedData: Record<string, string | number | undefined> = {
+        ...rest,
+        setor_id: Number(data.setor),
+        tecnico_responsavel_id: Number(data.tecnico_responsavel),
+        data_recolhimento: data.data_recolhimento || undefined,
+        data_devolucao: data.data_devolucao || undefined,
+        data_fechamento: data.data_fechamento || undefined,
+      };
+
+      const formData = new FormData();
+
+      Object.entries(cleanedData).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          formData.append(key, String(value));
+        }
+      });
+
+      if (arquivo) {
+        formData.append("arquivo", arquivo);
+      }
+
+      await createOrdens(formData, headers);
+      toast.success("Ordem de serviço cadastrada com sucesso!");
+      setIsOpen(false);
+    } catch (err) {
+      console.error("Erro ao cadastrar ordem de serviço:", err);
+      toast.error("Erro ao cadastrar ordem de serviço. Tente novamente.");
+      throw err;
+    }
   };
 
   return (
@@ -42,8 +60,6 @@ export function NovaOrdem() {
         <CadastroOSDialog
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
-          form={form}
-          handleChange={handleChange}
           handleSubmit={handleSubmit}
         />
       </div>

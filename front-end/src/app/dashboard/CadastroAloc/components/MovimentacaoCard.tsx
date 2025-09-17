@@ -26,13 +26,13 @@ export default function MovimentacaoCard({ alocacao, onUpdate }: MovimentacaoCar
   if (!alocacao) {
     return null;
   }
-  const tipo = 'Alocado';
+  // const tipo = 'Alocado';
 
-  const badgeColors: { [key: string]: string } = {
-    Alocado: 'bg-blue-100 text-blue-700',
-    Leilão: 'bg-orange-100 text-orange-700',
-    Estoque: 'bg-green-100 text-green-700',
-  };
+  // const badgeColors: { [key: string]: string } = {
+  //   Alocado: 'bg-blue-100 text-blue-700',
+  //   Leilão: 'bg-orange-100 text-orange-700',
+  //   Estoque: 'bg-green-100 text-green-700',
+  // };
 
   const formattedDate = alocacao.created_at
     ? new Date(alocacao.created_at).toLocaleDateString('pt-BR', {
