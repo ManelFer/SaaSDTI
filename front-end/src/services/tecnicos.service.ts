@@ -1,6 +1,8 @@
 import { API_URL, API_ROUTES } from "@/constants/constante";
-import { Tecnico } from "@/models/tecnico.model";
+import { Tecnico, TecnicoCreate } from "@/models/tecnico.model";
+import { getHeaders } from "@/lib/getHeaders";
 import axios from 'axios';
+
 
 type AtualizarTecnicoPayload = Partial<Tecnico> & {
   senhaAtual?: string;
@@ -9,11 +11,29 @@ type AtualizarTecnicoPayload = Partial<Tecnico> & {
 export async function buscarTecnico(): Promise<Tecnico> {
     const res = await fetch(API_URL + API_ROUTES.TECNICOS, {
         method: "GET",
-        headers: { "Content-Type": "application/json" },
+        headers: getHeaders(),
     });
     const data = await res.json();
     return data;
     
+}
+
+// METODO POST
+export async function cadastrarTecnico(tecnico: TecnicoCreate): Promise<Tecnico> {
+  const res = await fetch(API_URL + API_ROUTES.TECNICOS, {
+    method: "POST",
+    headers: getHeaders(),
+    body: JSON.stringify(tecnico),
+  });
+
+  const contentType = res.headers.get("content-type");
+  if (contentType && contentType.includes("application/json")) {
+    return await res.json();
+  } else {
+    const text = await res.text();
+    console.error("Resposta não JSON:", text);
+    throw new Error("Resposta não foi JSON.");
+  }
 }
 
 export const buscarTecnicos = async (): Promise<Tecnico[]> => {
@@ -50,5 +70,21 @@ export const atualizarTecnicoDados = async (id: number, data: AtualizarTecnicoPa
     throw error;
   }
 };
+
+//DELETE
+export async function deletarTecnico(id:number): Promise<void> {
+  try {
+    const res = await fetch(`${API_URL}/tecnicos/${id}`, {
+      method: "DELETE",
+      headers: getHeaders(),
+    });
+    if (!res.ok){
+      throw new Error(`Erro HTTP: ${res.status}`);
+    }
+  } catch (error) {
+    console.error('Erro ao deletar tecnico:', error);
+    throw error;
+  }
+}
 
 

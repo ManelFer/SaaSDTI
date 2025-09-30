@@ -1,18 +1,18 @@
-'use client';
+"use client";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { useState } from "react";
-import { User2} from "lucide-react";
+import { User2, UserPlus2 } from "lucide-react";
 import { MeuPerfilForm } from "./_components/PerfilForm";
 import { PerfilAvatar } from "./_components/PerfilAvatar";
-
+import  {NewTecnico } from "./_components/HeaderNewTecnico";
 
 export default function MeuPerfilPage() {
   const tabs = [
-    { id: 'perfil', name: 'Perfil', icon: User2 },
+    { id: "perfil", name: "Perfil", icon: User2 },
+    { id: "cadastros", name: "Cadastros", icon: UserPlus2 },
   ];
 
-  const [activeTab, setActiveTab] = useState('perfil');
-  
+  const [activeTab, setActiveTab] = useState("perfil");
 
   return (
     <DashboardLayout>
@@ -25,8 +25,8 @@ export default function MeuPerfilPage() {
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-2 pb-2 transition-all border-b-2 ${
                 activeTab === tab.id
-                  ? 'text-[#257432] border-[#257432] font-medium'
-                  : 'text-gray-500 border-transparent hover:text-green-500'
+                  ? "text-[#257432] border-[#257432] font-medium"
+                  : "text-gray-500 border-transparent hover:text-green-500"
               }`}
             >
               <tab.icon size={18} />
@@ -37,14 +37,18 @@ export default function MeuPerfilPage() {
 
         {/* Conteúdo */}
         <div className="bg-white p-6 rounded-lg shadow-md mt-4">
-          {activeTab === 'perfil' && (
+          {activeTab === "perfil" && (
             <>
-              {/* Avatar e informações */}
               <PerfilAvatar />
-
-              {/* Formulário */}
               <MeuPerfilForm />
             </>
+          )}
+
+          {activeTab === "cadastros" && (
+            <div>
+              {/* Aqui você pode colocar um componente ou lista de cadastros */}
+              <NewTecnico/>
+            </div>
           )}
         </div>
       </div>

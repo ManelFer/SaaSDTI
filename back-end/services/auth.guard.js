@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
 const validateToken = (authHeader) => {
-  if (!authHeader) {
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return false;
   }
 
@@ -15,6 +15,7 @@ const validateToken = (authHeader) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     return !!decoded;
   } catch (error) {
+    console.error(error);
     return false;
   }
 };

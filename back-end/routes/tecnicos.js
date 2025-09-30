@@ -118,5 +118,19 @@ router.put('/tecnicos/:id', async (req, res) => {
   }
 });
 
+// DELETE
+router.delete('/tecnicos/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const { rows } = await db.query('DELETE FROM tecnicos WHERE id = $1 RETURNING *', [id]);
+    if (rows.length === 0) {
+      return res.status(404).json({ error: 'Tecnico not found' });
+    }
+    res.json(rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 
 export default router;

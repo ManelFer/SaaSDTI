@@ -38,14 +38,17 @@ export async function createSetor(form: Partial<Setor>): Promise<Setor> {
 }
 
 //metodo deleta um setor
-export async function deleteSetores(id: number): Promise<void> {
+export async function deleteSetores(id: number): Promise<void>{
   try {
-    await fetch(`${API_URL}/setores/${id}`, {
+    const res = await fetch(`${API_URL}/setores/${id}`, {
       method: "DELETE",
       headers: getHeaders(),
-    });
+    })
+    if (!res.ok) {
+      throw new Error(`Erro HTTP: ${res.status}`);
+    }
   } catch (error) {
-    console.error("Erro ao deletar setor:", error);
+    console.error('Erro ao deletar setor:', error);
     throw error;
   }
 }

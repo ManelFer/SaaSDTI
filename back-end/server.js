@@ -23,7 +23,7 @@ await criarTabelas();
 
 const app = express();
 app.use(cors({
-  origin: 'http://192.168.56.1:3000', // URL do front-end
+  origin: '*'
 }));
 app.use('/', osRouter);
 app.use(express.json({ limit: '50mb' }));
