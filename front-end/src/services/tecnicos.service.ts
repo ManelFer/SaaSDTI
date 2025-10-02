@@ -59,17 +59,18 @@ export const buscarTecnicoPorId = async (id: number): Promise<Tecnico> => {
 };
 
 // update
-export const atualizarTecnicoDados = async (id: number, data: AtualizarTecnicoPayload): Promise<Tecnico> => {
-  try {
-    const response = await axios.put(`${API_URL}${API_ROUTES.TECNICOS}/${id}`, data);
-    const tecnico = response.data;
-    
-    return tecnico as Tecnico;
-  } catch (error) {
-    console.error(`Erro ao atualizar técnico com ID ${id}:`, error);
-    throw error;
+export async function atualizarTecnico(id: number, tecnico: AtualizarTecnicoPayload): Promise<Tecnico> {
+  const res = await fetch(`${API_URL}${API_ROUTES.TECNICOS}/${id}`, {
+    method: "PUT",
+    headers: getHeaders(),
+    body: JSON.stringify(tecnico),
+  });
+  if (!res.ok){
+    throw new Error(`Erro HTTP: ${res.status}`);
   }
-};
+  const data = await res.json();
+  return data;
+}
 
 //DELETE
 export async function deletarTecnico(id:number): Promise<void> {

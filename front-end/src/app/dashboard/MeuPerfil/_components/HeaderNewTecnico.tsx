@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { TecnicoFormLabel } from "./TecnicoFormLabel";
 import { buscarTecnico, deletarTecnico } from "@/services/tecnicos.service";
+import { EditarNewTecnico} from "@/app/dashboard/MeuPerfil/_components/EditarNewTecnico"
 import { toast } from "react-toastify";
 
 export function NewTecnico() {
@@ -25,6 +26,11 @@ export function NewTecnico() {
     };
     fetchTecnicos();
   }, []);
+
+  //update
+  const handleUpdate = () => {
+    setLoading(true);
+  }
 
   const handleDelete = async (tecnicoId: number) => {
     try {
@@ -78,7 +84,12 @@ export function NewTecnico() {
 
             {/* Ações */}
             <div className="flex justify-end gap-3 mt-4 text-sm">
-              <button className="text-blue-600 hover:underline">Editar</button>
+              <button className="text-blue-600 hover:underline">
+                <EditarNewTecnico
+                  EditTecnico={tecnico}
+                  onUpdate={handleUpdate}
+                />
+              </button>
               <button 
                 onClick={() => handleDelete(tecnico.id)}
                 className="text-red-600 hover:underline" >

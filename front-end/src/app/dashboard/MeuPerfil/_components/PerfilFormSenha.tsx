@@ -3,7 +3,7 @@ import { Lock } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { atualizarTecnicoDados } from "@/services/tecnicos.service";
+import { atualizarTecnico } from "@/services/tecnicos.service";
 import { toast } from "react-toastify";
 import useAuth from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
@@ -35,7 +35,7 @@ export function PerfilFormSenha() {
     }
 
     try {
-      await atualizarTecnicoDados(user.id, {
+      await atualizarTecnico(user.id, {
         senhaAtual: currentPassword,
         senha: novaSenha,
       });

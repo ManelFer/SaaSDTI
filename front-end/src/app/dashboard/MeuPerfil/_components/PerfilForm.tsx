@@ -6,7 +6,7 @@ import { Mail, User2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
   buscarTecnicoPorId,
-  atualizarTecnicoDados,
+  atualizarTecnico,
 } from "@/services/tecnicos.service";
 import { Button } from "@/components/ui/button";
 import { toast } from "react-toastify";
@@ -40,7 +40,7 @@ export function MeuPerfilForm() {
     if (!user?.id) return;
 
     try {
-      await atualizarTecnicoDados(user.id, {
+      await atualizarTecnico(user.id, {
         nome: tecnicoNome,
         email: tecnicoEmail,
       });
