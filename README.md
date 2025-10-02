@@ -80,7 +80,7 @@ front-end/       → Interface em Next.js
 cd back-end
 npm install
 cp .env.example .env   # editar com credenciais do banco e JWT_SECRET
-npm start
+npm run dev
 ````
 
 O servidor será iniciado em:
