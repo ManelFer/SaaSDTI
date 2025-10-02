@@ -4,14 +4,13 @@ import { TecnicoFormLabel } from "./TecnicoFormLabel";
 import { buscarTecnico, deletarTecnico } from "@/services/tecnicos.service";
 import { EditarNewTecnico} from "@/app/dashboard/MeuPerfil/_components/EditarNewTecnico"
 import { toast } from "react-toastify";
+import { Tecnico } from "@/models/tecnico.model";
+
+
 
 export function NewTecnico() {
-  const [tecnicos, setTecnicos] = useState<any[]>([]);
+  const [tecnicos, setTecnicos] = useState<Tecnico[]>([]);
   const [loading, setLoading] = useState(true);
-
-  
-
-
 
   useEffect(() => {
     const fetchTecnicos = async () => {
@@ -64,7 +63,7 @@ export function NewTecnico() {
               {/* Avatar + Info */}
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 font-semibold">
-                  {tecnico.nome[0]}
+                  {tecnico.nome ? tecnico.nome[0]: "?"}
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900">{tecnico.nome}</h3>
@@ -91,7 +90,11 @@ export function NewTecnico() {
                 />
               </button>
               <button 
-                onClick={() => handleDelete(tecnico.id)}
+                onClick={() => {
+                  if (tecnico.id !== undefined) {
+                    handleDelete(tecnico.id);
+                  }
+                }}
                 className="text-red-600 hover:underline" >
                 Excluir
               </button>

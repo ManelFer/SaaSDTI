@@ -56,7 +56,7 @@ export function EditarNewTecnico({
     }
   };
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline">Editar</Button>
       </DialogTrigger>
