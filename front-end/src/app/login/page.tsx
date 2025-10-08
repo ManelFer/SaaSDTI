@@ -102,6 +102,9 @@ export default function LoginPage() {
           >
             {loading ? 'Entrando...' : 'Entrar'}
           </button>
+          <footer>
+            <p className="text-xs text-gray-500 opacity-30">Versão 1.0.0-08/10/2025</p>
+          </footer>
         </form>
       </div>
     </div>
