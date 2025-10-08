@@ -46,7 +46,7 @@ export default function MeuPerfilPage() {
 
           {activeTab === "cadastros" && (
             <div>
-              {/* Aqui você pode colocar um componente ou lista de cadastros */}
+              
               <NewTecnico/>
             </div>
           )}
