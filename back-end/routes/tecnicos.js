@@ -45,11 +45,12 @@ router.post('/tecnicos', async (req, res) => {
     const hashedPassword = await bcrypt.hash(senha, salt);
 
     const result = await db.query(
-      'INSERT INTO tecnicos (nome, email, senha, role) VALUES ($1, $2, $3, $4) RETURNING id, nome, email, created_at, updated_at',
+      'INSERT INTO tecnicos (nome, email, senha, role) VALUES ($1, $2, $3, $4) RETURNING id, nome, email, role, created_at, updated_at',
       [nome, email, hashedPassword, roleValue]
     );
 
     res.status(201).json(result.rows[0]);
+    console.log(`Tecnico com ID ${result.rows[0].id} criado com sucesso.`);
   } catch (err) {
     if (err.code === '23505') {
         return res.status(409).json({ error: 'O e-mail fornecido já está em uso.' });
