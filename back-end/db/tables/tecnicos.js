@@ -13,7 +13,7 @@ export function criarTabelaTecnicos() {
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
         CONSTRAINT tecnicos_role_check CHECK (
-            role IN ('Tecnico', 'Admin')
+            role IN ('tecnico', 'admin')
         )
 
         );
