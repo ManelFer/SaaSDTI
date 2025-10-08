@@ -85,6 +85,7 @@ export default function Sidebar() {
             <div>
               <h2 className="font-bold text-gray-900">Sistema TI</h2>
               <p className="text-xs text-gray-500">Defensoria Pública</p>
+              <p className="text-xs text-gray-500 opacity-30">Versão 1.0.0-08/10/2025</p>
             </div>
           </div>
           <button

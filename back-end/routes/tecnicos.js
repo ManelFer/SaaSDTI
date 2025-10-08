@@ -55,6 +55,7 @@ router.post('/tecnicos', async (req, res) => {
         return res.status(409).json({ error: 'O e-mail fornecido já está em uso.' });
     }
     res.status(500).json({ error: 'Erro interno do servidor ao criar o técnico.' });
+    console.log(err, " o erro é devido a", err.code)
   }
 });
 
