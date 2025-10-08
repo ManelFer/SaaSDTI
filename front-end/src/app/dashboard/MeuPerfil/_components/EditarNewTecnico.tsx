@@ -109,8 +109,8 @@ export function EditarNewTecnico({
                 <SelectValue placeholder="Selecione" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="tecnico">Tecnico</SelectItem>
-                <SelectItem value="admin">Admin</SelectItem>
+                <SelectItem value="tecnico">tecnico</SelectItem>
+                <SelectItem value="admin">admin</SelectItem>
               </SelectContent>
             </Select>
           </div>
