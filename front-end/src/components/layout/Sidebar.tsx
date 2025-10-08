@@ -8,7 +8,6 @@ import {
   Box,
   Trash2,
   ChevronRight,
-  Settings,
   ArrowLeftRight,
   Menu,
   X,
